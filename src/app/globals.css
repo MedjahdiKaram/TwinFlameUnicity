@@ -1,0 +1,470 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   FONTS — Google Fonts (import in layout)
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;500;600;700&display=swap');
+
+/* ============================================================
+   CSS VARIABLES — Design System
+   ============================================================ */
+@layer base {
+  :root {
+    /* Radius */
+    --radius: 0.75rem;
+
+    /* Shadcn variables — dark cosmic theme */
+    --background: 260 50% 4%;
+    --foreground: 280 20% 95%;
+
+    --card: 260 40% 8%;
+    --card-foreground: 280 20% 95%;
+
+    --popover: 260 40% 8%;
+    --popover-foreground: 280 20% 95%;
+
+    --primary: 272 84% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 260 30% 15%;
+    --secondary-foreground: 280 20% 90%;
+
+    --muted: 260 30% 12%;
+    --muted-foreground: 260 20% 60%;
+
+    --accent: 260 40% 20%;
+    --accent-foreground: 280 20% 95%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 260 30% 18%;
+    --input: 260 30% 15%;
+    --ring: 272 84% 60%;
+
+    /* Custom cosmic variables */
+    --cosmic-bg: #0f0728;
+    --cosmic-bg-2: #1a0545;
+    --cosmic-purple: #9333ea;
+    --cosmic-violet: #7c3aed;
+    --cosmic-lavender: #a855f7;
+    --cosmic-pink: #ec4899;
+    --cosmic-gold: #f59e0b;
+    --cosmic-blue: #6366f1;
+    --cosmic-white: #f0e6ff;
+    --glow-purple: rgba(147, 51, 234, 0.5);
+    --glow-violet: rgba(124, 58, 237, 0.4);
+  }
+
+  /* Light mode (minimal, still mystical) */
+  .light {
+    --background: 280 40% 97%;
+    --foreground: 260 50% 10%;
+    --card: 280 30% 99%;
+    --card-foreground: 260 50% 10%;
+    --popover: 280 30% 99%;
+    --popover-foreground: 260 50% 10%;
+    --primary: 272 84% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 280 20% 92%;
+    --secondary-foreground: 260 50% 15%;
+    --muted: 280 20% 94%;
+    --muted-foreground: 260 30% 45%;
+    --accent: 280 30% 88%;
+    --accent-foreground: 260 50% 15%;
+    --destructive: 0 84% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 280 20% 85%;
+    --input: 280 20% 90%;
+    --ring: 272 84% 55%;
+  }
+}
+
+/* ============================================================
+   GLOBAL BASE STYLES
+   ============================================================ */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background-color: var(--cosmic-bg);
+    font-family: var(--font-inter), system-ui, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Arabic RTL support */
+  [dir="rtl"] body,
+  html[lang="ar"] body {
+    font-family: var(--font-cairo), var(--font-amiri), 'Noto Sans Arabic', system-ui, sans-serif;
+    letter-spacing: 0;
+  }
+
+  [dir="rtl"] {
+    text-align: right;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(15, 7, 40, 0.8);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(147, 51, 234, 0.5);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(147, 51, 234, 0.8);
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgba(147, 51, 234, 0.35);
+    color: #f0e6ff;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-cinzel), var(--font-playfair), Georgia, serif;
+    letter-spacing: 0.02em;
+  }
+
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] h5,
+  [dir="rtl"] h6 {
+    font-family: var(--font-cairo), 'Noto Kufi Arabic', system-ui, sans-serif;
+    letter-spacing: 0;
+  }
+}
+
+/* ============================================================
+   COMPONENTS
+   ============================================================ */
+@layer components {
+
+  /* Glass card */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius);
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-500;
+  }
+
+  .glass-card-hover:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow: 0 20px 60px rgba(168, 85, 247, 0.2), 0 8px 24px rgba(0, 0, 0, 0.4);
+    transform: translateY(-4px);
+  }
+
+  /* Glow button */
+  .btn-glow {
+    @apply relative overflow-hidden transition-all duration-300;
+    background: linear-gradient(135deg, #9333ea, #6366f1);
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.4);
+  }
+
+  .btn-glow::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: linear-gradient(135deg, #a855f7, #818cf8);
+  }
+
+  .btn-glow:hover::before {
+    @apply opacity-100;
+  }
+
+  .btn-glow:hover {
+    box-shadow: 0 0 35px rgba(147, 51, 234, 0.7), 0 0 60px rgba(147, 51, 234, 0.3);
+    transform: translateY(-2px);
+  }
+
+  /* Cosmic text gradient */
+  .text-cosmic {
+    background: linear-gradient(135deg, #c084fc, #a78bfa, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-cosmic-gold {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-cosmic-rose {
+    background: linear-gradient(135deg, #f9a8d4, #ec4899, #db2777);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Shimmering text */
+  .text-shimmer {
+    background: linear-gradient(90deg, #c084fc 0%, #f0abfc 25%, #818cf8 50%, #f0abfc 75%, #c084fc 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+  }
+
+  /* Stars background */
+  .stars-bg {
+    position: relative;
+  }
+
+  .stars-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 40% 80%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 20%, rgba(255,255,255,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 70%, rgba(255,255,255,0.4) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Premium badge */
+  .badge-premium {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    color: #1c1008;
+    font-weight: 700;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.2em 0.6em;
+    border-radius: 9999px;
+    box-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+  }
+
+  /* Cosmic divider */
+  .cosmic-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.5), rgba(99, 102, 241, 0.5), transparent);
+  }
+
+  /* Prose content (article body) */
+  .prose-cosmic {
+    @apply prose prose-invert max-w-none;
+    color: rgba(240, 230, 255, 0.9);
+  }
+
+  .prose-cosmic h1,
+  .prose-cosmic h2,
+  .prose-cosmic h3,
+  .prose-cosmic h4 {
+    font-family: var(--font-cinzel), serif;
+    color: #e9d5ff;
+  }
+
+  .prose-cosmic a {
+    color: #a855f7;
+    text-decoration: underline;
+    text-decoration-color: rgba(168, 85, 247, 0.4);
+  }
+
+  .prose-cosmic a:hover {
+    color: #c084fc;
+    text-decoration-color: rgba(192, 132, 252, 0.8);
+  }
+
+  .prose-cosmic blockquote {
+    border-left: 3px solid #9333ea;
+    background: rgba(147, 51, 234, 0.08);
+    border-radius: 0 0.5rem 0.5rem 0;
+    padding: 1rem 1.5rem;
+    color: #c084fc;
+    font-style: italic;
+  }
+
+  /* Skeleton loader */
+  .skeleton {
+    @apply animate-pulse rounded-md;
+    background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s linear infinite;
+  }
+
+  /* Input cosmic style */
+  .input-cosmic {
+    @apply w-full rounded-xl border bg-white/5 px-4 py-3 text-sm text-white/90 transition-all duration-300;
+    border-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  .input-cosmic::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+  }
+
+  .input-cosmic:focus {
+    outline: none;
+    border-color: rgba(147, 51, 234, 0.6);
+    box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.15), 0 0 20px rgba(147, 51, 234, 0.2);
+  }
+
+  /* Sidebar active state */
+  .sidebar-item-active {
+    background: linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(99, 102, 241, 0.15));
+    border-left: 3px solid #9333ea;
+  }
+
+  [dir="rtl"] .sidebar-item-active {
+    border-left: none;
+    border-right: 3px solid #9333ea;
+  }
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .gradient-mask-b {
+    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+}
+
+/* ============================================================
+   TIPTAP EDITOR STYLES
+   ============================================================ */
+.tiptap-editor .ProseMirror {
+  min-height: 400px;
+  padding: 1.5rem;
+  outline: none;
+  color: rgba(240, 230, 255, 0.9);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  line-height: 1.75;
+}
+
+.tiptap-editor .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+  height: 0;
+}
+
+.tiptap-editor .ProseMirror h1 { font-size: 2em; font-weight: 700; margin: 1em 0 0.5em; color: #e9d5ff; }
+.tiptap-editor .ProseMirror h2 { font-size: 1.5em; font-weight: 600; margin: 1em 0 0.5em; color: #ddd6fe; }
+.tiptap-editor .ProseMirror h3 { font-size: 1.25em; font-weight: 600; margin: 1em 0 0.5em; color: #c4b5fd; }
+.tiptap-editor .ProseMirror blockquote {
+  border-left: 3px solid #9333ea;
+  background: rgba(147, 51, 234, 0.08);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  color: #c084fc;
+  font-style: italic;
+  margin: 1.5em 0;
+}
+.tiptap-editor .ProseMirror code {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(168,85,247,0.3);
+  border-radius: 4px;
+  padding: 0.2em 0.4em;
+  font-size: 0.875em;
+  color: #a5f3fc;
+}
+.tiptap-editor .ProseMirror pre {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(168,85,247,0.2);
+  border-radius: 8px;
+  padding: 1.25rem;
+  overflow-x: auto;
+  margin: 1.5em 0;
+}
+.tiptap-editor .ProseMirror pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #a5f3fc;
+}
+.tiptap-editor .ProseMirror table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5em 0;
+}
+.tiptap-editor .ProseMirror th,
+.tiptap-editor .ProseMirror td {
+  border: 1px solid rgba(168,85,247,0.3);
+  padding: 0.625rem 1rem;
+}
+.tiptap-editor .ProseMirror th {
+  background: rgba(147,51,234,0.15);
+  font-weight: 600;
+  color: #e9d5ff;
+}
+.tiptap-editor .ProseMirror a {
+  color: #a855f7;
+  text-decoration: underline;
+}
+.tiptap-editor .ProseMirror ul,
+.tiptap-editor .ProseMirror ol {
+  padding-left: 1.5em;
+  margin: 1em 0;
+}
+.tiptap-editor .ProseMirror li { margin: 0.25em 0; }
+
+/* Table selected cells */
+.tiptap-editor .ProseMirror .selectedCell:after {
+  z-index: 2;
+  position: absolute;
+  content: "";
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(147, 51, 234, 0.15);
+  pointer-events: none;
+}
