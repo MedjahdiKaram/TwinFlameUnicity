@@ -60,15 +60,15 @@ BEGIN
   VALUES (
     NEW.id,
     NEW.email,
-    COALESCE((NEW.raw_user_meta_data->>'role')::user_role, 'user'),
+    COALESCE((NEW.raw_user_meta_data->>'role')::public.user_role, 'user'::public.user_role),
     CASE
-      WHEN NEW.email = 'kar.giga@gmail.com' THEN 'active'::user_status
-      ELSE 'pending'::user_status
+      WHEN NEW.email = 'kar.giga@gmail.com' THEN 'active'::public.user_status
+      ELSE 'pending'::public.user_status
     END
   );
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
