@@ -1,5 +1,7 @@
-'use client'
+﻿'use client'
 
+import { useRef, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
@@ -68,6 +70,47 @@ function Sep() {
 }
 
 export function TipTapEditor({ content, onChange, placeholder }: Props) {
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [isUploading, setIsUploading] = useState(false)
+  const supabase = createClient()
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    try {
+      setIsUploading(true)
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`
+      const filePath = `${fileName}`
+
+      const { data, error } = await supabase.storage
+        .from('articles')
+        .upload(filePath, file)
+
+      if (error) {
+        console.error('Upload error:', error)
+        alert("Erreur lors du telechargement de l'image.")
+        return
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('articles')
+        .getPublicUrl(data.path)
+
+      if (editor) {
+        editor.chain().focus().setImage({ src: publicUrl }).run()
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsUploading(false)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -82,7 +125,7 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
       TableCell,
       TableHeader,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
-      Placeholder.configure({ placeholder: placeholder || 'Commencez à écrire votre article...' }),
+      Placeholder.configure({ placeholder: placeholder || 'Commencez Ã  Ã©crire votre article...' }),
       Highlight.configure({ multicolor: true }),
       TextStyle,
       Color,
@@ -103,8 +146,7 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
   if (!editor) return null
 
   const addImage = () => {
-    const url = prompt("URL de l'image :")
-    if (url) editor.chain().focus().setImage({ src: url }).run()
+    fileInputRef.current?.click()
   }
 
   const addLink = () => {
@@ -126,12 +168,19 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
 
   return (
     <div className="tiptap-editor border border-white/10 rounded-xl overflow-hidden bg-black/20">
-      {/* ── Toolbar ── */}
+      <input 
+        type="file" 
+        accept="image/*" 
+        onChange={handleImageUpload} 
+        style={{ display: 'none' }} 
+        ref={fileInputRef} 
+      />
+      {/* â”€â”€ Toolbar â”€â”€ */}
       <div className="flex flex-wrap items-center gap-0.5 p-2 border-b border-white/10 bg-white/[0.02]">
         <ToolbarButton onClick={() => editor.chain().focus().undo().run()} title="Annuler" disabled={!editor.can().undo()}>
           <Undo className="w-3.5 h-3.5" />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().redo().run()} title="Rétablir" disabled={!editor.can().redo()}>
+        <ToolbarButton onClick={() => editor.chain().focus().redo().run()} title="RÃ©tablir" disabled={!editor.can().redo()}>
           <Redo className="w-3.5 h-3.5" />
         </ToolbarButton>
         <Sep />
@@ -153,13 +202,13 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
         <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} active={editor.isActive('italic')} title="Italique">
           <Italic className="w-3.5 h-3.5" />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} active={editor.isActive('underline')} title="Souligné">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} active={editor.isActive('underline')} title="SoulignÃ©">
           <UnderlineIcon className="w-3.5 h-3.5" />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().toggleStrike().run()} active={editor.isActive('strike')} title="Barré">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleStrike().run()} active={editor.isActive('strike')} title="BarrÃ©">
           <Strikethrough className="w-3.5 h-3.5" />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().toggleHighlight().run()} active={editor.isActive('highlight')} title="Surligné">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleHighlight().run()} active={editor.isActive('highlight')} title="SurlignÃ©">
           <Highlighter className="w-3.5 h-3.5" />
         </ToolbarButton>
         <Sep />
@@ -178,7 +227,7 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
         <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} active={editor.isActive('bulletList')} title="Liste">
           <List className="w-3.5 h-3.5" />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} active={editor.isActive('orderedList')} title="Liste numérotée">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} active={editor.isActive('orderedList')} title="Liste numÃ©rotÃ©e">
           <ListOrdered className="w-3.5 h-3.5" />
         </ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().toggleBlockquote().run()} active={editor.isActive('blockquote')} title="Citation">
@@ -187,13 +236,17 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
         <ToolbarButton onClick={() => editor.chain().focus().toggleCode().run()} active={editor.isActive('code')} title="Code inline">
           <Code className="w-3.5 h-3.5" />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().setHorizontalRule().run()} title="Séparateur">
+        <ToolbarButton onClick={() => editor.chain().focus().setHorizontalRule().run()} title="SÃ©parateur">
           <Minus className="w-3.5 h-3.5" />
         </ToolbarButton>
         <Sep />
 
-        <ToolbarButton onClick={addImage} title="Image">
-          <ImageIconComp className="w-3.5 h-3.5" />
+        <ToolbarButton onClick={addImage} title="Image" disabled={isUploading}>
+          {isUploading ? (
+            <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin opacity-50" />
+          ) : (
+            <ImageIconComp className="w-3.5 h-3.5" />
+          )}
         </ToolbarButton>
         <ToolbarButton onClick={addLink} active={editor.isActive('link')} title="Lien">
           <LinkIcon className="w-3.5 h-3.5" />
@@ -206,13 +259,13 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
         </ToolbarButton>
       </div>
 
-      {/* ── Editor area ── */}
+      {/* â”€â”€ Editor area â”€â”€ */}
       <EditorContent editor={editor} className="min-h-[400px]" />
 
-      {/* ── Footer ── */}
+      {/* â”€â”€ Footer â”€â”€ */}
       <div className="flex items-center gap-4 px-4 py-2 border-t border-white/5 text-[11px] text-white/25">
         <span>{wordCount} mots</span>
-        <span>{charCount} caractères</span>
+        <span>{charCount} caractÃ¨res</span>
       </div>
     </div>
   )

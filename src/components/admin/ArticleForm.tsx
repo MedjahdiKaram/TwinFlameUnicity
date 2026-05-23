@@ -1,11 +1,11 @@
-'use client'
+﻿'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useRef } from 'react'
 import { useRouter } from '@/i18n/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
-import { Save, Globe, Crown, Star, Tag, FolderOpen } from 'lucide-react'
+import { Save, Globe, Crown, Star, Tag, FolderOpen, Upload, ImageIcon } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { articleSchema, type ArticleInput } from '@/lib/validations/article'
 import { createClient } from '@/lib/supabase/client'
@@ -35,6 +35,44 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
   const [content, setContent] = useState(initialData?.content || '')
   const [selectedTags, setSelectedTags] = useState<string[]>(initialData?.selected_tags || [])
   const [error, setError] = useState('')
+  const [isUploadingCover, setIsUploadingCover] = useState(false)
+  const coverInputRef = useRef<HTMLInputElement>(null)
+  const supabase = createClient()
+
+  const handleCoverUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    try {
+      setIsUploadingCover(true)
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`
+      const filePath = `${fileName}`
+
+      const { data, error } = await supabase.storage
+        .from('covers')
+        .upload(filePath, file)
+
+      if (error) {
+        console.error('Upload error:', error)
+        alert("Erreur lors du telechargement de l'image.")
+        return
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('covers')
+        .getPublicUrl(data.path)
+
+      setValue('cover_url', publicUrl)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsUploadingCover(false)
+      if (coverInputRef.current) {
+        coverInputRef.current.value = ''
+      }
+    }
+  }
 
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<ArticleInput>({
     resolver: zodResolver(articleSchema),
@@ -131,7 +169,7 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main content — 2 cols */}
+        {/* Main content â€” 2 cols */}
         <div className="lg:col-span-2 space-y-5">
           {/* Title */}
           <div className="glass-card p-5 space-y-4">
@@ -155,7 +193,7 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
               <textarea
                 {...register('excerpt')}
                 rows={3}
-                placeholder="Résumé de l'article (affiché dans les cartes)..."
+                placeholder="RÃ©sumÃ© de l'article (affichÃ© dans les cartes)..."
                 className="input-cosmic resize-none"
               />
             </div>
@@ -167,7 +205,7 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
             <TipTapEditor
               content={content}
               onChange={setContent}
-              placeholder="Rédigez votre article spirituel..."
+              placeholder="RÃ©digez votre article spirituel..."
             />
           </div>
 
@@ -185,7 +223,7 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
           </div>
         </div>
 
-        {/* Sidebar — 1 col */}
+        {/* Sidebar â€” 1 col */}
         <div className="space-y-5">
           {/* Publish */}
           <div className="glass-card p-5 space-y-4">
@@ -194,8 +232,8 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
               <label className="block text-xs font-medium text-white/40 mb-2">Statut</label>
               <select {...register('status')} className="input-cosmic">
                 <option value="draft">Brouillon</option>
-                <option value="published">Publié</option>
-                <option value="archived">Archivé</option>
+                <option value="published">PubliÃ©</option>
+                <option value="archived">ArchivÃ©</option>
               </select>
             </div>
             <div>
@@ -203,8 +241,8 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
                 <Globe className="w-3 h-3" /> Langue
               </label>
               <select {...register('language')} className="input-cosmic">
-                <option value="fr">🇫🇷 Français</option>
-                <option value="ar">🇲🇦 العربية</option>
+                <option value="fr">ðŸ‡«ðŸ‡· FranÃ§ais</option>
+                <option value="ar">ðŸ‡²ðŸ‡¦ Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©</option>
               </select>
             </div>
             <div className="space-y-3 pt-2">
@@ -225,18 +263,41 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
 
           {/* Cover */}
           <div className="glass-card p-5 space-y-3">
-            <h3 className="text-sm font-semibold text-white/60 uppercase tracking-wider">Image de couverture</h3>
-            <input {...register('cover_url')} placeholder="https://..." className="input-cosmic text-sm" />
-            <input {...register('cover_alt')} placeholder="Texte alternatif" className="input-cosmic text-sm" />
+            <h3 className="text-sm font-semibold text-white/60 uppercase tracking-wider mb-2">Image de couverture</h3>
+            <div className="flex flex-col gap-3">
+              <input type="file" accept="image/*" onChange={handleCoverUpload} style={{ display: 'none' }} ref={coverInputRef} />
+              <button 
+                type="button" 
+                onClick={() => coverInputRef.current?.click()} 
+                disabled={isUploadingCover}
+                className="btn-cosmic flex items-center justify-center gap-2"
+              >
+                {isUploadingCover ? (
+                  <div className="w-4 h-4 border-2 border-white/50 border-t-white rounded-full animate-spin" />
+                ) : (
+                  <Upload className="w-4 h-4" />
+                )}
+                {isUploadingCover ? 'TÃ©lÃ©chargement...' : 'Uploader une image'}
+              </button>
+              
+              {watch('cover_url') && (
+                <div className="relative aspect-video rounded-lg overflow-hidden border border-white/10 group mt-2">
+                  <img src={watch('cover_url')} alt="Cover preview" className="object-cover w-full h-full" />
+                </div>
+              )}
+
+              <input {...register('cover_url')} placeholder="URL de l'image (optionnel)" className="input-cosmic text-sm" />
+              <input {...register('cover_alt')} placeholder="Texte alternatif" className="input-cosmic text-sm" />
+            </div>
           </div>
 
           {/* Category */}
           <div className="glass-card p-5">
             <label className="flex items-center gap-1.5 text-sm font-semibold text-white/60 uppercase tracking-wider mb-3">
-              <FolderOpen className="w-4 h-4" /> Catégorie
+              <FolderOpen className="w-4 h-4" /> CatÃ©gorie
             </label>
             <select {...register('category_id')} className="input-cosmic">
-              <option value="">— Aucune —</option>
+              <option value="">â€” Aucune â€”</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {locale === 'ar' ? cat.name_ar : cat.name_fr}
