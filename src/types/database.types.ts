@@ -278,10 +278,10 @@ export interface Database {
       media: {
         Row: {
           id: string
-          name: string
+          filename: string
           url: string
           bucket: string
-          path: string
+          storage_path: string
           mime_type: string | null
           size: number | null
           uploaded_by: string | null
@@ -289,20 +289,20 @@ export interface Database {
         }
         Insert: {
           id?: string
-          name: string
+          filename: string
           url: string
           bucket: string
-          path: string
+          storage_path: string
           mime_type?: string | null
           size?: number | null
           uploaded_by?: string | null
           created_at?: string
         }
         Update: {
-          name?: string
+          filename?: string
           url?: string
           bucket?: string
-          path?: string
+          storage_path?: string
           mime_type?: string | null
           size?: number | null
         }

@@ -269,10 +269,10 @@ CREATE TRIGGER article_likes_count
 
 CREATE TABLE public.media (
   id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name        TEXT NOT NULL,
+  filename    TEXT NOT NULL,
   url         TEXT NOT NULL,
   bucket      TEXT NOT NULL,
-  path        TEXT NOT NULL,
+  storage_path TEXT NOT NULL,
   mime_type   TEXT,
   size        BIGINT,
   uploaded_by UUID REFERENCES public.profiles(id) ON DELETE SET NULL,

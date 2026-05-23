@@ -91,6 +91,42 @@ export function generateOrganizationSchema() {
   }
 }
 
+export function generatePageMetadata({
+  title,
+  description,
+  locale,
+  path,
+  image,
+}: {
+  title: string
+  description: string
+  locale: string
+  path: string
+  image?: string
+}) {
+  const url = `${BASE_URL}/${locale}${path}`
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: 'TwinFlameUnicity',
+      locale: locale === 'ar' ? 'ar_MA' : 'fr_FR',
+      type: 'website' as const,
+      images: image ? [{ url: image }] : [],
+    },
+    twitter: {
+      card: 'summary_large_image' as const,
+      title,
+      description,
+      images: image ? [image] : [],
+    },
+  }
+}
+
 export function generateBreadcrumbSchema(items: { name: string; url: string }[]) {
   return {
     '@context': 'https://schema.org',
