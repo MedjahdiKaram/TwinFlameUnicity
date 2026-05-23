@@ -106,7 +106,7 @@ export function Footer({ locale }: { locale: string }) {
         {/* Bottom bar */}
         <div className="cosmic-divider mt-12 mb-6" />
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/30">
-          <p>{t('copyright').replace('{year}', String(year))}</p>
+          <p>{t('copyright', { year })}</p>
           <p>{t('made_with')}</p>
         </div>
       </div>

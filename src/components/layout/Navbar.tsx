@@ -2,10 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
-import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Sparkles, User, LogOut, Settings } from 'lucide-react'
-import { Link } from '@/i18n/navigation'
+import { Link, usePathname } from '@/i18n/navigation'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { createClient } from '@/lib/supabase/client'
 import type { Profile } from '@/types/database.types'
@@ -63,7 +62,7 @@ export function Navbar({ locale }: { locale: string }) {
   }, [])
 
   const isActive = (href: string) => {
-    if (href === '/') return pathname === `/${locale}` || pathname === `/${locale}/`
+    if (href === '/') return pathname === '/'
     return pathname.includes(href)
   }
 

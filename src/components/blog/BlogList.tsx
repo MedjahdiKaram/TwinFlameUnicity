@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
+import { useRouter, usePathname } from '@/i18n/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, X, SlidersHorizontal } from 'lucide-react'
 import { ArticleCard } from './ArticleCard'
@@ -31,6 +32,13 @@ export function BlogList({ initialArticles, categories, total, page, pageSize, l
   const [hasMore, setHasMore] = useState(articles.length < total)
   const [search, setSearch] = useState(searchParams.get('q') || '')
   const [activeCategory, setActiveCategory] = useState(searchParams.get('category') || '')
+
+  // Sync state when props change due to URL parameter changes
+  useEffect(() => {
+    setArticles(initialArticles)
+    setCurrentPage(page)
+    setHasMore(initialArticles.length < total)
+  }, [initialArticles, page, total])
 
   // Infinite scroll trigger
   const { ref: loadMoreRef } = useInView({

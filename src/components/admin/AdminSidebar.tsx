@@ -2,15 +2,15 @@
 
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
+import { usePathname } from '@/i18n/navigation'
 import {
   LayoutDashboard, FileText, FolderOpen, Tag,
   Users, Image, Settings, Sparkles, Menu, X, LogOut
 } from 'lucide-react'
 import { Link } from '@/i18n/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/i18n/navigation'
 
 const NAV_ITEMS = [
   { key: 'dashboard' as const, href: '/admin', icon: LayoutDashboard },

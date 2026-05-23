@@ -1,7 +1,7 @@
 'use client'
 
 import { useLocale } from 'next-intl'
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname } from '@/i18n/navigation'
 import { motion } from 'framer-motion'
 import { Globe } from 'lucide-react'
 import { useState } from 'react'
@@ -13,9 +13,8 @@ export function LanguageSwitcher({ locale }: { locale: string }) {
   const [isOpen, setIsOpen] = useState(false)
 
   const switchLocale = (newLocale: string) => {
-    // Replace locale prefix in current path
-    const newPath = pathname.replace(`/${currentLocale}`, `/${newLocale}`)
-    router.push(newPath)
+    // Navigate to the same path but with the new locale
+    router.replace(pathname, { locale: newLocale })
     setIsOpen(false)
     // Save preference
     localStorage.setItem('preferred-locale', newLocale)
