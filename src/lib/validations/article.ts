@@ -12,7 +12,7 @@ export const articleSchema = z.object({
     .regex(/^[a-z0-9-]+$/, 'Le slug ne peut contenir que des lettres minuscules, chiffres et -'),
   language: z.enum(['fr', 'ar']),
   excerpt: z.string().max(500, 'L\'extrait est trop long').optional(),
-  content: z.string().min(1, 'Le contenu est requis'),
+  content: z.string(), // validé manuellement dans ArticleForm (TipTap hors react-hook-form)
   cover_url: z.string().url('URL de couverture invalide').optional().or(z.literal('')),
   cover_alt: z.string().max(200).optional(),
   status: z.enum(['draft', 'published', 'archived']),

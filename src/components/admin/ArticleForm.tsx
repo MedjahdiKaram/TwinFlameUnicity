@@ -1,6 +1,6 @@
 ﻿'use client'
 
-import { useState, useTransition, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from '@/i18n/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -10,6 +10,7 @@ import dynamic from 'next/dynamic'
 import { articleSchema, type ArticleInput } from '@/lib/validations/article'
 import { createClient } from '@/lib/supabase/client'
 import { slugify, estimateReadingTime } from '@/lib/utils'
+import type { InsertTables, UpdateTables } from '@/types/database.types'
 
 // Dynamic import to avoid SSR issues with TipTap
 const TipTapEditor = dynamic(() => import('./TipTapEditor').then((m) => m.TipTapEditor), {
@@ -31,8 +32,9 @@ interface Props {
 
 export function ArticleForm({ categories, tags, authorId, locale, initialData }: Props) {
   const router = useRouter()
-  const [isPending, startTransition] = useTransition()
+  const [isPending, setIsPending] = useState(false)
   const [content, setContent] = useState(initialData?.content || '')
+  const [contentError, setContentError] = useState('')
   const [selectedTags, setSelectedTags] = useState<string[]>(initialData?.selected_tags || [])
   const [error, setError] = useState('')
   const [isUploadingCover, setIsUploadingCover] = useState(false)
@@ -81,7 +83,7 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
       slug: initialData?.slug || '',
       language: initialData?.language || locale,
       excerpt: initialData?.excerpt || '',
-      content: content,
+      content: initialData?.content || 'placeholder', // content géré via état TipTap
       cover_url: initialData?.cover_url || '',
       cover_alt: initialData?.cover_alt || '',
       status: initialData?.status || 'draft',
@@ -111,57 +113,82 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
 
   const onSubmit = async (data: ArticleInput) => {
     setError('')
-    const readingTime = estimateReadingTime(content)
+    setContentError('')
 
-    startTransition(async () => {
-      try {
-        const supabase = createClient()
-        const payload = {
-          ...data,
-          content,
-          reading_time: readingTime,
-          author_id: authorId,
-          category_id: data.category_id || null,
-        }
+    // Validation manuelle du contenu TipTap
+    const rawContent = content.replace(/<[^>]*>/g, '').trim()
+    if (!rawContent) {
+      setContentError('Le contenu est requis')
+      return
+    }
 
-        let articleId = initialData?.id
-
-        if (articleId) {
-          const { error } = await supabase
-            .from('articles')
-            .update(payload)
-            .eq('id', articleId)
-          if (error) throw error
-        } else {
-          const { data: created, error } = await supabase
-            .from('articles')
-            .insert(payload)
-            .select('id')
-            .single()
-          if (error) throw error
-          articleId = created.id
-        }
-
-        // Sync tags
-        if (articleId) {
-          await supabase.from('article_tags').delete().eq('article_id', articleId)
-          if (selectedTags.length > 0) {
-            await supabase.from('article_tags').insert(
-              selectedTags.map((tag_id) => ({ article_id: articleId!, tag_id }))
-            )
-          }
-        }
-
-        router.push(`/${locale}/admin/articles`)
-        router.refresh()
-      } catch (err: any) {
-        setError(err?.message || 'Une erreur s\'est produite')
+    setIsPending(true)
+    try {
+      // Construire le payload avec les types exacts de la DB (undefined → null)
+      const basePayload: InsertTables<'articles'> = {
+        title: data.title,
+        slug: data.slug,
+        language: data.language,
+        excerpt: data.excerpt || null,
+        content,
+        cover_url: data.cover_url || null,
+        cover_alt: data.cover_alt || null,
+        status: data.status,
+        is_premium: data.is_premium,
+        is_featured: data.is_featured,
+        category_id: data.category_id || null,
+        meta_title: data.meta_title || null,
+        meta_description: data.meta_description || null,
+        og_image: data.og_image || null,
+        reading_time: estimateReadingTime(content),
+        author_id: authorId,
       }
-    })
+
+      let articleId = initialData?.id
+
+      if (articleId) {
+        const { error } = await supabase
+          .from('articles')
+          .update(basePayload)
+          .eq('id', articleId)
+        if (error) throw error
+      } else {
+        const { data: created, error } = await supabase
+          .from('articles')
+          .insert(basePayload)
+          .select('id')
+          .single()
+        if (error) throw error
+        articleId = created.id
+      }
+
+      // Sync tags
+      if (articleId) {
+        await supabase.from('article_tags').delete().eq('article_id', articleId)
+        if (selectedTags.length > 0) {
+          await supabase.from('article_tags').insert(
+            selectedTags.map((tag_id) => ({ article_id: articleId!, tag_id }))
+          )
+        }
+      }
+
+      router.push('/admin/articles')
+      router.refresh()
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Une erreur s\'est produite'
+      setError(msg)
+    } finally {
+      setIsPending(false)
+    }
+  }
+
+  const onFormError = (errs: Record<string, unknown>) => {
+    const first = Object.values(errs)[0] as { message?: string } | undefined
+    setError(first?.message || 'Veuillez corriger les erreurs du formulaire')
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit, onFormError)} className="space-y-6">
       {error && (
         <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 text-sm text-red-400">
           {error}
@@ -206,11 +233,11 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
               content={content}
               onChange={(value) => {
                 setContent(value)
-                setValue('content', value, { shouldValidate: true })
+                setContentError('')
               }}
               placeholder="Rédigez votre article spirituel..."
             />
-            {errors.content && <p className="text-red-400 text-xs mt-2">{errors.content.message}</p>}
+            {contentError && <p className="text-red-400 text-xs mt-2">{contentError}</p>}
           </div>
 
           {/* SEO */}
