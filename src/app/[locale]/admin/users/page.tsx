@@ -13,7 +13,7 @@ export default async function AdminUsersPage({ params }: Props) {
     .order('created_at', { ascending: false })
 
   return (
-    <div className="p-6 lg:p-8">
+    <div className="space-y-6">
       <h1 className="text-2xl font-display font-bold text-white mb-8">Utilisateurs</h1>
       <AdminUsersTable users={users || []} locale={locale as 'fr' | 'ar'} />
     </div>

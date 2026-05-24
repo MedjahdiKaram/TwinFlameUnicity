@@ -9,6 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: '*',
         allow: '/',
         disallow: ['/admin/', '/api/', '/fr/connexion', '/fr/inscription', '/ar/تسجيل-دخول', '/ar/التسجيل'],
+        crawlDelay: 2,
       },
     ],
     sitemap: `${BASE_URL}/sitemap.xml`,

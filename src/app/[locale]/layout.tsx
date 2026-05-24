@@ -56,24 +56,61 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'seo' })
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://twinflameunicity.com'
 
   return {
+    metadataBase: new URL(siteUrl),
     title: {
       default: t('default_title'),
       template: `%s | TwinFlameUnicity`,
     },
     description: t('default_description'),
+    keywords: [
+      'flammes jumelles', 'twin flames', 'union sacrée', 'éveil spirituel', 
+      'amour inconditionnel', 'relation d\'âme', 'âme sœur', 'spiritualité', 
+      'numérologie', 'ésotérisme', 'tarot', 'méditation', 'astrologie', 
+      'توأم الشعلة', 'الروحانية', 'اليقظة الروحية', 'علم الأعداد'
+    ],
+    authors: [{ name: 'TwinFlameUnicity' }],
+    creator: 'TwinFlameUnicity',
+    publisher: 'TwinFlameUnicity',
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
+    icons: {
+      icon: '/favicon.ico',
+      shortcut: '/favicon-32x32.png',
+      apple: '/apple-touch-icon.png',
+    },
     openGraph: {
       type: 'website',
       locale: locale === 'ar' ? 'ar_MA' : 'fr_FR',
       siteName: 'TwinFlameUnicity',
       title: t('default_title'),
       description: t('default_description'),
+      url: `${siteUrl}/${locale}`,
+      images: [
+        {
+          url: '/images/og-default.jpg',
+          width: 1200,
+          height: 630,
+          alt: 'TwinFlameUnicity — Éveil & Flammes Jumelles',
+        }
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: t('default_title'),
       description: t('default_description'),
+      images: ['/images/og-default.jpg'],
     },
     alternates: {
       canonical: `/${locale}`,
@@ -82,8 +119,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ar: '/ar',
       },
     },
+    verification: {
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
+      yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION || '',
+    },
     other: {
-      'google-site-verification': process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
+      'theme-color': '#0a0516',
+      'apple-mobile-web-app-capable': 'yes',
+      'apple-mobile-web-app-status-bar-style': 'black-translucent',
     },
   }
 }

@@ -60,7 +60,7 @@ export function BlogPreviewSection({ articles, locale }: Props) {
 
         {/* Grid */}
         {rest.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {rest.slice(0, 6).map((article, i) => (
               <ArticleCard key={article.id} article={article} locale={locale} index={i + 1} />
             ))}

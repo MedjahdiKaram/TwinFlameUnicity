@@ -84,58 +84,69 @@ export function ArticleCard({ article, locale, index = 0, featured = false }: Pr
           </div>
 
           {/* Content */}
-          <div className={`p-5 ${featured ? 'md:w-1/2 flex flex-col justify-center' : ''}`}>
-            {/* Title */}
-            <h3 className={`font-display font-semibold text-white/90 group-hover:text-white transition-colors mb-2 leading-snug ${featured ? 'text-xl md:text-2xl' : 'text-base'}`}>
-              {article.title}
-            </h3>
+          <div className={`p-6 ${featured ? 'md:p-8 md:w-1/2 flex flex-col justify-center' : 'flex flex-col justify-between flex-1'}`}>
+            <div>
+              {/* Title */}
+              <h3 className={`font-display font-bold text-white group-hover:text-purple-300 transition-colors mb-3 leading-snug ${featured ? 'text-2xl md:text-3xl' : 'text-lg'}`}>
+                {article.title}
+              </h3>
+  
+              {/* Excerpt */}
+              {article.excerpt && (
+                <p className={`text-white/60 text-sm leading-relaxed mb-4 ${featured ? 'line-clamp-3 md:line-clamp-4 text-base' : 'line-clamp-2'}`}>
+                  {article.excerpt}
+                </p>
+              )}
+  
+              {/* Tags */}
+              {article.tags && article.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mb-5">
+                  {article.tags.slice(0, 3).map((tag) => (
+                    <span
+                      key={tag.id}
+                      className="text-[10px] px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20 hover:bg-purple-500/20 transition-colors"
+                    >
+                      #{locale === 'ar' ? tag.name_ar : tag.name_fr}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
 
-            {/* Excerpt */}
-            {article.excerpt && (
-              <p className={`text-white/50 text-sm leading-relaxed mb-4 ${featured ? 'line-clamp-3' : 'line-clamp-2'}`}>
-                {article.excerpt}
-              </p>
-            )}
-
-            {/* Tags */}
-            {article.tags && article.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 mb-4">
-                {article.tags.slice(0, 3).map((tag) => (
-                  <span
-                    key={tag.id}
-                    className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20"
-                  >
-                    #{locale === 'ar' ? tag.name_ar : tag.name_fr}
+            <div className="space-y-4">
+              {/* Meta */}
+              <div className="flex flex-wrap items-center gap-4 text-[11px] text-white/40 border-t border-white/5 pt-4">
+                {article.reading_time && (
+                  <span className="flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-purple-400" />
+                    {article.reading_time} {t('reading_time')}
                   </span>
-                ))}
+                )}
+                {article.views > 0 && (
+                  <span className="flex items-center gap-1.5">
+                    <Eye className="w-3.5 h-3.5 text-purple-400" />
+                    {article.views}
+                  </span>
+                )}
+                {article.likes > 0 && (
+                  <span className="flex items-center gap-1.5">
+                    <Heart className="w-3.5 h-3.5 text-pink-400" />
+                    {article.likes}
+                  </span>
+                )}
+                {article.published_at && (
+                  <span className="ms-auto text-white/30">
+                    {formatDate(article.published_at, locale)}
+                  </span>
+                )}
               </div>
-            )}
 
-            {/* Meta */}
-            <div className="flex items-center gap-4 text-[11px] text-white/35">
-              {article.reading_time && (
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  {article.reading_time} {t('reading_time')}
+              {/* Lire la suite CTA */}
+              <div className="flex justify-end pt-1">
+                <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-400 group-hover:text-purple-300 transition-colors">
+                  {locale === 'ar' ? 'اقرأ المزيد ←' : 'Lire la suite →'}
                 </span>
-              )}
-              {article.views > 0 && (
-                <span className="flex items-center gap-1">
-                  <Eye className="w-3 h-3" />
-                  {article.views}
-                </span>
-              )}
-              {article.likes > 0 && (
-                <span className="flex items-center gap-1">
-                  <Heart className="w-3 h-3" />
-                  {article.likes}
-                </span>
-              )}
-              {article.published_at && (
-                <span className="ms-auto">
-                  {formatDate(article.published_at, locale)}
-                </span>
-              )}
+              </div>
             </div>
           </div>
         </div>

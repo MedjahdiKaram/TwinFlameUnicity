@@ -14,7 +14,7 @@ export default async function NewArticlePage({ params }: Props) {
   ])
 
   return (
-    <div className="p-6 lg:p-8">
+    <div className="space-y-6">
       <h1 className="text-2xl font-display font-bold text-white mb-8">Nouvel Article</h1>
       <ArticleForm
         categories={categories || []}

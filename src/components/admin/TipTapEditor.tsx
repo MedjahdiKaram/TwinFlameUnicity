@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -23,7 +23,7 @@ import TaskItem from '@tiptap/extension-task-item'
 import {
   Bold, Italic, Underline as UnderlineIcon, Strikethrough,
   List, ListOrdered, Quote, Code, Heading1, Heading2, Heading3,
-  AlignLeft, AlignCenter, AlignRight,
+  AlignLeft, AlignCenter, AlignRight, AlignJustify,
   ImageIcon, Link as LinkIcon, Youtube as YoutubeIcon,
   TableIcon, Highlighter, Undo, Redo, Minus,
 } from 'lucide-react'
@@ -221,6 +221,16 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
         </ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('right').run()} active={editor.isActive({ textAlign: 'right' })} title="Droite">
           <AlignRight className="w-3.5 h-3.5" />
+        </ToolbarButton>
+        <ToolbarButton onClick={() => editor.chain().focus().setTextAlign('justify').run()} active={editor.isActive({ textAlign: 'justify' })} title="Justifier">
+          <AlignJustify className="w-3.5 h-3.5" />
+        </ToolbarButton>
+        <ToolbarButton 
+          onClick={() => editor.chain().focus().setTextAlign('right').run()} 
+          active={editor.isActive({ textAlign: 'right' })} 
+          title="Direction Droite à Gauche (RTL / Arabe)"
+        >
+          <span className="text-[9px] font-bold border border-purple-500/40 px-1 py-0.5 rounded bg-purple-500/10 text-purple-300">RTL</span>
         </ToolbarButton>
         <Sep />
 

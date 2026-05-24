@@ -19,8 +19,8 @@ export default async function AdminArticlesPage({ params }: Props) {
     .order('created_at', { ascending: false })
 
   return (
-    <div className="p-6 lg:p-8">
-      <div className="flex items-center justify-between mb-8">
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
         <h1 className="text-2xl font-display font-bold text-white">Articles</h1>
         <Link
           href="/admin/articles/new"

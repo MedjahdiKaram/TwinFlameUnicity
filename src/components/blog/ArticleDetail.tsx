@@ -1,15 +1,16 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import Image from 'next/image'
-import { Clock, Eye, Heart, Share2, ArrowLeft, Crown, ChevronRight } from 'lucide-react'
+import { Clock, Eye, Heart, ArrowLeft, Crown, ChevronRight } from 'lucide-react'
 import { formatDate, formatRelativeDate } from '@/lib/utils'
 import { ArticleCard } from './ArticleCard'
 import { createClient } from '@/lib/supabase/client'
 import type { ArticleCard as ArticleCardType } from '@/types/database.types'
+import { ShareButtons } from './ShareButtons'
 
 interface Props {
   article: any
@@ -21,6 +22,11 @@ export function ArticleDetail({ article, related, locale }: Props) {
   const t = useTranslations('blog')
   const [likes, setLikes] = useState(article.likes || 0)
   const [liked, setLiked] = useState(false)
+  const [currentUrl, setCurrentUrl] = useState('')
+
+  useEffect(() => {
+    setCurrentUrl(window.location.href)
+  }, [])
 
   const handleLike = useCallback(async () => {
     if (liked) return
@@ -183,33 +189,36 @@ export function ArticleDetail({ article, related, locale }: Props) {
       )}
 
       {/* Actions */}
-      <div className="flex items-center gap-4 py-6 border-y border-white/5 mb-16">
-        <button
-          onClick={handleLike}
-          disabled={liked}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm transition-all duration-300 ${
-            liked
-              ? 'bg-pink-500/20 text-pink-400 border border-pink-500/30 cursor-default'
-              : 'bg-white/5 text-white/50 border border-white/10 hover:bg-pink-500/10 hover:text-pink-400 hover:border-pink-500/30'
-          }`}
-        >
-          <Heart className={`w-4 h-4 ${liked ? 'fill-current' : ''}`} />
-          {likes}
-        </button>
-        <button
-          onClick={() => navigator.share?.({ title: article.title, url: window.location.href })}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm bg-white/5 text-white/50 border border-white/10 hover:bg-white/10 hover:text-white/80 transition-all duration-300"
-        >
-          <Share2 className="w-4 h-4" />
-          {t('share')}
-        </button>
-        <Link
-          href="/blog"
-          className="ms-auto flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          {t('back')}
-        </Link>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 py-6 border-y border-white/5 mb-16">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleLike}
+            disabled={liked}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm transition-all duration-300 ${
+              liked
+                ? 'bg-pink-500/20 text-pink-400 border border-pink-500/30 cursor-default'
+                : 'bg-white/5 text-white/50 border border-white/10 hover:bg-pink-500/10 hover:text-pink-400 hover:border-pink-500/30'
+            }`}
+          >
+            <Heart className={`w-4 h-4 ${liked ? 'fill-current' : ''}`} />
+            {likes}
+          </button>
+          <Link
+            href="/blog"
+            className="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            {t('back')}
+          </Link>
+        </div>
+
+        {currentUrl && (
+          <ShareButtons
+            url={currentUrl}
+            title={article.title}
+            locale={locale}
+          />
+        )}
       </div>
 
       {/* Related articles */}

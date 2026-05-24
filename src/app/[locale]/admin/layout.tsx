@@ -27,7 +27,7 @@ export default async function AdminLayout({ children, params }: Props) {
   return (
     <div className="min-h-screen bg-cosmic-gradient flex">
       <AdminSidebar locale={locale} />
-      <div className="flex-1 min-w-0 overflow-auto">
+      <div className="flex-1 min-w-0 overflow-auto p-4 lg:p-6">
         {children}
       </div>
     </div>

@@ -38,6 +38,14 @@ export function formatRelativeDate(
 // ============================================================
 
 export function slugify(text: string): string {
+  const isArabic = /[\u0600-\u06FF]/.test(text)
+  if (isArabic) {
+    return text
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\u0600-\u06FFa-z0-9-]/gi, '')
+      .replace(/-+/g, '-')
+  }
   return text
     .toLowerCase()
     .normalize('NFD')

@@ -60,7 +60,7 @@ export default async function AdminDashboard({ params }: Props) {
   ])
 
   return (
-    <div className="p-6 lg:p-8">
+    <div className="space-y-6">
       <h1 className="text-2xl font-display font-bold text-white mb-8">
         {t('dashboard')}
       </h1>
