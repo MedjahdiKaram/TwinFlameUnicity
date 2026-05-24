@@ -56,10 +56,15 @@ CREATE TRIGGER profiles_updated_at
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.profiles (id, email, role, status)
+  INSERT INTO public.profiles (id, email, first_name, last_name, pseudo, gender, bio, role, status)
   VALUES (
     NEW.id,
     NEW.email,
+    NEW.raw_user_meta_data->>'first_name',
+    NEW.raw_user_meta_data->>'last_name',
+    NEW.raw_user_meta_data->>'pseudo',
+    COALESCE((NEW.raw_user_meta_data->>'gender')::public.user_gender, 'prefer_not_to_say'::public.user_gender),
+    NEW.raw_user_meta_data->>'bio',
     COALESCE((NEW.raw_user_meta_data->>'role')::public.user_role, 'user'::public.user_role),
     CASE
       WHEN NEW.email = 'kar.giga@gmail.com' THEN 'active'::public.user_status

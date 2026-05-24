@@ -18,7 +18,7 @@ export const articleSchema = z.object({
   status: z.enum(['draft', 'published', 'archived']),
   is_premium: z.boolean().default(false),
   is_featured: z.boolean().default(false),
-  category_id: z.string().uuid('Catégorie invalide').optional(),
+  category_id: z.string().uuid('Catégorie invalide').optional().or(z.literal('')),
   tag_ids: z.array(z.string().uuid()).optional(),
   meta_title: z.string().max(70, 'Le meta title doit faire moins de 70 caractères').optional(),
   meta_description: z.string().max(160, 'La meta description doit faire moins de 160 caractères').optional(),

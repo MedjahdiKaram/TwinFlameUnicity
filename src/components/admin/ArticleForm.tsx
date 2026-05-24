@@ -204,9 +204,13 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
             <label className="block text-xs font-medium text-white/40 mb-3 uppercase tracking-wider">Contenu *</label>
             <TipTapEditor
               content={content}
-              onChange={setContent}
+              onChange={(value) => {
+                setContent(value)
+                setValue('content', value, { shouldValidate: true })
+              }}
               placeholder="Rédigez votre article spirituel..."
             />
+            {errors.content && <p className="text-red-400 text-xs mt-2">{errors.content.message}</p>}
           </div>
 
           {/* SEO */}
