@@ -4,19 +4,29 @@ import { createClient } from '@/lib/supabase/server'
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://twinflameunicity.com'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const supabase = await createClient()
+  let articles: { slug: string; language: string; updated_at: string }[] = []
+  let categories: { slug: string; updated_at: string }[] = []
 
-  // Fetch published articles
-  const { data: articles } = await supabase
-    .from('articles')
-    .select('slug, language, updated_at')
-    .eq('status', 'published')
-    .order('updated_at', { ascending: false })
+  try {
+    const supabase = await createClient()
 
-  // Fetch categories
-  const { data: categories } = await supabase
-    .from('categories')
-    .select('slug, updated_at')
+    // Fetch published articles
+    const { data: articlesData } = await supabase
+      .from('articles')
+      .select('slug, language, updated_at')
+      .eq('status', 'published')
+      .order('updated_at', { ascending: false })
+
+    // Fetch categories
+    const { data: categoriesData } = await supabase
+      .from('categories')
+      .select('slug, updated_at')
+
+    articles = articlesData ?? []
+    categories = categoriesData ?? []
+  } catch {
+    // Supabase unavailable during build — return static pages only
+  }
 
   const staticPages = [
     { url: `${BASE_URL}/fr`, lastModified: new Date() },
@@ -31,14 +41,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/ar/تصنيفات`, lastModified: new Date() },
   ]
 
-  const articleUrls: MetadataRoute.Sitemap = (articles || []).map((article) => ({
+  const articleUrls: MetadataRoute.Sitemap = articles.map((article) => ({
     url: `${BASE_URL}/${article.language}/${article.language === 'fr' ? 'blog' : 'مدونة'}/${article.slug}`,
     lastModified: new Date(article.updated_at),
     changeFrequency: 'weekly',
     priority: 0.8,
   }))
 
-  const categoryUrls: MetadataRoute.Sitemap = (categories || []).flatMap((cat) => [
+  const categoryUrls: MetadataRoute.Sitemap = categories.flatMap((cat) => [
     {
       url: `${BASE_URL}/fr/categories/${cat.slug}`,
       lastModified: new Date(cat.updated_at),

@@ -21,29 +21,33 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 async function getLatestArticles(locale: string): Promise<ArticleCard[]> {
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from('articles')
-    .select(`
-      id, slug, title, excerpt, cover_url, cover_alt,
-      is_premium, is_featured, language, reading_time, views, likes,
-      published_at, category_id,
-      category:categories(id, name_fr, name_ar, slug, color),
-      tags:article_tags(tag:tags(id, name_fr, name_ar, slug)),
-      author:profiles!articles_author_id_fkey(id, pseudo, first_name, last_name, avatar_url)
-    `)
-    .eq('status', 'published')
-    .eq('language', locale)
-    .order('published_at', { ascending: false })
-    .limit(7)
+  try {
+    const supabase = await createClient()
+    const { data } = await supabase
+      .from('articles')
+      .select(`
+        id, slug, title, excerpt, cover_url, cover_alt,
+        is_premium, is_featured, language, reading_time, views, likes,
+        published_at, category_id,
+        category:categories(id, name_fr, name_ar, slug, color),
+        tags:article_tags(tag:tags(id, name_fr, name_ar, slug)),
+        author:profiles!articles_author_id_fkey(id, pseudo, first_name, last_name, avatar_url)
+      `)
+      .eq('status', 'published')
+      .eq('language', locale)
+      .order('published_at', { ascending: false })
+      .limit(7)
 
-  if (!data) return []
+    if (!data) return []
 
-  // Flatten nested tags
-  return data.map((a: any) => ({
-    ...a,
-    tags: a.tags?.map((t: any) => t.tag) ?? [],
-  })) as ArticleCard[]
+    // Flatten nested tags
+    return data.map((a: any) => ({
+      ...a,
+      tags: a.tags?.map((t: any) => t.tag) ?? [],
+    })) as ArticleCard[]
+  } catch {
+    return []
+  }
 }
 
 export default async function HomePage({ params }: Props) {
