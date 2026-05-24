@@ -125,7 +125,7 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
       TableCell,
       TableHeader,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
-      Placeholder.configure({ placeholder: placeholder || 'Commencez Ã  Ã©crire votre article...' }),
+      Placeholder.configure({ placeholder: placeholder || 'Commencez à écrire votre article...' }),
       Highlight.configure({ multicolor: true }),
       TextStyle,
       Color,
@@ -180,7 +180,7 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
         <ToolbarButton onClick={() => editor.chain().focus().undo().run()} title="Annuler" disabled={!editor.can().undo()}>
           <Undo className="w-3.5 h-3.5" />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().redo().run()} title="RÃ©tablir" disabled={!editor.can().redo()}>
+        <ToolbarButton onClick={() => editor.chain().focus().redo().run()} title="Rétablir" disabled={!editor.can().redo()}>
           <Redo className="w-3.5 h-3.5" />
         </ToolbarButton>
         <Sep />
@@ -202,13 +202,13 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
         <ToolbarButton onClick={() => editor.chain().focus().toggleItalic().run()} active={editor.isActive('italic')} title="Italique">
           <Italic className="w-3.5 h-3.5" />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} active={editor.isActive('underline')} title="SoulignÃ©">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleUnderline().run()} active={editor.isActive('underline')} title="Souligné">
           <UnderlineIcon className="w-3.5 h-3.5" />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().toggleStrike().run()} active={editor.isActive('strike')} title="BarrÃ©">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleStrike().run()} active={editor.isActive('strike')} title="Barré">
           <Strikethrough className="w-3.5 h-3.5" />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().toggleHighlight().run()} active={editor.isActive('highlight')} title="SurlignÃ©">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleHighlight().run()} active={editor.isActive('highlight')} title="Surligné">
           <Highlighter className="w-3.5 h-3.5" />
         </ToolbarButton>
         <Sep />
@@ -227,7 +227,7 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
         <ToolbarButton onClick={() => editor.chain().focus().toggleBulletList().run()} active={editor.isActive('bulletList')} title="Liste">
           <List className="w-3.5 h-3.5" />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} active={editor.isActive('orderedList')} title="Liste numÃ©rotÃ©e">
+        <ToolbarButton onClick={() => editor.chain().focus().toggleOrderedList().run()} active={editor.isActive('orderedList')} title="Liste numérotée">
           <ListOrdered className="w-3.5 h-3.5" />
         </ToolbarButton>
         <ToolbarButton onClick={() => editor.chain().focus().toggleBlockquote().run()} active={editor.isActive('blockquote')} title="Citation">
@@ -236,7 +236,7 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
         <ToolbarButton onClick={() => editor.chain().focus().toggleCode().run()} active={editor.isActive('code')} title="Code inline">
           <Code className="w-3.5 h-3.5" />
         </ToolbarButton>
-        <ToolbarButton onClick={() => editor.chain().focus().setHorizontalRule().run()} title="SÃ©parateur">
+        <ToolbarButton onClick={() => editor.chain().focus().setHorizontalRule().run()} title="Séparateur">
           <Minus className="w-3.5 h-3.5" />
         </ToolbarButton>
         <Sep />
@@ -265,7 +265,7 @@ export function TipTapEditor({ content, onChange, placeholder }: Props) {
       {/* â”€â”€ Footer â”€â”€ */}
       <div className="flex items-center gap-4 px-4 py-2 border-t border-white/5 text-[11px] text-white/25">
         <span>{wordCount} mots</span>
-        <span>{charCount} caractÃ¨res</span>
+        <span>{charCount} caractères</span>
       </div>
     </div>
   )

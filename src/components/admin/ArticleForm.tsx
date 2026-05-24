@@ -169,7 +169,7 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main content â€” 2 cols */}
+        {/* Main content — 2 cols */}
         <div className="lg:col-span-2 space-y-5">
           {/* Title */}
           <div className="glass-card p-5 space-y-4">
@@ -193,7 +193,7 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
               <textarea
                 {...register('excerpt')}
                 rows={3}
-                placeholder="RÃ©sumÃ© de l'article (affichÃ© dans les cartes)..."
+                placeholder="Résumé de l'article (affiché dans les cartes)..."
                 className="input-cosmic resize-none"
               />
             </div>
@@ -205,7 +205,7 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
             <TipTapEditor
               content={content}
               onChange={setContent}
-              placeholder="RÃ©digez votre article spirituel..."
+              placeholder="Rédigez votre article spirituel..."
             />
           </div>
 
@@ -223,7 +223,7 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
           </div>
         </div>
 
-        {/* Sidebar â€” 1 col */}
+        {/* Sidebar — 1 col */}
         <div className="space-y-5">
           {/* Publish */}
           <div className="glass-card p-5 space-y-4">
@@ -232,8 +232,8 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
               <label className="block text-xs font-medium text-white/40 mb-2">Statut</label>
               <select {...register('status')} className="input-cosmic">
                 <option value="draft">Brouillon</option>
-                <option value="published">PubliÃ©</option>
-                <option value="archived">ArchivÃ©</option>
+                <option value="published">Publié</option>
+                <option value="archived">Archivé</option>
               </select>
             </div>
             <div>
@@ -241,8 +241,8 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
                 <Globe className="w-3 h-3" /> Langue
               </label>
               <select {...register('language')} className="input-cosmic">
-                <option value="fr">ðŸ‡«ðŸ‡· FranÃ§ais</option>
-                <option value="ar">ðŸ‡²ðŸ‡¦ Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©</option>
+                <option value="fr">Français</option>
+                <option value="ar">العربية</option>
               </select>
             </div>
             <div className="space-y-3 pt-2">
@@ -277,7 +277,7 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
                 ) : (
                   <Upload className="w-4 h-4" />
                 )}
-                {isUploadingCover ? 'TÃ©lÃ©chargement...' : 'Uploader une image'}
+                {isUploadingCover ? 'Téléchargement...' : 'Uploader une image'}
               </button>
               
               {watch('cover_url') && (
@@ -294,10 +294,10 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
           {/* Category */}
           <div className="glass-card p-5">
             <label className="flex items-center gap-1.5 text-sm font-semibold text-white/60 uppercase tracking-wider mb-3">
-              <FolderOpen className="w-4 h-4" /> CatÃ©gorie
+              <FolderOpen className="w-4 h-4" /> Catégorie
             </label>
             <select {...register('category_id')} className="input-cosmic">
-              <option value="">â€” Aucune â€”</option>
+              <option value="">— Aucune —</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {locale === 'ar' ? cat.name_ar : cat.name_fr}

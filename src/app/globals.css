@@ -330,6 +330,21 @@
     box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.15), 0 0 20px rgba(147, 51, 234, 0.2);
   }
 
+  /* Dropdown options — dark theme */
+  .input-cosmic option,
+  select.input-cosmic option {
+    background-color: #1a0e35;
+    color: rgba(240, 230, 255, 0.92);
+  }
+
+  .input-cosmic option:hover,
+  .input-cosmic option:focus,
+  .input-cosmic option:checked,
+  select.input-cosmic option:checked {
+    background-color: #3b1d6e;
+    color: #ffffff;
+  }
+
   /* Sidebar active state */
   .sidebar-item-active {
     background: linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(99, 102, 241, 0.15));
