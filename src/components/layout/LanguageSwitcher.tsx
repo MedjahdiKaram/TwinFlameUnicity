@@ -18,8 +18,8 @@ export function LanguageSwitcher({ locale }: { locale: string }) {
   }
 
   const languages = [
-    { code: 'fr', label: 'Français', flag: '🇫🇷', dir: 'ltr' },
-    { code: 'ar', label: 'العربية', flag: '🇲🇦', dir: 'rtl' },
+    { code: 'fr', label: 'Français', dir: 'ltr' },
+    { code: 'ar', label: 'العربية', dir: 'rtl' },
   ]
 
   const current = languages.find((l) => l.code === locale) || languages[0]
@@ -31,8 +31,7 @@ export function LanguageSwitcher({ locale }: { locale: string }) {
         className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white/70 hover:text-white hover:bg-white/10 hover:border-purple-500/30 transition-all duration-300 text-sm"
       >
         <Globe className="w-3.5 h-3.5" />
-        <span className="text-sm">{current.flag}</span>
-        <span className="hidden sm:block text-xs font-medium">
+        <span className="text-xs font-medium">
           {current.code.toUpperCase()}
         </span>
       </button>
@@ -56,7 +55,6 @@ export function LanguageSwitcher({ locale }: { locale: string }) {
               }`}
               dir={lang.dir}
             >
-              <span>{lang.flag}</span>
               <span>{lang.label}</span>
               {lang.code === locale && (
                 <motion.div
