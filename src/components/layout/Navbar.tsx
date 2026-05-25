@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Sparkles, User, LogOut, Settings } from 'lucide-react'
+import { Menu, X, User, LogOut, Settings } from 'lucide-react'
+import Image from 'next/image'
 import { Link, usePathname } from '@/i18n/navigation'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { createClient } from '@/lib/supabase/client'
@@ -81,8 +82,15 @@ export function Navbar({ locale }: { locale: string }) {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative w-10 h-10 flex items-center justify-center">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 opacity-80 group-hover:opacity-100 transition-opacity animate-pulse-slow" />
-            <Sparkles className="relative z-10 w-5 h-5 text-white" />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500/20 to-indigo-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
+            <Image
+              src="/images/logo_twin.png"
+              alt="TwinFlame Unicity Logo"
+              width={40}
+              height={40}
+              className="relative z-10 w-auto h-10 object-contain transition-transform duration-300 group-hover:scale-105"
+              priority
+            />
           </div>
           <div className="hidden sm:block">
             <div className="text-sm font-display font-bold tracking-wider text-white leading-none">

@@ -6,8 +6,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { usePathname } from '@/i18n/navigation'
 import {
   LayoutDashboard, FileText, FolderOpen, Tag,
-  Users, Image, Settings, Sparkles, Menu, X, LogOut
+  Users, Image as ImageIcon, Settings, Menu, X, LogOut
 } from 'lucide-react'
+import Image from 'next/image'
 import { Link } from '@/i18n/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from '@/i18n/navigation'
@@ -18,7 +19,7 @@ const NAV_ITEMS = [
   { key: 'categories' as const, href: '/admin/categories', icon: FolderOpen },
   { key: 'tags' as const, href: '/admin/tags', icon: Tag },
   { key: 'users' as const, href: '/admin/users', icon: Users },
-  { key: 'media' as const, href: '/admin/media', icon: Image },
+  { key: 'media' as const, href: '/admin/media', icon: ImageIcon },
   { key: 'settings' as const, href: '/admin/settings', icon: Settings },
 ]
 
@@ -44,8 +45,15 @@ export function AdminSidebar({ locale }: { locale: string }) {
     <div className="flex flex-col h-full">
       {/* Logo */}
       <div className="flex items-center gap-3 px-6 py-6 border-b border-white/5">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-glow-sm">
-          <Sparkles className="w-4 h-4 text-white" />
+        <div className="relative w-8 h-8 flex items-center justify-center">
+          <Image
+            src="/images/logo_twin.png"
+            alt="TwinFlame Unicity Logo"
+            width={32}
+            height={32}
+            className="object-contain"
+            priority
+          />
         </div>
         <div>
           <div className="text-xs font-display font-bold text-white tracking-wider">TwinFlame</div>

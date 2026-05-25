@@ -1,6 +1,7 @@
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { Sparkles, Mail } from 'lucide-react'
+import { Mail } from 'lucide-react'
+import Image from 'next/image'
 
 export function Footer({ locale }: { locale: string }) {
   const t = useTranslations('footer')
@@ -48,8 +49,15 @@ export function Footer({ locale }: { locale: string }) {
           {/* Brand column */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-3 mb-6 group">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center shadow-glow">
-                <Sparkles className="w-5 h-5 text-white" />
+              <div className="relative w-10 h-10 flex items-center justify-center">
+                <Image
+                  src="/images/logo_twin.png"
+                  alt="TwinFlame Unicity Logo"
+                  width={40}
+                  height={40}
+                  className="object-contain"
+                  priority
+                />
               </div>
               <div>
                 <div className="text-base font-display font-bold tracking-wider text-white">TwinFlame</div>
