@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
@@ -236,12 +237,26 @@ export function HeroSection() {
     >
       {/* ── Deep cosmic background ── */}
       <motion.div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: 'url(/images/hero-bg.png)',
-          scale,
-        }}
-      />
+        className="absolute inset-0 select-none pointer-events-none overflow-hidden"
+        style={{ scale }}
+      >
+        <Image
+          src="/images/hero-bg-new.png"
+          alt="Cosmic space portal background"
+          fill
+          priority
+          quality={95}
+          sizes="100vw"
+          className="object-cover opacity-85 filter blur-[2px]"
+        />
+        {/* Ambient overlay to smooth and blend edges */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(circle at 50% 35%, transparent 20%, rgba(15, 7, 40, 0.3) 60%, #0f0728 100%)',
+          }}
+        />
+      </motion.div>
 
       {/* ── Background overlay vignette ── */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/10 to-[#0f0728] pointer-events-none" />
