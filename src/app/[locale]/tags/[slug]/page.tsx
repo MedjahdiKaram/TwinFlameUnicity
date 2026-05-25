@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { ArticleCard } from '@/components/blog/ArticleCard'
 import { Link } from '@/i18n/navigation'
-import { ArrowLeft, Tag } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Tag } from 'lucide-react'
 import type { Metadata } from 'next'
 
 interface Props {
@@ -61,7 +61,7 @@ export default async function TagPage({ params }: Props) {
 
       <div className="relative max-w-6xl mx-auto px-4">
         <Link href="/tags" className="inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm mb-8">
-          <ArrowLeft className="w-4 h-4" />
+          {isAr ? <ArrowRight className="w-4 h-4" /> : <ArrowLeft className="w-4 h-4" />}
           {isAr ? 'جميع الوسوم' : 'Tous les tags'}
         </Link>
 

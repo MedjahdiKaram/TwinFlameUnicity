@@ -4,7 +4,7 @@ import { ArticleCard } from '@/components/blog/ArticleCard'
 import { generatePageMetadata } from '@/lib/seo/jsonld'
 import type { Metadata } from 'next'
 import { Link } from '@/i18n/navigation'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>
@@ -57,7 +57,7 @@ export default async function CategoryPage({ params }: Props) {
       <div className="relative max-w-6xl mx-auto px-4">
         {/* Back */}
         <Link href="/categories" className="inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm mb-8">
-          <ArrowLeft className="w-4 h-4" />
+          {isAr ? <ArrowRight className="w-4 h-4" /> : <ArrowLeft className="w-4 h-4" />}
           {isAr ? 'جميع الفئات' : 'Toutes les catégories'}
         </Link>
 

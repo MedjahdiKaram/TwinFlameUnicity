@@ -81,6 +81,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
   const { locale } = await params
   const sp = await searchParams
   const { articles, categories, total, page, pageSize } = await getData(locale, sp)
+  const t = await getTranslations({ locale, namespace: 'blog' })
 
   return (
     <>
@@ -91,10 +92,18 @@ export default async function BlogPage({ params, searchParams }: Props) {
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(147,51,234,0.15)_0%,transparent_70%)] pointer-events-none" />
           <div className="container mx-auto px-4 relative">
             <h1 className="text-4xl sm:text-5xl font-display font-black text-white mb-4">
-              Le <span className="text-cosmic">Blog</span> Spirituel
+              {locale === 'ar' ? (
+                <>
+                  <span className="text-cosmic">المدونة</span> الروحية
+                </>
+              ) : (
+                <>
+                  Le <span className="text-cosmic">Blog</span> Spirituel
+                </>
+              )}
             </h1>
             <p className="text-white/50 max-w-xl mx-auto">
-              Guidance, éveil et connexion pour votre voyage vers l&apos;Unité
+              {locale === 'ar' ? 'توجيه وصحوة وتواصل في رحلتك نحو الوحدة' : t('subtitle')}
             </p>
           </div>
         </div>

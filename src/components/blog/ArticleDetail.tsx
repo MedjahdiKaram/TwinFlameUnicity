@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import Image from 'next/image'
-import { Clock, Eye, Heart, ArrowLeft, Crown, ChevronRight } from 'lucide-react'
+import { Clock, Eye, Heart, ArrowLeft, ArrowRight, Crown, ChevronRight, ChevronLeft } from 'lucide-react'
 import { formatDate, formatRelativeDate } from '@/lib/utils'
 import { ArticleCard } from './ArticleCard'
 import { createClient } from '@/lib/supabase/client'
@@ -51,15 +51,15 @@ export function ArticleDetail({ article, related, locale }: Props) {
         className="flex items-center gap-2 text-xs text-white/30 mb-8"
       >
         <Link href="/" className="hover:text-white/60 transition-colors">
-          Accueil
+          {locale === 'ar' ? 'الرئيسية' : 'Accueil'}
         </Link>
-        <ChevronRight className="w-3 h-3" />
+        {locale === 'ar' ? <ChevronLeft className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
         <Link href="/blog" className="hover:text-white/60 transition-colors">
-          Blog
+          {locale === 'ar' ? 'المدونة' : 'Blog'}
         </Link>
         {categoryName && (
           <>
-            <ChevronRight className="w-3 h-3" />
+            {locale === 'ar' ? <ChevronLeft className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
             <span className="text-purple-400">{categoryName}</span>
           </>
         )}
@@ -207,7 +207,7 @@ export function ArticleDetail({ article, related, locale }: Props) {
             href="/blog"
             className="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" />
+            {locale === 'ar' ? <ArrowRight className="w-4 h-4" /> : <ArrowLeft className="w-4 h-4" />}
             {t('back')}
           </Link>
         </div>

@@ -58,7 +58,7 @@ export function ArticleCard({ article, locale, index = 0, featured = false }: Pr
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
             {/* Badges */}
-            <div className="absolute top-3 left-3 flex gap-2">
+            <div className="absolute top-3 start-3 flex gap-2">
               {article.is_premium && (
                 <span className="badge-premium flex items-center gap-1">
                   <Crown className="w-2.5 h-2.5" />
@@ -75,7 +75,7 @@ export function ArticleCard({ article, locale, index = 0, featured = false }: Pr
             {/* Category */}
             {categoryName && (
               <div
-                className="absolute bottom-3 left-3 text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded-full backdrop-blur-sm"
+                className="absolute bottom-3 start-3 text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded-full backdrop-blur-sm"
                 style={{ background: `${article.category?.color || '#9333ea'}40`, color: article.category?.color || '#c084fc', border: `1px solid ${article.category?.color || '#9333ea'}60` }}
               >
                 {categoryName}

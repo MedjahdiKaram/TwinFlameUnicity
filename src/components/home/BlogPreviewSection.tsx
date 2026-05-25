@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ArrowLeft } from 'lucide-react'
 import { ArticleCard } from '@/components/blog/ArticleCard'
 import type { ArticleCard as ArticleCardType } from '@/types/database.types'
 
@@ -47,7 +47,11 @@ export function BlogPreviewSection({ articles, locale }: Props) {
             className="hidden sm:flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors group"
           >
             {t('blog_cta')}
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            {locale === 'ar' ? (
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+            ) : (
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            )}
           </Link>
         </motion.div>
 
@@ -74,7 +78,11 @@ export function BlogPreviewSection({ articles, locale }: Props) {
             className="inline-flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors"
           >
             {t('blog_cta')}
-            <ArrowRight className="w-4 h-4" />
+            {locale === 'ar' ? (
+              <ArrowLeft className="w-4 h-4" />
+            ) : (
+              <ArrowRight className="w-4 h-4" />
+            )}
           </Link>
         </div>
       </div>

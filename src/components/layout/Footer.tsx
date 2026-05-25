@@ -11,10 +11,10 @@ export function Footer({ locale }: { locale: string }) {
     {
       title: t('sitemap'),
       links: [
-        { label: 'Accueil', href: '/' as const },
-        { label: 'Blog', href: '/blog' as const },
-        { label: 'Catégories', href: '/categories' as const },
-        { label: 'Notre Approche', href: '/about' as const },
+        { label: locale === 'ar' ? 'الرئيسية' : 'Accueil', href: '/' as const },
+        { label: locale === 'ar' ? 'المدونة' : 'Blog', href: '/blog' as const },
+        { label: locale === 'ar' ? 'التصنيفات' : 'Catégories', href: '/categories' as const },
+        { label: locale === 'ar' ? 'نهجنا' : 'Notre Approche', href: '/about' as const },
       ],
     },
     {
