@@ -143,7 +143,11 @@ function AnimatedTitle({
               key={i}
               variants={wordVariants}
               className="inline-block text-white font-display font-bold"
-              style={{ fontSize: 'clamp(2.5rem, 7vw, 5.5rem)' }}
+              style={{
+                fontSize: 'clamp(2.5rem, 7vw, 5.5rem)',
+                WebkitTextStroke: '1px rgba(10, 5, 22, 0.7)',
+                textShadow: '0 4px 12px rgba(10, 5, 22, 0.6)',
+              }}
             >
               {word}
             </motion.span>
@@ -156,15 +160,22 @@ function AnimatedTitle({
               key={i}
               variants={wordVariants}
               className="inline-block text-white font-display font-bold"
-              style={{ fontSize: 'clamp(2.5rem, 7vw, 5.5rem)' }}
+              style={{
+                fontSize: 'clamp(2.5rem, 7vw, 5.5rem)',
+                WebkitTextStroke: '1px rgba(10, 5, 22, 0.7)',
+                textShadow: '0 4px 12px rgba(10, 5, 22, 0.6)',
+              }}
             >
               {word}
             </motion.span>
           ))}
           <motion.span
             variants={wordVariants}
-            className="inline-block font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#ffe17d] via-[#f59e0b] to-[#d97706] drop-shadow-[0_0_20px_rgba(245,158,11,0.4)]"
-            style={{ fontSize: 'clamp(2.5rem, 7vw, 5.5rem)' }}
+            className="inline-block font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#ffe17d] via-[#f59e0b] to-[#d97706]"
+            style={{
+              fontSize: 'clamp(2.5rem, 7vw, 5.5rem)',
+              filter: 'drop-shadow(0 2px 8px rgba(10, 5, 22, 0.8)) drop-shadow(0 0 20px rgba(245,158,11,0.4))',
+            }}
           >
             {highlight}
           </motion.span>
@@ -241,13 +252,13 @@ export function HeroSection() {
         style={{ scale }}
       >
         <Image
-          src="/images/hero-bg-new.png"
+          src="/images/hero-cosmic.jpg"
           alt="Cosmic space portal background"
           fill
           priority
           quality={95}
           sizes="100vw"
-          className="object-cover opacity-85 filter blur-[2px]"
+          className="object-cover opacity-85"
         />
         {/* Ambient overlay to smooth and blend edges */}
         <div
