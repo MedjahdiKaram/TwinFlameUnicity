@@ -5,7 +5,7 @@ import { useRouter } from '@/i18n/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion } from 'framer-motion'
-import { Save, Globe, Crown, Star, Tag, FolderOpen, Upload, ImageIcon } from 'lucide-react'
+import { Save, Globe, Crown, Star, Tag, FolderOpen, Upload, ImageIcon, Plus } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { articleSchema, type ArticleInput } from '@/lib/validations/article'
 import { createClient } from '@/lib/supabase/client'
@@ -13,6 +13,7 @@ import { slugify, estimateReadingTime } from '@/lib/utils'
 import type { InsertTables, UpdateTables } from '@/types/database.types'
 import { generateMetadata, generateImageNanoBanana } from '@/lib/ai'
 import { toast } from '@/hooks/use-toast'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 // Dynamic import to avoid SSR issues with TipTap
 const TipTapEditor = dynamic(() => import('./TipTapEditor').then((m) => m.TipTapEditor), {
@@ -41,7 +42,127 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
   const [error, setError] = useState('')
   const [isUploadingCover, setIsUploadingCover] = useState(false)
   const coverInputRef = useRef<HTMLInputElement>(null)
-  const supabase = createClient()
+  const supabase = createClient() as any
+
+  const [localCategories, setLocalCategories] = useState(categories)
+  const [localTags, setLocalTags] = useState(tags)
+
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
+  const [newCategory, setNewCategory] = useState({
+    name_fr: '',
+    name_ar: '',
+    slug: '',
+    color: '#9333ea',
+    description_fr: '',
+    description_ar: '',
+  })
+  const [categorySubmitting, setCategorySubmitting] = useState(false)
+  const [categoryError, setCategoryError] = useState('')
+
+  const [isTagModalOpen, setIsTagModalOpen] = useState(false)
+  const [newTag, setNewTag] = useState({
+    name_fr: '',
+    name_ar: '',
+    slug: '',
+  })
+  const [tagSubmitting, setTagSubmitting] = useState(false)
+  const [tagError, setTagError] = useState('')
+
+  const handleCategoryNameFRChange = (val: string) => {
+    setNewCategory((prev) => ({
+      ...prev,
+      name_fr: val,
+      slug: slugify(val),
+    }))
+  }
+
+  const handleTagNameFRChange = (val: string) => {
+    setNewTag((prev) => ({
+      ...prev,
+      name_fr: val,
+      slug: slugify(val),
+    }))
+  }
+
+  const handleCreateCategory = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setCategoryError('')
+    if (!newCategory.name_fr || !newCategory.name_ar || !newCategory.slug) {
+      setCategoryError('Les champs Nom (FR), Nom (AR) et Slug sont requis.')
+      return
+    }
+    setCategorySubmitting(true)
+    try {
+      const { data, error } = await supabase
+        .from('categories')
+        .insert({
+          name_fr: newCategory.name_fr,
+          name_ar: newCategory.name_ar,
+          slug: newCategory.slug,
+          color: newCategory.color || '#9333ea',
+          description_fr: newCategory.description_fr || null,
+          description_ar: newCategory.description_ar || null,
+        })
+        .select()
+        .single()
+
+      if (error) throw error
+
+      setLocalCategories((prev) => [...prev, data])
+      setValue('category_id', data.id)
+      toast({ title: 'Catégorie créée !', description: `La catégorie "${data.name_fr}" a été ajoutée et sélectionnée.` })
+      setIsCategoryModalOpen(false)
+      setNewCategory({
+        name_fr: '',
+        name_ar: '',
+        slug: '',
+        color: '#9333ea',
+        description_fr: '',
+        description_ar: '',
+      })
+    } catch (err: any) {
+      setCategoryError(err.message || 'Une erreur est survenue lors de la création de la catégorie.')
+    } finally {
+      setCategorySubmitting(false)
+    }
+  }
+
+  const handleCreateTag = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setTagError('')
+    if (!newTag.name_fr || !newTag.name_ar || !newTag.slug) {
+      setTagError('Les champs Nom (FR), Nom (AR) et Slug sont requis.')
+      return
+    }
+    setTagSubmitting(true)
+    try {
+      const { data, error } = await supabase
+        .from('tags')
+        .insert({
+          name_fr: newTag.name_fr,
+          name_ar: newTag.name_ar,
+          slug: newTag.slug,
+        })
+        .select()
+        .single()
+
+      if (error) throw error
+
+      setLocalTags((prev) => [...prev, data].sort((a, b) => a.name_fr.localeCompare(b.name_fr)))
+      setSelectedTags((prev) => [...prev, data.id])
+      toast({ title: 'Tag créé !', description: `Le tag "${data.name_fr}" a été ajouté et sélectionné.` })
+      setIsTagModalOpen(false)
+      setNewTag({
+        name_fr: '',
+        name_ar: '',
+        slug: '',
+      })
+    } catch (err: any) {
+      setTagError(err.message || 'Une erreur est survenue lors de la création du tag.')
+    } finally {
+      setTagSubmitting(false)
+    }
+  }
 
   const handleCoverUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -483,12 +604,132 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
 
           {/* Category */}
           <div className="glass-card p-5">
-            <label className="flex items-center gap-1.5 text-sm font-semibold text-white/60 uppercase tracking-wider mb-3">
-              <FolderOpen className="w-4 h-4" /> Catégorie
-            </label>
+            <div className="flex items-center justify-between mb-3">
+              <label className="flex items-center gap-1.5 text-sm font-semibold text-white/60 uppercase tracking-wider">
+                <FolderOpen className="w-4 h-4" /> Catégorie
+              </label>
+              <Dialog open={isCategoryModalOpen} onOpenChange={setIsCategoryModalOpen}>
+                <button
+                  type="button"
+                  onClick={() => setIsCategoryModalOpen(true)}
+                  className="p-1 rounded-md bg-white/5 hover:bg-purple-600/20 border border-white/10 hover:border-purple-500/30 transition-all text-white/60 hover:text-white"
+                  title="Ajouter une catégorie"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                </button>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Nouvelle Catégorie</DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={handleCreateCategory} className="space-y-4 text-left">
+                    {categoryError && (
+                      <div className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg p-2.5">
+                        {categoryError}
+                      </div>
+                    )}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Nom (FR) *</label>
+                        <input
+                          type="text"
+                          required
+                          value={newCategory.name_fr}
+                          onChange={(e) => handleCategoryNameFRChange(e.target.value)}
+                          className="input-cosmic text-sm w-full"
+                          placeholder="ex: Flamme Jumelle"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Nom (AR) *</label>
+                        <input
+                          type="text"
+                          required
+                          value={newCategory.name_ar}
+                          onChange={(e) => setNewCategory(prev => ({ ...prev, name_ar: e.target.value }))}
+                          className="input-cosmic text-sm w-full"
+                          placeholder="ex: التوأم اللهبي"
+                          dir="rtl"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Slug *</label>
+                      <input
+                        type="text"
+                        required
+                        value={newCategory.slug}
+                        onChange={(e) => setNewCategory(prev => ({ ...prev, slug: e.target.value }))}
+                        className="input-cosmic text-sm font-mono w-full"
+                        placeholder="ex: flamme-jumelle"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Couleur</label>
+                      <div className="flex gap-2 items-center">
+                        <input
+                          type="color"
+                          value={newCategory.color}
+                          onChange={(e) => setNewCategory(prev => ({ ...prev, color: e.target.value }))}
+                          className="w-10 h-10 rounded border border-white/10 bg-transparent cursor-pointer"
+                        />
+                        <input
+                          type="text"
+                          value={newCategory.color}
+                          onChange={(e) => setNewCategory(prev => ({ ...prev, color: e.target.value }))}
+                          className="input-cosmic text-sm font-mono w-full"
+                          placeholder="#9333ea"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Description (FR)</label>
+                      <input
+                        type="text"
+                        value={newCategory.description_fr}
+                        onChange={(e) => setNewCategory(prev => ({ ...prev, description_fr: e.target.value }))}
+                        className="input-cosmic text-sm w-full"
+                        placeholder="Description en français..."
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Description (AR)</label>
+                      <input
+                        type="text"
+                        value={newCategory.description_ar}
+                        onChange={(e) => setNewCategory(prev => ({ ...prev, description_ar: e.target.value }))}
+                        className="input-cosmic text-sm w-full"
+                        placeholder="الوصف باللغة العربية..."
+                        dir="rtl"
+                      />
+                    </div>
+
+                    <div className="flex justify-end gap-3 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => setIsCategoryModalOpen(false)}
+                        className="px-4 py-2 rounded-lg text-xs font-semibold text-white/60 bg-white/5 hover:bg-white/10 hover:text-white transition-all duration-300"
+                      >
+                        Annuler
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={categorySubmitting}
+                        className="px-4 py-2 rounded-lg text-xs font-semibold text-white bg-purple-600 hover:bg-purple-500 disabled:opacity-50 transition-all duration-300 shadow-glow-sm"
+                      >
+                        {categorySubmitting ? 'Création...' : 'Créer'}
+                      </button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
             <select {...register('category_id')} className="input-cosmic">
               <option value="">— Aucune —</option>
-              {categories.map((cat) => (
+              {localCategories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {locale === 'ar' ? cat.name_ar : cat.name_fr}
                 </option>
@@ -498,11 +739,89 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
 
           {/* Tags */}
           <div className="glass-card p-5">
-            <label className="flex items-center gap-1.5 text-sm font-semibold text-white/60 uppercase tracking-wider mb-3">
-              <Tag className="w-4 h-4" /> Tags
-            </label>
+            <div className="flex items-center justify-between mb-3">
+              <label className="flex items-center gap-1.5 text-sm font-semibold text-white/60 uppercase tracking-wider">
+                <Tag className="w-4 h-4" /> Tags
+              </label>
+              <Dialog open={isTagModalOpen} onOpenChange={setIsTagModalOpen}>
+                <button
+                  type="button"
+                  onClick={() => setIsTagModalOpen(true)}
+                  className="p-1 rounded-md bg-white/5 hover:bg-purple-600/20 border border-white/10 hover:border-purple-500/30 transition-all text-white/60 hover:text-white"
+                  title="Ajouter un tag"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                </button>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Nouveau Tag</DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={handleCreateTag} className="space-y-4 text-left">
+                    {tagError && (
+                      <div className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg p-2.5">
+                        {tagError}
+                      </div>
+                    )}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Nom (FR) *</label>
+                        <input
+                          type="text"
+                          required
+                          value={newTag.name_fr}
+                          onChange={(e) => handleTagNameFRChange(e.target.value)}
+                          className="input-cosmic text-sm w-full"
+                          placeholder="ex: Numérologie"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Nom (AR) *</label>
+                        <input
+                          type="text"
+                          required
+                          value={newTag.name_ar}
+                          onChange={(e) => setNewTag(prev => ({ ...prev, name_ar: e.target.value }))}
+                          className="input-cosmic text-sm w-full"
+                          placeholder="ex: علم الأعداد"
+                          dir="rtl"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Slug *</label>
+                      <input
+                        type="text"
+                        required
+                        value={newTag.slug}
+                        onChange={(e) => setNewTag(prev => ({ ...prev, slug: e.target.value }))}
+                        className="input-cosmic text-sm font-mono w-full"
+                        placeholder="ex: numerologie"
+                      />
+                    </div>
+
+                    <div className="flex justify-end gap-3 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => setIsTagModalOpen(false)}
+                        className="px-4 py-2 rounded-lg text-xs font-semibold text-white/60 bg-white/5 hover:bg-white/10 hover:text-white transition-all duration-300"
+                      >
+                        Annuler
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={tagSubmitting}
+                        className="px-4 py-2 rounded-lg text-xs font-semibold text-white bg-purple-600 hover:bg-purple-500 disabled:opacity-50 transition-all duration-300 shadow-glow-sm"
+                      >
+                        {tagSubmitting ? 'Création...' : 'Créer'}
+                      </button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
             <div className="flex flex-wrap gap-2">
-              {tags.map((tag) => (
+              {localTags.map((tag) => (
                 <button
                   key={tag.id}
                   type="button"

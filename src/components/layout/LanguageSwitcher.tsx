@@ -1,20 +1,17 @@
 'use client'
 
-import { useLocale } from 'next-intl'
-import { useRouter, usePathname } from '@/i18n/navigation'
+import { useRouter } from '@/i18n/navigation'
 import { motion } from 'framer-motion'
 import { Globe } from 'lucide-react'
 import { useState } from 'react'
 
 export function LanguageSwitcher({ locale }: { locale: string }) {
   const router = useRouter()
-  const pathname = usePathname()
-  const currentLocale = useLocale()
   const [isOpen, setIsOpen] = useState(false)
 
   const switchLocale = (newLocale: string) => {
-    // Navigate to the same path but with the new locale
-    router.replace(pathname, { locale: newLocale })
+    // Navigate to the home page of the chosen language
+    router.replace('/', { locale: newLocale })
     setIsOpen(false)
     // Save preference
     localStorage.setItem('preferred-locale', newLocale)
