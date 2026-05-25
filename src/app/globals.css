@@ -106,11 +106,21 @@
   [dir="rtl"] body,
   html[lang="ar"] body {
     font-family: var(--font-cairo), var(--font-amiri), 'Noto Sans Arabic', system-ui, sans-serif;
-    letter-spacing: 0;
   }
 
   [dir="rtl"] {
     text-align: right;
+  }
+
+  [dir="rtl"] *,
+  [dir="rtl"] *::before,
+  [dir="rtl"] *::after {
+    letter-spacing: normal !important;
+  }
+
+  [dir="rtl"] .font-display,
+  [dir="rtl"] [class*="font-display"] {
+    font-family: var(--font-cairo), 'Noto Kufi Arabic', system-ui, sans-serif !important;
   }
 
   /* Scrollbar */

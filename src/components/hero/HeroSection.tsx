@@ -129,12 +129,12 @@ function AnimatedTitle({
   }
 
   return (
-    <div className="overflow-hidden perspective-1000">
+    <div className="overflow-hidden py-4 -my-4 perspective-1000">
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="leading-tight"
+        className="leading-tight rtl:leading-normal"
       >
         {/* Line 1 */}
         <div className="flex flex-wrap justify-center gap-x-4 mb-1">
