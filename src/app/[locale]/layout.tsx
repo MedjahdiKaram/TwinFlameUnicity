@@ -7,6 +7,7 @@ import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import { QueryProvider } from '@/components/providers/QueryProvider'
 import { Toaster } from '@/components/ui/toaster'
 import { routing } from '@/i18n/routing'
+import '../globals.css'
 
 // ── Fonts ──────────────────────────────────────────────────
 const cinzel = Cinzel({
@@ -154,10 +155,6 @@ export default async function LocaleLayout({ children, params }: Props) {
       suppressHydrationWarning
       className={`${cinzel.variable} ${playfair.variable} ${inter.variable} ${amiri.variable} ${cairo.variable}`}
     >
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </head>
       <body className="min-h-screen bg-cosmic-gradient antialiased">
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider
