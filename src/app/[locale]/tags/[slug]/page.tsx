@@ -11,8 +11,9 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params
+  const decodedSlug = decodeURIComponent(slug)
   const supabase = await createClient()
-  const { data: tag } = await supabase.from('tags').select('*').eq('slug', slug).single()
+  const { data: tag } = await supabase.from('tags').select('*').eq('slug', decodedSlug).single()
   if (!tag) return {}
   return {
     title: `${locale === 'fr' ? tag.name_fr : tag.name_ar} | TwinFlameUnicity`,
@@ -21,13 +22,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TagPage({ params }: Props) {
   const { locale, slug } = await params
+  const decodedSlug = decodeURIComponent(slug)
   const supabase = await createClient()
   const isAr = locale === 'ar'
 
   const { data: tag } = await supabase
     .from('tags')
     .select('*')
-    .eq('slug', slug)
+    .eq('slug', decodedSlug)
     .single()
 
   if (!tag) notFound()

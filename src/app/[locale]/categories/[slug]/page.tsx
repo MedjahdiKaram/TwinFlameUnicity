@@ -12,26 +12,28 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params
+  const decodedSlug = decodeURIComponent(slug)
   const supabase = await createClient()
-  const { data: cat } = await supabase.from('categories').select('*').eq('slug', slug).single()
+  const { data: cat } = await supabase.from('categories').select('*').eq('slug', decodedSlug).single()
   if (!cat) return {}
   return generatePageMetadata({
     title: `${locale === 'fr' ? cat.name_fr : cat.name_ar} | TwinFlameUnicity`,
     description: (locale === 'fr' ? cat.description_fr : cat.description_ar) || '',
     locale,
-    path: `/categories/${slug}`,
+    path: `/categories/${decodedSlug}`,
   })
 }
 
 export default async function CategoryPage({ params }: Props) {
   const { locale, slug } = await params
+  const decodedSlug = decodeURIComponent(slug)
   const supabase = await createClient()
   const isAr = locale === 'ar'
 
   const { data: category } = await supabase
     .from('categories')
     .select('*')
-    .eq('slug', slug)
+    .eq('slug', decodedSlug)
     .single()
 
   if (!category) notFound()

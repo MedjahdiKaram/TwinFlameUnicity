@@ -12,6 +12,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params
+  const decodedSlug = decodeURIComponent(slug)
   const supabase = await createClient()
   const { data: article } = await supabase
     .from('articles')
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       category:categories(name_fr, name_ar),
       tags:article_tags(tag:tags(name_fr, name_ar))
     `)
-    .eq('slug', slug)
+    .eq('slug', decodedSlug)
     .single()
 
   if (!article) return {}
@@ -71,6 +72,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ArticlePage({ params }: Props) {
   const { locale, slug } = await params
+  const decodedSlug = decodeURIComponent(slug)
   const supabase = await createClient()
 
   // Fetch article with relations
@@ -83,14 +85,14 @@ export default async function ArticlePage({ params }: Props) {
       tags:article_tags(tag:tags(id, name_fr, name_ar, slug)),
       images:article_images(id, url, alt, sort_order)
     `)
-    .eq('slug', slug)
+    .eq('slug', decodedSlug)
     .eq('status', 'published')
     .single()
 
   if (!article) notFound()
 
   // Increment views (fire & forget)
-  supabase.rpc('increment_article_views', { article_slug: slug }).then(() => {})
+  supabase.rpc('increment_article_views', { article_slug: decodedSlug }).then(() => {})
 
   const normalizedArticle = {
     ...article,
@@ -120,7 +122,7 @@ export default async function ArticlePage({ params }: Props) {
 
   const authorName = article.author?.pseudo || `${article.author?.first_name || ''} ${article.author?.last_name || ''}`.trim() || 'TwinFlameUnicity'
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://twinflameunicity.com'
-  const canonicalUrl = `${siteUrl}/${locale}/${locale === 'fr' ? 'blog' : 'مدونة'}/${slug}`
+  const canonicalUrl = `${siteUrl}/${locale}/${locale === 'fr' ? 'blog' : 'مدونة'}/${decodedSlug}`
 
   const jsonLd = {
     '@context': 'https://schema.org',
