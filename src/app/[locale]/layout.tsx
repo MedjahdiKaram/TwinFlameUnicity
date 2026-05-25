@@ -8,6 +8,7 @@ import { QueryProvider } from '@/components/providers/QueryProvider'
 import { Toaster } from '@/components/ui/toaster'
 import { routing } from '@/i18n/routing'
 import { FairyCursor } from '@/components/layout/FairyCursor'
+import GoogleAnalytics from '@/components/layout/GoogleAnalytics'
 import '../globals.css'
 
 // ── Fonts ──────────────────────────────────────────────────
@@ -165,6 +166,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             disableTransitionOnChange={false}
           >
             <QueryProvider>
+              <GoogleAnalytics />
               <FairyCursor />
               {children}
               <Toaster />
