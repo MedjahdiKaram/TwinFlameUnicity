@@ -1,10 +1,18 @@
 'use client'
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Search, CheckCircle, XCircle, Trash2, Shield, User } from 'lucide-react'
+import { Search, CheckCircle, XCircle, Trash2, Shield, User, UserPlus, Loader2, Eye, EyeOff } from 'lucide-react'
 import { formatDate } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
+import { createUserAction } from '@/server/actions/admin'
+import { toast } from '@/hooks/use-toast'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 interface UserProfile {
   id: string
@@ -34,7 +42,82 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
   const [users, setUsers] = useState(initialUsers)
   const [search, setSearch] = useState('')
   const [filterStatus, setFilterStatus] = useState<'all' | 'pending' | 'active' | 'disabled'>('all')
-  const [isPending, startTransition] = useTransition()
+
+  const [isAddOpen, setIsAddOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+
+  // Form states
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [role, setRole] = useState<'admin' | 'user' | 'visitor'>('user')
+  const [status, setStatus] = useState<'pending' | 'active' | 'disabled'>('active')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [pseudo, setPseudo] = useState('')
+  const [gender, setGender] = useState<'male' | 'female' | 'other' | 'prefer_not_to_say'>('prefer_not_to_say')
+
+  const handleAddUser = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email || !password || !role) {
+      toast({
+        title: 'Erreur',
+        description: 'Veuillez remplir les champs obligatoires.',
+        variant: 'destructive',
+      })
+      return
+    }
+
+    setIsSubmitting(true)
+    try {
+      const formData = new FormData()
+      formData.append('email', email)
+      formData.append('password', password)
+      formData.append('role', role)
+      formData.append('status', status)
+      formData.append('first_name', firstName)
+      formData.append('last_name', lastName)
+      formData.append('pseudo', pseudo)
+      formData.append('gender', gender)
+
+      const result = await createUserAction(formData)
+
+      if (result.error) {
+        toast({
+          title: 'Erreur',
+          description: result.error,
+          variant: 'destructive',
+        })
+      } else if (result.success && result.user) {
+        toast({
+          title: 'Succès',
+          description: 'L\'utilisateur a été créé avec succès.',
+        })
+        
+        // Append the new user to state
+        setUsers((prev) => [result.user as UserProfile, ...prev])
+        
+        // Close modal and reset form
+        setIsAddOpen(false)
+        setEmail('')
+        setPassword('')
+        setRole('user')
+        setStatus('active')
+        setFirstName('')
+        setLastName('')
+        setPseudo('')
+        setGender('prefer_not_to_say')
+      }
+    } catch (err: any) {
+      toast({
+        title: 'Erreur',
+        description: err.message || 'Une erreur est survenue.',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   const filtered = users.filter((u) => {
     const matchSearch =
@@ -48,14 +131,14 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
   })
 
   const updateStatus = async (userId: string, newStatus: UserProfile['status']) => {
-    const supabase = createClient()
+    const supabase = createClient() as any
     await supabase.from('profiles').update({ status: newStatus }).eq('id', userId)
     setUsers((prev) => prev.map((u) => (u.id === userId ? { ...u, status: newStatus } : u)))
   }
 
   const deleteUser = async (userId: string) => {
     if (!confirm('Supprimer définitivement cet utilisateur ?')) return
-    const supabase = createClient()
+    const supabase = createClient() as any
     await supabase.from('profiles').delete().eq('id', userId)
     setUsers((prev) => prev.filter((u) => u.id !== userId))
   }
@@ -93,7 +176,13 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
             </button>
           ))}
         </div>
-        <span className="ms-auto text-xs text-white/30">{filtered.length} utilisateurs</span>
+        <div className="flex items-center gap-3 ms-auto">
+          <span className="text-xs text-white/30">{filtered.length} utilisateurs</span>
+          <Button onClick={() => setIsAddOpen(true)} variant="glow" size="sm" className="gap-2">
+            <UserPlus className="w-4 h-4" />
+            Ajouter un utilisateur
+          </Button>
+        </div>
       </div>
 
       {/* Table */}
@@ -211,6 +300,170 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
           </table>
         </div>
       </div>
+
+      <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+        <DialogContent className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-white">
+              <UserPlus className="w-5 h-5 text-purple-400" />
+              Ajouter un nouvel utilisateur
+            </DialogTitle>
+            <DialogDescription>
+              Créez un compte utilisateur et configurez ses informations ainsi que son rôle d&apos;accès.
+            </DialogDescription>
+          </DialogHeader>
+
+          <form onSubmit={handleAddUser} className="space-y-4 mt-2">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1.5 col-span-2 sm:col-span-1">
+                <Label htmlFor="firstName" className="text-white/70">Prénom</Label>
+                <Input
+                  id="firstName"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  placeholder="Jean"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-white/20"
+                />
+              </div>
+
+              <div className="space-y-1.5 col-span-2 sm:col-span-1">
+                <Label htmlFor="lastName" className="text-white/70">Nom</Label>
+                <Input
+                  id="lastName"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  placeholder="Dupont"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-white/20"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1.5 col-span-2 sm:col-span-1">
+                <Label htmlFor="pseudo" className="text-white/70">Pseudo <span className="text-purple-400">*</span></Label>
+                <Input
+                  id="pseudo"
+                  value={pseudo}
+                  onChange={(e) => setPseudo(e.target.value)}
+                  placeholder="jeandupont"
+                  required
+                  className="bg-white/5 border-white/10 text-white placeholder:text-white/20"
+                />
+              </div>
+
+              <div className="space-y-1.5 col-span-2 sm:col-span-1">
+                <Label htmlFor="gender" className="text-white/70">Genre</Label>
+                <Select value={gender} onValueChange={(val: any) => setGender(val)}>
+                  <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                    <SelectValue placeholder="Sélectionner..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="male">Homme</SelectItem>
+                    <SelectItem value="female">Femme</SelectItem>
+                    <SelectItem value="other">Autre</SelectItem>
+                    <SelectItem value="prefer_not_to_say">Ne pas spécifier</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="text-white/70">Adresse Email <span className="text-purple-400">*</span></Label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="jean.dupont@exemple.com"
+                required
+                className="bg-white/5 border-white/10 text-white placeholder:text-white/20"
+              />
+            </div>
+
+            <div className="space-y-1.5 relative">
+              <Label htmlFor="password" className="text-white/70">Mot de passe <span className="text-purple-400">*</span></Label>
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  className="bg-white/5 border-white/10 text-white placeholder:text-white/20 pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1.5 col-span-2 sm:col-span-1">
+                <Label htmlFor="role" className="text-white/70">Rôle <span className="text-purple-400">*</span></Label>
+                <Select value={role} onValueChange={(val: any) => setRole(val)}>
+                  <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                    <SelectValue placeholder="Rôle" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="user">Utilisateur (user)</SelectItem>
+                    <SelectItem value="admin">Administrateur (admin)</SelectItem>
+                    <SelectItem value="visitor">Visiteur (visitor)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-1.5 col-span-2 sm:col-span-1">
+                <Label htmlFor="status" className="text-white/70">Statut <span className="text-purple-400">*</span></Label>
+                <Select value={status} onValueChange={(val: any) => setStatus(val)}>
+                  <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                    <SelectValue placeholder="Statut" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="active">Actif (active)</SelectItem>
+                    <SelectItem value="pending">En attente (pending)</SelectItem>
+                    <SelectItem value="disabled">Désactivé (disabled)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 mt-6">
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setIsAddOpen(false)}
+                disabled={isSubmitting}
+                className="text-white/70 hover:text-white"
+              >
+                Annuler
+              </Button>
+              <Button
+                type="submit"
+                variant="glow"
+                disabled={isSubmitting}
+                className="gap-2"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Création...
+                  </>
+                ) : (
+                  <>
+                    <UserPlus className="w-4 h-4" />
+                    Créer l&apos;utilisateur
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
