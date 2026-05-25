@@ -3,6 +3,8 @@ import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { Folder } from 'lucide-react'
 import { generatePageMetadata } from '@/lib/seo/jsonld'
+import { Navbar } from '@/components/layout/Navbar'
+import { Footer } from '@/components/layout/Footer'
 import type { Metadata } from 'next'
 
 interface Props {
@@ -34,7 +36,9 @@ export default async function CategoriesPage({ params }: Props) {
   const isAr = locale === 'ar'
 
   return (
-    <main className="min-h-screen bg-cosmic-gradient pt-24 pb-16">
+    <>
+      <Navbar locale={locale} />
+      <main className="min-h-screen bg-cosmic-gradient pt-24 pb-16">
       {/* Background orbs */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full bg-purple-600/5 blur-3xl" />
@@ -100,6 +104,8 @@ export default async function CategoriesPage({ params }: Props) {
           </div>
         )}
       </div>
-    </main>
+      </main>
+      <Footer locale={locale} />
+    </>
   )
 }
