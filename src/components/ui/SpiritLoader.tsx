@@ -3,11 +3,11 @@
 import { useEffect, useState } from 'react'
 
 const MESSAGES = [
-  'Connexion au cosmos...',
-  'Éveil de la conscience...',
-  'Alignement des énergies...',
-  'Synchronisation des chakras...',
-  'Illumination en cours...',
+  'Connecting to the cosmos...',
+  'Awakening consciousness...',
+  'Aligning energies...',
+  'Synchronizing chakras...',
+  'Illumination in progress...',
 ]
 
 export function SpiritLoader() {
