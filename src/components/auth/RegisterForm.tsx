@@ -10,7 +10,7 @@ import { Link } from '@/i18n/navigation'
 import { registerSchema, type RegisterInput } from '@/lib/validations/auth'
 import { registerAction } from '@/server/actions/auth'
 
-export function RegisterForm({ locale }: { locale: 'fr' | 'ar' }) {
+export function RegisterForm({ locale }: { locale: 'en' | 'ar' }) {
   const t = useTranslations('auth')
   const [isPending, startTransition] = useTransition()
   const [showPassword, setShowPassword] = useState(false)

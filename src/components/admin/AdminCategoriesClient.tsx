@@ -12,10 +12,10 @@ import { createClient } from '@/lib/supabase/client'
 import { toast } from '@/hooks/use-toast'
 
 const categorySchema = z.object({
-  name_fr: z.string().min(2, 'Nom FR requis'),
+  name_en: z.string().min(2, 'English name required'),
   name_ar: z.string().min(2, 'Nom AR requis'),
   slug: z.string().min(2, 'Slug requis').regex(/^[a-z0-9-]+$/, 'Slug: lettres minuscules, chiffres et tirets uniquement'),
-  description_fr: z.string().optional(),
+  description_en: z.string().optional(),
   description_ar: z.string().optional(),
   color: z.string().optional(),
   icon: z.string().optional(),
@@ -25,10 +25,10 @@ type CategoryForm = z.infer<typeof categorySchema>
 
 interface Category {
   id: string
-  name_fr: string
+  name_en: string
   name_ar: string
   slug: string
-  description_fr?: string | null
+  description_en?: string | null
   description_ar?: string | null
   color?: string | null
   icon?: string | null
@@ -56,10 +56,10 @@ export function AdminCategoriesClient({ initialCategories }: Props) {
   }
 
   const openEdit = (cat: Category) => {
-    setValue('name_fr', cat.name_fr)
+    setValue('name_en', cat.name_en)
     setValue('name_ar', cat.name_ar)
     setValue('slug', cat.slug)
-    setValue('description_fr', cat.description_fr || '')
+    setValue('description_en', cat.description_en || '')
     setValue('description_ar', cat.description_ar || '')
     setValue('color', cat.color || '')
     setValue('icon', cat.icon || '')
@@ -122,14 +122,14 @@ export function AdminCategoriesClient({ initialCategories }: Props) {
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="name_fr">Nom (FR)</Label>
+              <Label htmlFor="name_en">Name (EN)</Label>
               <Input
-                id="name_fr"
-                {...register('name_fr')}
-                onChange={e => { register('name_fr').onChange(e); if (!editingId) setValue('slug', slugify(e.target.value)) }}
-                placeholder="Flamme Jumelle"
+                id="name_en"
+                {...register('name_en')}
+                onChange={e => { register('name_en').onChange(e); if (!editingId) setValue('slug', slugify(e.target.value)) }}
+                placeholder="Twin Flame"
               />
-              {errors.name_fr && <p className="text-red-400 text-xs">{errors.name_fr.message}</p>}
+              {errors.name_en && <p className="text-red-400 text-xs">{errors.name_en.message}</p>}
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="name_ar">Nom (AR)</Label>
@@ -146,8 +146,8 @@ export function AdminCategoriesClient({ initialCategories }: Props) {
               <Input id="color" {...register('color')} placeholder="#9333ea" />
             </div>
             <div className="space-y-1.5 sm:col-span-2">
-              <Label htmlFor="description_fr">Description (FR)</Label>
-              <Input id="description_fr" {...register('description_fr')} placeholder="Articles sur les flammes jumelles..." />
+              <Label htmlFor="description_en">Description (EN)</Label>
+              <Input id="description_en" {...register('description_en')} placeholder="Articles about twin flames..." />
             </div>
             <div className="space-y-1.5 sm:col-span-2">
               <Label htmlFor="description_ar">Description (AR)</Label>
@@ -189,7 +189,7 @@ export function AdminCategoriesClient({ initialCategories }: Props) {
                     <div className="flex items-center gap-2">
                       {cat.color && <span className="w-3 h-3 rounded-full" style={{ backgroundColor: cat.color }} />}
                       <div>
-                        <p className="text-white font-medium">{cat.name_fr}</p>
+                        <p className="text-white font-medium">{cat.name_en}</p>
                         <p className="text-white/40 text-xs" dir="rtl">{cat.name_ar}</p>
                       </div>
                     </div>

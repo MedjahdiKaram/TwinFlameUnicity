@@ -21,7 +21,7 @@ export default async function ContactPage({ params }: Props) {
             <p className="text-white/50">{t('subtitle')}</p>
             <div className="w-24 h-px mx-auto bg-gradient-to-r from-transparent via-purple-500 to-transparent mt-4" />
           </div>
-          <ContactForm locale={locale as 'fr' | 'ar'} />
+          <ContactForm locale={locale as 'en' | 'ar'} />
         </div>
       </main>
       <Footer locale={locale} />

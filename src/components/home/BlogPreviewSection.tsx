@@ -9,7 +9,7 @@ import type { ArticleCard as ArticleCardType } from '@/types/database.types'
 
 interface Props {
   articles: ArticleCardType[]
-  locale: 'fr' | 'ar'
+  locale: 'en' | 'ar'
 }
 
 export function BlogPreviewSection({ articles, locale }: Props) {

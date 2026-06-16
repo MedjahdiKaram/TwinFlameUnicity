@@ -14,9 +14,9 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
   return generatePageMetadata({
-    title: locale === 'fr' ? 'Catégories | TwinFlameUnicity' : 'الفئات | TwinFlameUnicity',
-    description: locale === 'fr'
-      ? 'Explorez tous les sujets spirituels : flammes jumelles, numérologie, chakras et plus.'
+    title: locale === 'en' ? 'Categories | TwinFlameUnicity' : 'الفئات | TwinFlameUnicity',
+    description: locale === 'en'
+      ? 'Explore all spiritual topics: twin flames, numerology, chakras and more.'
       : 'استكشف جميع الموضوعات الروحية.',
     locale,
     path: '/categories',
@@ -28,10 +28,13 @@ export default async function CategoriesPage({ params }: Props) {
   const t = await getTranslations('blog')
   const supabase = await createClient()
 
-  const { data: categories } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: categoriesData } = await supabase
     .from('categories')
     .select('*, articles(count)')
-    .order('name_fr')
+    .order('name_en')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const categories = (categoriesData as unknown) as any[] | null
 
   const isAr = locale === 'ar'
 
@@ -48,26 +51,27 @@ export default async function CategoriesPage({ params }: Props) {
       <div className="relative max-w-6xl mx-auto px-4">
         <div className="mb-10 text-center">
           <h1 className="text-4xl font-bold text-white font-display mb-3">
-            {isAr ? 'الفئات' : 'Catégories'}
+            {isAr ? 'الفئات' : 'Categories'}
           </h1>
           <p className="text-white/50 max-w-xl mx-auto">
             {isAr
               ? 'اكتشف مجموعة مواضيعنا الروحية'
-              : 'Explorez nos thèmes spirituels et trouvez les articles qui résonnent avec votre chemin'}
+              : 'Explore our spiritual themes and find articles that resonate with your path'}
           </p>
         </div>
 
         {!categories || categories.length === 0 ? (
           <div className="text-center py-20 text-white/30">
             <Folder className="w-12 h-12 mx-auto mb-3" />
-            <p>{isAr ? 'لا توجد فئات بعد' : 'Aucune catégorie pour l\'instant'}</p>
+            <p>{isAr ? 'لا توجد فئات بعد' : 'No categories yet'}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {categories.map((cat, i) => {
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+            {(categories || []).map((cat: any, i: number) => {
               const articleCount = (cat.articles as unknown as { count: number }[])?.[0]?.count ?? 0
-              const name = isAr ? cat.name_ar : cat.name_fr
-              const desc = isAr ? cat.description_ar : cat.description_fr
+              const name = isAr ? cat.name_ar : cat.name_en
+              const desc = isAr ? cat.description_ar : cat.description_en
 
               return (
                 <Link

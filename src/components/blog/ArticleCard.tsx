@@ -10,7 +10,7 @@ import type { ArticleCard as ArticleCardType } from '@/types/database.types'
 
 interface Props {
   article: ArticleCardType
-  locale: 'fr' | 'ar'
+  locale: 'en' | 'ar'
   index?: number
   featured?: boolean
 }
@@ -20,7 +20,7 @@ export function ArticleCard({ article, locale, index = 0, featured = false }: Pr
 
   const categoryName = locale === 'ar'
     ? article.category?.name_ar
-    : article.category?.name_fr
+    : article.category?.name_en
 
   return (
     <motion.article
@@ -106,7 +106,7 @@ export function ArticleCard({ article, locale, index = 0, featured = false }: Pr
                       key={tag.id}
                       className="text-[10px] px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20 hover:bg-purple-500/20 transition-colors"
                     >
-                      #{locale === 'ar' ? tag.name_ar : tag.name_fr}
+                      #{locale === 'ar' ? tag.name_ar : tag.name_en}
                     </span>
                   ))}
                 </div>

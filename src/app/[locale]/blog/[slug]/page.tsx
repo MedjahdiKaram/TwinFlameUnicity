@@ -20,8 +20,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title, excerpt, meta_title, meta_description, og_image, cover_url, 
       published_at, updated_at,
       author:profiles!articles_author_id_fkey(pseudo, first_name, last_name),
-      category:categories(name_fr, name_ar),
-      tags:article_tags(tag:tags(name_fr, name_ar))
+      category:categories(name_en, name_ar),
+      tags:article_tags(tag:tags(name_en, name_ar))
     `)
     .eq('slug', decodedSlug)
     .single()
@@ -30,8 +30,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://twinflameunicity.com'
   const isAr = locale === 'ar'
-  const categoryName = isAr ? (article as any).category?.name_ar : (article as any).category?.name_fr
-  const tagList = (article as any).tags?.map((t: any) => isAr ? t.tag?.name_ar : t.tag?.name_fr).filter(Boolean) || []
+  const categoryName = isAr ? (article as any).category?.name_ar : (article as any).category?.name_en
+  const tagList = (article as any).tags?.map((t: any) => isAr ? t.tag?.name_ar : t.tag?.name_en).filter(Boolean) || []
   const authorName = (article as any).author?.pseudo || `${(article as any).author?.first_name || ''} ${(article as any).author?.last_name || ''}`.trim() || 'TwinFlameUnicity'
   const imageUrl = article.og_image || article.cover_url || `${siteUrl}/images/og-default.jpg`
   const canonicalUrl = `${siteUrl}/${locale}/${isAr ? 'مدونة' : 'blog'}/${slug}`
@@ -81,8 +81,8 @@ export default async function ArticlePage({ params }: Props) {
     .select(`
       *,
       author:profiles!articles_author_id_fkey(id, pseudo, first_name, last_name, avatar_url, bio),
-      category:categories(id, name_fr, name_ar, slug, color),
-      tags:article_tags(tag:tags(id, name_fr, name_ar, slug)),
+      category:categories(id, name_en, name_ar, slug, color),
+      tags:article_tags(tag:tags(id, name_en, name_ar, slug)),
       images:article_images(id, url, alt, sort_order)
     `)
     .eq('slug', decodedSlug)
@@ -106,8 +106,8 @@ export default async function ArticlePage({ params }: Props) {
       id, slug, title, excerpt, cover_url, cover_alt,
       is_premium, is_featured, language, reading_time, views, likes,
       published_at, category_id,
-      category:categories(id, name_fr, name_ar, slug, color),
-      tags:article_tags(tag:tags(id, name_fr, name_ar, slug))
+      category:categories(id, name_en, name_ar, slug, color),
+      tags:article_tags(tag:tags(id, name_en, name_ar, slug))
     `)
     .eq('status', 'published')
     .eq('language', locale)
@@ -122,7 +122,7 @@ export default async function ArticlePage({ params }: Props) {
 
   const authorName = article.author?.pseudo || `${article.author?.first_name || ''} ${article.author?.last_name || ''}`.trim() || 'TwinFlameUnicity'
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://twinflameunicity.com'
-  const canonicalUrl = `${siteUrl}/${locale}/${locale === 'fr' ? 'blog' : 'مدونة'}/${decodedSlug}`
+  const canonicalUrl = `${siteUrl}/${locale}/${locale === 'en' ? 'blog' : 'مدونة'}/${decodedSlug}`
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -161,7 +161,7 @@ export default async function ArticlePage({ params }: Props) {
         <ArticleDetail
           article={normalizedArticle}
           related={relatedArticles}
-          locale={locale as 'fr' | 'ar'}
+          locale={locale as 'en' | 'ar'}
         />
       </main>
       <Footer locale={locale} />

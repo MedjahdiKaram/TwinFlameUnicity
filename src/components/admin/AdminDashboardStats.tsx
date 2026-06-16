@@ -16,7 +16,7 @@ interface Props {
   stats: Stats
   recentArticles: any[]
   pendingUsers: any[]
-  locale: 'fr' | 'ar'
+  locale: 'en' | 'ar'
 }
 
 function StatCard({

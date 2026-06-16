@@ -8,8 +8,8 @@ export default async function NewArticlePage({ params }: Props) {
   const supabase = await createClient()
 
   const [{ data: categories }, { data: tags }, { data: { user } }] = await Promise.all([
-    supabase.from('categories').select('id, name_fr, name_ar').order('sort_order'),
-    supabase.from('tags').select('id, name_fr, name_ar').order('name_fr'),
+    supabase.from('categories').select('id, name_en, name_ar').order('sort_order'),
+    supabase.from('tags').select('id, name_en, name_ar').order('name_en'),
     supabase.auth.getUser(),
   ])
 
@@ -20,7 +20,7 @@ export default async function NewArticlePage({ params }: Props) {
         categories={categories || []}
         tags={tags || []}
         authorId={user?.id || ''}
-        locale={locale as 'fr' | 'ar'}
+        locale={locale as 'en' | 'ar'}
       />
     </div>
   )

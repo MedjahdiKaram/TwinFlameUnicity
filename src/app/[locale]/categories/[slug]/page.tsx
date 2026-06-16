@@ -17,8 +17,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { data: cat } = await supabase.from('categories').select('*').eq('slug', decodedSlug).single()
   if (!cat) return {}
   return generatePageMetadata({
-    title: `${locale === 'fr' ? cat.name_fr : cat.name_ar} | TwinFlameUnicity`,
-    description: (locale === 'fr' ? cat.description_fr : cat.description_ar) || '',
+    title: `${locale === 'en' ? cat.name_en : cat.name_ar} | TwinFlameUnicity`,
+    description: (locale === 'en' ? cat.description_en : cat.description_ar) || '',
     locale,
     path: `/categories/${decodedSlug}`,
   })
@@ -45,8 +45,8 @@ export default async function CategoryPage({ params }: Props) {
     .eq('status', 'published')
     .order('published_at', { ascending: false })
 
-  const name = isAr ? category.name_ar : category.name_fr
-  const desc = isAr ? category.description_ar : category.description_fr
+  const name = isAr ? category.name_ar : category.name_en
+  const desc = isAr ? category.description_ar : category.description_en
 
   return (
     <main className="min-h-screen bg-cosmic-gradient pt-24 pb-16">
@@ -58,7 +58,7 @@ export default async function CategoryPage({ params }: Props) {
         {/* Back */}
         <Link href="/categories" className="inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm mb-8">
           {isAr ? <ArrowRight className="w-4 h-4" /> : <ArrowLeft className="w-4 h-4" />}
-          {isAr ? 'جميع الفئات' : 'Toutes les catégories'}
+          {isAr ? 'جميع الفئات' : 'All categories'}
         </Link>
 
         {/* Header */}

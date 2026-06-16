@@ -29,8 +29,8 @@ async function getLatestArticles(locale: string): Promise<ArticleCard[]> {
         id, slug, title, excerpt, cover_url, cover_alt,
         is_premium, is_featured, language, reading_time, views, likes,
         published_at, category_id,
-        category:categories(id, name_fr, name_ar, slug, color),
-        tags:article_tags(tag:tags(id, name_fr, name_ar, slug)),
+          category:categories(id, name_en, name_ar, slug, color),
+          tags:article_tags(tag:tags(id, name_en, name_ar, slug)),
         author:profiles!articles_author_id_fkey(id, pseudo, first_name, last_name, avatar_url)
       `)
       .eq('status', 'published')
@@ -59,9 +59,9 @@ export default async function HomePage({ params }: Props) {
       <Navbar locale={locale} />
       <main>
         <HeroSection />
-        <ServicesSection locale={locale as 'fr' | 'ar'} />
+        <ServicesSection locale={locale as 'en' | 'ar'} />
         <Suspense fallback={null}>
-          <BlogPreviewSection articles={articles} locale={locale as 'fr' | 'ar'} />
+          <BlogPreviewSection articles={articles} locale={locale as 'en' | 'ar'} />
         </Suspense>
       </main>
       <Footer locale={locale} />

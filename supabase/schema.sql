@@ -16,7 +16,7 @@ CREATE TYPE user_role AS ENUM ('admin', 'user', 'visitor');
 CREATE TYPE user_status AS ENUM ('pending', 'active', 'disabled');
 CREATE TYPE user_gender AS ENUM ('male', 'female', 'other', 'prefer_not_to_say');
 CREATE TYPE article_status AS ENUM ('draft', 'published', 'archived');
-CREATE TYPE article_language AS ENUM ('fr', 'ar');
+CREATE TYPE article_language AS ENUM ('en', 'ar');
 
 -- ============================================================
 -- TABLE: profiles (extends auth.users)
@@ -85,10 +85,10 @@ CREATE TRIGGER on_auth_user_created
 
 CREATE TABLE public.categories (
   id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name_fr     TEXT NOT NULL,
+  name_en     TEXT NOT NULL,
   name_ar     TEXT NOT NULL,
   slug        TEXT NOT NULL UNIQUE,
-  description_fr TEXT,
+  description_en TEXT,
   description_ar TEXT,
   color       TEXT DEFAULT '#9333ea',
   icon        TEXT,
@@ -105,10 +105,10 @@ CREATE TRIGGER categories_updated_at
   FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
 
 -- Default category
-INSERT INTO public.categories (name_fr, name_ar, slug, description_fr, description_ar, is_default, sort_order)
+INSERT INTO public.categories (name_en, name_ar, slug, description_en, description_ar, is_default, sort_order)
 VALUES (
-  'Non classé', 'غير مصنف', 'non-classe',
-  'Articles sans catégorie spécifique', 'مقالات بدون فئة محددة',
+  'Uncategorized', 'غير مصنف', 'uncategorized',
+  'Articles without a specific category', 'مقالات بدون فئة محددة',
   TRUE, 0
 );
 
@@ -118,7 +118,7 @@ VALUES (
 
 CREATE TABLE public.tags (
   id         UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name_fr    TEXT NOT NULL,
+  name_en    TEXT NOT NULL,
   name_ar    TEXT NOT NULL,
   slug       TEXT NOT NULL UNIQUE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -178,7 +178,7 @@ CREATE TRIGGER articles_publish_date
 
 -- Full-text search index
 CREATE INDEX articles_search_idx ON public.articles
-  USING gin(to_tsvector('french', coalesce(title, '') || ' ' || coalesce(excerpt, '') || ' ' || coalesce(content, '')));
+  USING gin(to_tsvector('english', coalesce(title, '') || ' ' || coalesce(excerpt, '') || ' ' || coalesce(content, '')));
 
 CREATE INDEX articles_slug_idx ON public.articles(slug);
 CREATE INDEX articles_status_idx ON public.articles(status);

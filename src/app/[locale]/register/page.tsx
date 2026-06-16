@@ -48,7 +48,7 @@ export default async function RegisterPage({ params }: Props) {
             {locale === 'ar' ? 'رحلتك تبدأ هنا' : 'Votre voyage commence ici'}
           </p>
         </div>
-        <RegisterForm locale={locale as 'fr' | 'ar'} />
+        <RegisterForm locale={locale as 'en' | 'ar'} />
       </div>
     </div>
   )

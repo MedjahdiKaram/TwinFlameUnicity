@@ -15,7 +15,7 @@ export default async function AdminUsersPage({ params }: Props) {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-display font-bold text-white mb-8">Utilisateurs</h1>
-      <AdminUsersTable users={users || []} locale={locale as 'fr' | 'ar'} />
+      <AdminUsersTable users={users || []} locale={locale as 'en' | 'ar'} />
     </div>
   )
 }

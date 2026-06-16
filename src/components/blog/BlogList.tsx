@@ -13,11 +13,11 @@ import { createClient } from '@/lib/supabase/client'
 
 interface Props {
   initialArticles: ArticleCardType[]
-  categories: Pick<Category, 'id' | 'name_fr' | 'name_ar' | 'slug' | 'color'>[]
+  categories: Pick<Category, 'id' | 'name_en' | 'name_ar' | 'slug' | 'color'>[]
   total: number
   page: number
   pageSize: number
-  locale: 'fr' | 'ar'
+  locale: 'en' | 'ar'
 }
 
 export function BlogList({ initialArticles, categories, total, page, pageSize, locale }: Props) {
@@ -64,8 +64,8 @@ export function BlogList({ initialArticles, categories, total, page, pageSize, l
           id, slug, title, excerpt, cover_url, cover_alt,
           is_premium, is_featured, language, reading_time, views, likes,
           published_at, category_id,
-          category:categories(id, name_fr, name_ar, slug, color),
-          tags:article_tags(tag:tags(id, name_fr, name_ar, slug))
+          category:categories(id, name_en, name_ar, slug, color),
+          tags:article_tags(tag:tags(id, name_en, name_ar, slug))
         `)
         .eq('status', 'published')
         .eq('language', locale)
@@ -166,7 +166,7 @@ export function BlogList({ initialArticles, categories, total, page, pageSize, l
                   : {}
               }
             >
-              {locale === 'ar' ? cat.name_ar : cat.name_fr}
+              {locale === 'ar' ? cat.name_ar : cat.name_en}
             </button>
           ))}
         </div>

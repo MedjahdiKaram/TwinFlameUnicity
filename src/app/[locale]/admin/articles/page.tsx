@@ -14,7 +14,7 @@ export default async function AdminArticlesPage({ params }: Props) {
     .select(`
       id, slug, title, status, language, is_premium, is_featured,
       views, likes, created_at, published_at,
-      category:categories(name_fr, name_ar, color)
+      category:categories(name_en, name_ar, color)
     `)
     .order('created_at', { ascending: false })
 
@@ -30,7 +30,7 @@ export default async function AdminArticlesPage({ params }: Props) {
           Nouvel article
         </Link>
       </div>
-      <AdminArticlesTable articles={articles || []} locale={locale as 'fr' | 'ar'} />
+      <AdminArticlesTable articles={articles || []} locale={locale as 'en' | 'ar'} />
     </div>
   )
 }

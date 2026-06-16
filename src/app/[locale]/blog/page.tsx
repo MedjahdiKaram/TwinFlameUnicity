@@ -36,8 +36,8 @@ async function getData(locale: string, searchParams: Awaited<Props['searchParams
       id, slug, title, excerpt, cover_url, cover_alt,
       is_premium, is_featured, language, reading_time, views, likes,
       published_at, category_id,
-      category:categories(id, name_fr, name_ar, slug, color),
-      tags:article_tags(tag:tags(id, name_fr, name_ar, slug))
+      category:categories(id, name_en, name_ar, slug, color),
+          tags:article_tags(tag:tags(id, name_en, name_ar, slug))
     `, { count: 'exact' })
     .eq('status', 'published')
     .eq('language', locale)
@@ -65,7 +65,7 @@ async function getData(locale: string, searchParams: Awaited<Props['searchParams
   // Categories
   const { data: categories } = await supabase
     .from('categories')
-    .select('id, name_fr, name_ar, slug, color')
+    .select('id, name_en, name_ar, slug, color')
     .order('sort_order')
 
   return {
@@ -98,7 +98,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
                 </>
               ) : (
                 <>
-                  Le <span className="text-cosmic">Blog</span> Spirituel
+                  The <span className="text-cosmic">Spiritual</span> Blog
                 </>
               )}
             </h1>
@@ -115,7 +115,7 @@ export default async function BlogPage({ params, searchParams }: Props) {
             total={total}
             page={page}
             pageSize={pageSize}
-            locale={locale as 'fr' | 'ar'}
+            locale={locale as 'en' | 'ar'}
           />
         </Suspense>
       </main>

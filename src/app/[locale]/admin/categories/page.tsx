@@ -9,7 +9,7 @@ export default async function AdminCategoriesPage() {
   const { data: categories } = await supabase
     .from('categories')
     .select('*, articles(count)')
-    .order('name_fr')
+    .order('name_en')
 
   return (
     <div className="space-y-6">

@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import { motion } from 'framer-motion'
 import { Send, CheckCircle } from 'lucide-react'
 
-export function ContactForm({ locale }: { locale: 'fr' | 'ar' }) {
+export function ContactForm({ locale }: { locale: 'en' | 'ar' }) {
   const t = useTranslations('contact')
   const [sent, setSent] = useState(false)
   const [isLoading, setIsLoading] = useState(false)

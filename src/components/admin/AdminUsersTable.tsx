@@ -29,7 +29,7 @@ interface UserProfile {
 
 interface Props {
   users: UserProfile[]
-  locale: 'fr' | 'ar'
+  locale: 'en' | 'ar'
 }
 
 const STATUS_CONFIG = {

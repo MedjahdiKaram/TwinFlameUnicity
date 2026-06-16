@@ -68,7 +68,7 @@ export default async function AdminDashboard({ params }: Props) {
         stats={stats}
         recentArticles={recentArticles}
         pendingUsers={pendingUsers}
-        locale={locale as 'fr' | 'ar'}
+        locale={locale as 'en' | 'ar'}
       />
     </div>
   )

@@ -7,7 +7,7 @@ import { toast } from '@/hooks/use-toast'
 interface Props {
   url: string
   title: string
-  locale: 'fr' | 'ar'
+  locale: 'en' | 'ar'
 }
 
 export function ShareButtons({ url, title, locale }: Props) {

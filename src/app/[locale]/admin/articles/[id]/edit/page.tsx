@@ -21,12 +21,12 @@ export default async function EditArticlePage({ params }: Props) {
   const { data: categories } = await supabase
     .from('categories')
     .select('*')
-    .order('name_fr')
+    .order('name_en')
 
   const { data: tags } = await supabase
     .from('tags')
     .select('*')
-    .order('name_fr')
+    .order('name_en')
 
   const selectedTagIds = article.article_tags?.map((at: { tag_id: string }) => at.tag_id) || []
 
@@ -40,7 +40,7 @@ export default async function EditArticlePage({ params }: Props) {
         categories={categories || []}
         tags={tags || []}
         authorId={article.author_id}
-        locale={locale as 'fr' | 'ar'}
+        locale={locale as 'en' | 'ar'}
         initialData={{
           id: article.id,
           title: article.title,

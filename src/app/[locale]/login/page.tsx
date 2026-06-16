@@ -56,7 +56,7 @@ export default async function LoginPage({ params }: Props) {
             {locale === 'ar' ? 'عد إلى فضائك الروحي' : 'Retrouvez votre espace spirituel'}
           </p>
         </div>
-        <LoginForm locale={locale as 'fr' | 'ar'} />
+        <LoginForm locale={locale as 'en' | 'ar'} />
       </div>
     </div>
   )

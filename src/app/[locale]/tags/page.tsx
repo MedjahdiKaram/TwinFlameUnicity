@@ -10,7 +10,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
   return {
-    title: locale === 'fr' ? 'Tags | TwinFlameUnicity' : 'الوسوم | TwinFlameUnicity',
+    title: locale === 'en' ? 'Tags | TwinFlameUnicity' : 'الوسوم | TwinFlameUnicity',
   }
 }
 
@@ -22,7 +22,7 @@ export default async function TagsPage({ params }: Props) {
   const { data: tags } = await supabase
     .from('tags')
     .select('*, article_tags(count)')
-    .order('name_fr')
+    .order('name_en')
 
   return (
     <main className="min-h-screen bg-cosmic-gradient pt-24 pb-16">
@@ -36,20 +36,20 @@ export default async function TagsPage({ params }: Props) {
             {isAr ? 'الوسوم' : 'Tags'}
           </h1>
           <p className="text-white/50">
-            {isAr ? 'تصفح المقالات حسب الوسم' : 'Parcourez les articles par thématique'}
+            {isAr ? 'تصفح المقالات حسب الوسم' : 'Browse articles by theme'}
           </p>
         </div>
 
         {!tags || tags.length === 0 ? (
           <div className="text-center py-20 text-white/30">
             <Tag className="w-10 h-10 mx-auto mb-3" />
-            <p>{isAr ? 'لا توجد وسوم بعد' : 'Aucun tag pour l\'instant'}</p>
+            <p>{isAr ? 'لا توجد وسوم بعد' : 'No tags yet'}</p>
           </div>
         ) : (
           <div className="flex flex-wrap justify-center gap-3">
             {tags.map(tag => {
               const count = (tag.article_tags as unknown as { count: number }[])?.[0]?.count ?? 0
-              const name = isAr ? tag.name_ar : tag.name_fr
+              const name = isAr ? tag.name_ar : tag.name_en
               const size = count > 10 ? 'text-xl' : count > 5 ? 'text-base' : 'text-sm'
 
               return (

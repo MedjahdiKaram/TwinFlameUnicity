@@ -15,7 +15,7 @@ import { ShareButtons } from './ShareButtons'
 interface Props {
   article: any
   related: ArticleCardType[]
-  locale: 'fr' | 'ar'
+  locale: 'en' | 'ar'
 }
 
 export function ArticleDetail({ article, related, locale }: Props) {
@@ -40,7 +40,7 @@ export function ArticleDetail({ article, related, locale }: Props) {
 
   const categoryName = locale === 'ar'
     ? article.category?.name_ar
-    : article.category?.name_fr
+    : article.category?.name_en
 
   return (
     <article className="container mx-auto px-4 lg:px-8 py-12 max-w-4xl">
@@ -51,7 +51,7 @@ export function ArticleDetail({ article, related, locale }: Props) {
         className="flex items-center gap-2 text-xs text-white/30 mb-8"
       >
         <Link href="/" className="hover:text-white/60 transition-colors">
-          {locale === 'ar' ? 'الرئيسية' : 'Accueil'}
+          {locale === 'ar' ? 'الرئيسية' : 'Home'}
         </Link>
         {locale === 'ar' ? <ChevronLeft className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
         <Link href="/blog" className="hover:text-white/60 transition-colors">
@@ -182,7 +182,7 @@ export function ArticleDetail({ article, related, locale }: Props) {
               href={`/tags/${tag.slug}` as `/${string}`}
               className="text-xs px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20 hover:bg-purple-500/20 hover:border-purple-500/40 transition-colors"
             >
-              #{locale === 'ar' ? tag.name_ar : tag.name_fr}
+              #{locale === 'ar' ? tag.name_ar : tag.name_en}
             </Link>
           ))}
         </div>

@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { data: tag } = await supabase.from('tags').select('*').eq('slug', decodedSlug).single()
   if (!tag) return {}
   return {
-    title: `${locale === 'fr' ? tag.name_fr : tag.name_ar} | TwinFlameUnicity`,
+    title: `${locale === 'en' ? tag.name_en : tag.name_ar} | TwinFlameUnicity`,
   }
 }
 
@@ -51,7 +51,7 @@ export default async function TagPage({ params }: Props) {
         .order('published_at', { ascending: false })
     : { data: [] }
 
-  const name = isAr ? tag.name_ar : tag.name_fr
+  const name = isAr ? tag.name_ar : tag.name_en
 
   return (
     <main className="min-h-screen bg-cosmic-gradient pt-24 pb-16">
@@ -62,7 +62,7 @@ export default async function TagPage({ params }: Props) {
       <div className="relative max-w-6xl mx-auto px-4">
         <Link href="/tags" className="inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm mb-8">
           {isAr ? <ArrowRight className="w-4 h-4" /> : <ArrowLeft className="w-4 h-4" />}
-          {isAr ? 'جميع الوسوم' : 'Tous les tags'}
+          {isAr ? 'جميع الوسوم' : 'All tags'}
         </Link>
 
         <div className="flex items-center gap-3 mb-8">

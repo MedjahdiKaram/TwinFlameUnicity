@@ -47,7 +47,7 @@ const SERVICES = [
   },
 ]
 
-export function ServicesSection({ locale }: { locale: 'fr' | 'ar' }) {
+export function ServicesSection({ locale }: { locale: 'en' | 'ar' }) {
   const t = useTranslations('home')
 
   return (

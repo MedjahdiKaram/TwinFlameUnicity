@@ -16,19 +16,19 @@ interface Article {
   slug: string
   title: string
   status: 'draft' | 'published' | 'archived'
-  language: 'fr' | 'ar'
+  language: 'en' | 'ar'
   is_premium: boolean
   is_featured: boolean
   views: number
   likes: number
   created_at: string
   published_at: string | null
-  category?: { name_fr: string; name_ar: string; color: string } | null
+  category?: { name_en: string; name_ar: string; color: string } | null
 }
 
 interface Props {
   articles: Article[]
-  locale: 'fr' | 'ar'
+  locale: 'en' | 'ar'
 }
 
 const STATUS_CONFIG = {
@@ -41,7 +41,7 @@ export function AdminArticlesTable({ articles: initialArticles, locale }: Props)
   const router = useRouter()
   const [articles, setArticles] = useState(initialArticles)
   const [isPending, startTransition] = useTransition()
-  const [filterLang, setFilterLang] = useState<'all' | 'fr' | 'ar'>('all')
+  const [filterLang, setFilterLang] = useState<'all' | 'en' | 'ar'>('all')
   const [filterStatus, setFilterStatus] = useState<'all' | 'published' | 'draft' | 'archived'>('all')
 
   const filtered = articles.filter((a) => {
@@ -75,7 +75,7 @@ export function AdminArticlesTable({ articles: initialArticles, locale }: Props)
           <span className="text-xs text-white/40">Filtrer:</span>
         </div>
         <div className="flex gap-2">
-          {(['all', 'fr', 'ar'] as const).map((l) => (
+          {(['all', 'en', 'ar'] as const).map((l) => (
             <button
               key={l}
               onClick={() => setFilterLang(l)}
@@ -85,7 +85,7 @@ export function AdminArticlesTable({ articles: initialArticles, locale }: Props)
                   : 'bg-white/5 text-white/40 border border-white/10 hover:border-white/20'
               }`}
             >
-              {l === 'all' ? 'Toutes' : l.toUpperCase()}
+              {l === 'all' ? 'All' : l.toUpperCase()}
             </button>
           ))}
         </div>
@@ -151,7 +151,7 @@ export function AdminArticlesTable({ articles: initialArticles, locale }: Props)
                             className="text-[10px] px-1.5 py-0.5 rounded-full mt-1 inline-block"
                             style={{ background: `${article.category.color}20`, color: article.category.color }}
                           >
-                            {locale === 'ar' ? article.category.name_ar : article.category.name_fr}
+                            {locale === 'ar' ? article.category.name_ar : article.category.name_en}
                           </span>
                         )}
                       </td>

@@ -15,7 +15,7 @@ export type UserRole = 'admin' | 'user' | 'visitor'
 export type UserStatus = 'pending' | 'active' | 'disabled'
 export type UserGender = 'male' | 'female' | 'other' | 'prefer_not_to_say'
 export type ArticleStatus = 'draft' | 'published' | 'archived'
-export type ArticleLanguage = 'fr' | 'ar'
+export type ArticleLanguage = 'en' | 'ar'
 
 export interface Database {
   public: {
@@ -66,10 +66,10 @@ export interface Database {
       categories: {
         Row: {
           id: string
-          name_fr: string
+          name_en: string
           name_ar: string
           slug: string
-          description_fr: string | null
+          description_en: string | null
           description_ar: string | null
           color: string
           icon: string | null
@@ -80,10 +80,10 @@ export interface Database {
         }
         Insert: {
           id?: string
-          name_fr: string
+          name_en: string
           name_ar: string
           slug: string
-          description_fr?: string | null
+          description_en?: string | null
           description_ar?: string | null
           color?: string
           icon?: string | null
@@ -93,10 +93,10 @@ export interface Database {
           updated_at?: string
         }
         Update: {
-          name_fr?: string
+          name_en?: string
           name_ar?: string
           slug?: string
-          description_fr?: string | null
+          description_en?: string | null
           description_ar?: string | null
           color?: string
           icon?: string | null
@@ -108,20 +108,20 @@ export interface Database {
       tags: {
         Row: {
           id: string
-          name_fr: string
+          name_en: string
           name_ar: string
           slug: string
           created_at: string
         }
         Insert: {
           id?: string
-          name_fr: string
+          name_en: string
           name_ar: string
           slug: string
           created_at?: string
         }
         Update: {
-          name_fr?: string
+          name_en?: string
           name_ar?: string
           slug?: string
         }
@@ -398,7 +398,7 @@ export type ArticleCard = Pick<
   | 'published_at'
   | 'category_id'
 > & {
-  category?: Pick<Category, 'id' | 'name_fr' | 'name_ar' | 'slug' | 'color'>
-  tags?: Pick<Tag, 'id' | 'name_fr' | 'name_ar' | 'slug'>[]
+  category?: Pick<Category, 'id' | 'name_en' | 'name_ar' | 'slug' | 'color'>
+  tags?: Pick<Tag, 'id' | 'name_en' | 'name_ar' | 'slug'>[]
   author?: Pick<Profile, 'id' | 'pseudo' | 'first_name' | 'last_name' | 'avatar_url'>
 }

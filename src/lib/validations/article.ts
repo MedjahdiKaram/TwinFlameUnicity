@@ -10,7 +10,7 @@ export const articleSchema = z.object({
     .min(3, 'Le slug doit contenir au moins 3 caractères')
     .max(200)
     .regex(/^[a-z0-9\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF-]+$/, 'Le slug ne peut contenir que des lettres, chiffres, caractères arabes et -'),
-  language: z.enum(['fr', 'ar']),
+  language: z.enum(['en', 'ar']),
   excerpt: z.string().max(500, 'L\'extrait est trop long').optional(),
   content: z.string(), // validé manuellement dans ArticleForm (TipTap hors react-hook-form)
   cover_url: z.string().url('URL de couverture invalide').optional().or(z.literal('')),
@@ -26,14 +26,14 @@ export const articleSchema = z.object({
 })
 
 export const categorySchema = z.object({
-  name_fr: z.string().min(2).max(100),
+  name_en: z.string().min(2).max(100),
   name_ar: z.string().min(2).max(100),
   slug: z
     .string()
     .min(2)
     .max(100)
     .regex(/^[a-z0-9\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF-]+$/),
-  description_fr: z.string().max(500).optional(),
+  description_en: z.string().max(500).optional(),
   description_ar: z.string().max(500).optional(),
   color: z.string().regex(/^#[0-9a-fA-F]{6}$/, 'Couleur HEX invalide'),
   icon: z.string().optional(),
@@ -41,7 +41,7 @@ export const categorySchema = z.object({
 })
 
 export const tagSchema = z.object({
-  name_fr: z.string().min(2).max(50),
+  name_en: z.string().min(2).max(50),
   name_ar: z.string().min(2).max(50),
   slug: z
     .string()

@@ -11,7 +11,7 @@ import { Link } from '@/i18n/navigation'
 import { loginSchema, type LoginInput } from '@/lib/validations/auth'
 import { loginAction } from '@/server/actions/auth'
 
-export function LoginForm({ locale }: { locale: 'fr' | 'ar' }) {
+export function LoginForm({ locale }: { locale: 'en' | 'ar' }) {
   const t = useTranslations('auth')
   const router = useRouter()
   const [isPending, startTransition] = useTransition()

@@ -13,8 +13,8 @@ export function generateWebsiteSchema(locale: string) {
     description:
       locale === 'ar'
         ? 'رحلة روحانية للتوجيه والتواصل والصحوة الداخلية لأرواح التوأم'
-        : 'Un voyage spirituel de guidance, connexion et éveil intérieur pour les Flammes Jumelles',
-    inLanguage: locale === 'ar' ? 'ar' : 'fr',
+        : 'A spiritual journey of guidance, connection and inner awakening for Twin Flames',
+    inLanguage: locale === 'ar' ? 'ar' : 'en',
     potentialAction: {
       '@type': 'SearchAction',
       target: `${BASE_URL}/${locale}/blog?q={search_term_string}`,
@@ -29,13 +29,13 @@ export function generateArticleSchema(article: {
   content?: string
   cover_url?: string | null
   slug: string
-  language: 'fr' | 'ar'
+  language: 'en' | 'ar'
   published_at?: string | null
   updated_at?: string
   author?: { pseudo?: string | null; first_name?: string | null; last_name?: string | null }
-  category?: { name_fr?: string; name_ar?: string }
+  category?: { name_en?: string; name_ar?: string }
 }) {
-  const url = `${BASE_URL}/${article.language}/${article.language === 'fr' ? 'blog' : 'مدونة'}/${article.slug}`
+  const url = `${BASE_URL}/${article.language}/${article.language === 'en' ? 'blog' : 'مدونة'}/${article.slug}`
   const authorName = article.author?.pseudo
     || `${article.author?.first_name || ''} ${article.author?.last_name || ''}`.trim()
     || 'TwinFlameUnicity'
@@ -67,7 +67,7 @@ export function generateArticleSchema(article: {
       '@id': url,
     },
     articleSection: article.category
-      ? (article.language === 'ar' ? article.category.name_ar : article.category.name_fr)
+      ? (article.language === 'ar' ? article.category.name_ar : article.category.name_en)
       : undefined,
   }
 }
@@ -114,7 +114,7 @@ export function generatePageMetadata({
       description,
       url,
       siteName: 'TwinFlameUnicity',
-      locale: locale === 'ar' ? 'ar_MA' : 'fr_FR',
+      locale: locale === 'ar' ? 'ar_MA' : 'en_US',
       type: 'website' as const,
       images: image ? [{ url: image }] : [],
     },

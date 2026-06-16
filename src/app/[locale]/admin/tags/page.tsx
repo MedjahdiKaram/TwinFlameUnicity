@@ -9,7 +9,7 @@ export default async function AdminTagsPage() {
   const { data: tags } = await supabase
     .from('tags')
     .select('*')
-    .order('name_fr')
+    .order('name_en')
 
   return (
     <div className="space-y-6">

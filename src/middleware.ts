@@ -56,8 +56,8 @@ export async function middleware(request: NextRequest) {
 
     if (!user) {
       // Determine locale from pathname
-      const locale = pathname.startsWith('/ar') ? 'ar' : 'fr'
-      const loginPath = locale === 'ar' ? '/ar/تسجيل-دخول' : '/fr/connexion'
+      const locale = pathname.startsWith('/ar') ? 'ar' : 'en'
+      const loginPath = locale === 'ar' ? '/ar/تسجيل-دخول' : '/en/login'
       const url = request.nextUrl.clone()
       url.pathname = loginPath
       url.searchParams.set('redirect', pathname)
@@ -73,7 +73,7 @@ export async function middleware(request: NextRequest) {
         .single()
 
       if (!profile || profile.role !== 'admin' || profile.status !== 'active') {
-        const locale = pathname.startsWith('/ar') ? 'ar' : 'fr'
+        const locale = pathname.startsWith('/ar') ? 'ar' : 'en'
         const homePath = `/${locale}`
         const url = request.nextUrl.clone()
         url.pathname = homePath

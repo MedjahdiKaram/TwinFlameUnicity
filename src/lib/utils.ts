@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import { format, formatDistanceToNow } from 'date-fns'
-import { fr, ar } from 'date-fns/locale'
+import { fr as frLocale, ar, enUS } from 'date-fns/locale'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -13,23 +13,23 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatDate(
   date: string | Date,
-  locale: 'fr' | 'ar' = 'fr',
+  locale: 'en' | 'ar' = 'en',
   formatStr = 'dd MMMM yyyy'
 ): string {
   const dateObj = typeof date === 'string' ? new Date(date) : date
   return format(dateObj, formatStr, {
-    locale: locale === 'ar' ? ar : fr,
+    locale: locale === 'ar' ? ar : enUS,
   })
 }
 
 export function formatRelativeDate(
   date: string | Date,
-  locale: 'fr' | 'ar' = 'fr'
+  locale: 'en' | 'ar' = 'en'
 ): string {
   const dateObj = typeof date === 'string' ? new Date(date) : date
   return formatDistanceToNow(dateObj, {
     addSuffix: true,
-    locale: locale === 'ar' ? ar : fr,
+    locale: locale === 'ar' ? ar : enUS,
   })
 }
 
@@ -118,8 +118,8 @@ export function generateImagePath(
 // Number format
 // ============================================================
 
-export function formatNumber(num: number, locale: 'fr' | 'ar' = 'fr'): string {
-  return new Intl.NumberFormat(locale === 'ar' ? 'ar-MA' : 'fr-FR').format(num)
+export function formatNumber(num: number, locale: 'en' | 'ar' = 'en'): string {
+  return new Intl.NumberFormat(locale === 'ar' ? 'ar-MA' : 'en-US').format(num)
 }
 
 // ============================================================

@@ -12,7 +12,7 @@ import { createClient } from '@/lib/supabase/client'
 import { toast } from '@/hooks/use-toast'
 
 const tagSchema = z.object({
-  name_fr: z.string().min(1, 'Nom FR requis'),
+  name_en: z.string().min(1, 'English name required'),
   name_ar: z.string().min(1, 'Nom AR requis'),
   slug: z.string().min(1, 'Slug requis').regex(/^[a-z0-9-]+$/),
 })
@@ -21,7 +21,7 @@ type TagForm = z.infer<typeof tagSchema>
 
 interface TagItem {
   id: string
-  name_fr: string
+  name_en: string
   name_ar: string
   slug: string
 }
@@ -45,7 +45,7 @@ export function AdminTagsClient({ initialTags }: Props) {
   const onSubmit = async (data: TagForm) => {
     const { data: created, error } = await supabase.from('tags').insert(data).select().single()
     if (error) { toast({ title: 'Erreur', description: error.message, variant: 'destructive' }); return }
-    setTags(prev => [...prev, created].sort((a, b) => a.name_fr.localeCompare(b.name_fr)))
+    setTags(prev => [...prev, created].sort((a, b) => a.name_en.localeCompare(b.name_en)))
     toast({ title: 'Tag créé' })
     setShowForm(false)
     reset()
@@ -77,14 +77,14 @@ export function AdminTagsClient({ initialTags }: Props) {
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="name_fr">Nom (FR)</Label>
+              <Label htmlFor="name_en">Name (EN)</Label>
               <Input
-                id="name_fr"
-                {...register('name_fr')}
-                onChange={e => { register('name_fr').onChange(e); setValue('slug', slugify(e.target.value)) }}
-                placeholder="Numérologie"
+                id="name_en"
+                {...register('name_en')}
+                onChange={e => { register('name_en').onChange(e); setValue('slug', slugify(e.target.value)) }}
+                placeholder="Numerology"
               />
-              {errors.name_fr && <p className="text-red-400 text-xs">{errors.name_fr.message}</p>}
+              {errors.name_en && <p className="text-red-400 text-xs">{errors.name_en.message}</p>}
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="name_ar">Nom (AR)</Label>
@@ -118,7 +118,7 @@ export function AdminTagsClient({ initialTags }: Props) {
             className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-600/10 border border-purple-500/20 text-purple-300 text-sm"
           >
             <Tag className="w-3 h-3" />
-            <span>{tag.name_fr}</span>
+            <span>{tag.name_en}</span>
             <button
               onClick={() => deleteTag(tag.id)}
               disabled={deletingId === tag.id}

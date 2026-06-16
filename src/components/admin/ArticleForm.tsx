@@ -26,10 +26,10 @@ const TipTapEditor = dynamic(() => import('./TipTapEditor').then((m) => m.TipTap
 })
 
 interface Props {
-  categories: { id: string; name_fr: string; name_ar: string }[]
-  tags: { id: string; name_fr: string; name_ar: string }[]
+  categories: { id: string; name_en: string; name_ar: string }[]
+  tags: { id: string; name_en: string; name_ar: string }[]
   authorId: string
-  locale: 'fr' | 'ar'
+  locale: 'en' | 'ar'
   initialData?: Partial<ArticleInput> & { id?: string; selected_tags?: string[] }
 }
 
@@ -49,11 +49,11 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
 
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
   const [newCategory, setNewCategory] = useState({
-    name_fr: '',
+    name_en: '',
     name_ar: '',
     slug: '',
     color: '#9333ea',
-    description_fr: '',
+    description_en: '',
     description_ar: '',
   })
   const [categorySubmitting, setCategorySubmitting] = useState(false)
@@ -61,25 +61,25 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
 
   const [isTagModalOpen, setIsTagModalOpen] = useState(false)
   const [newTag, setNewTag] = useState({
-    name_fr: '',
+    name_en: '',
     name_ar: '',
     slug: '',
   })
   const [tagSubmitting, setTagSubmitting] = useState(false)
   const [tagError, setTagError] = useState('')
 
-  const handleCategoryNameFRChange = (val: string) => {
+  const handleCategoryNameENChange = (val: string) => {
     setNewCategory((prev) => ({
       ...prev,
-      name_fr: val,
+      name_en: val,
       slug: slugify(val),
     }))
   }
 
-  const handleTagNameFRChange = (val: string) => {
+  const handleTagNameENChange = (val: string) => {
     setNewTag((prev) => ({
       ...prev,
-      name_fr: val,
+      name_en: val,
       slug: slugify(val),
     }))
   }
@@ -87,8 +87,8 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
   const handleCreateCategory = async (e: React.FormEvent) => {
     e.preventDefault()
     setCategoryError('')
-    if (!newCategory.name_fr || !newCategory.name_ar || !newCategory.slug) {
-      setCategoryError('Les champs Nom (FR), Nom (AR) et Slug sont requis.')
+    if (!newCategory.name_en || !newCategory.name_ar || !newCategory.slug) {
+      setCategoryError('English name, Arabic name and slug are required.')
       return
     }
     setCategorySubmitting(true)
@@ -96,28 +96,20 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
       const { data, error } = await supabase
         .from('categories')
         .insert({
-          name_fr: newCategory.name_fr,
+          name_en: newCategory.name_en,
           name_ar: newCategory.name_ar,
           slug: newCategory.slug,
           color: newCategory.color || '#9333ea',
-          description_fr: newCategory.description_fr || null,
+          description_en: newCategory.description_en || null,
           description_ar: newCategory.description_ar || null,
         })
         .select()
-        .single()
-
-      if (error) throw error
-
-      setLocalCategories((prev) => [...prev, data])
-      setValue('category_id', data.id)
-      toast({ title: 'Catégorie créée !', description: `La catégorie "${data.name_fr}" a été ajoutée et sélectionnée.` })
-      setIsCategoryModalOpen(false)
       setNewCategory({
-        name_fr: '',
+        name_en: '',
         name_ar: '',
         slug: '',
         color: '#9333ea',
-        description_fr: '',
+        description_en: '',
         description_ar: '',
       })
     } catch (err: any) {
@@ -130,8 +122,8 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
   const handleCreateTag = async (e: React.FormEvent) => {
     e.preventDefault()
     setTagError('')
-    if (!newTag.name_fr || !newTag.name_ar || !newTag.slug) {
-      setTagError('Les champs Nom (FR), Nom (AR) et Slug sont requis.')
+    if (!newTag.name_en || !newTag.name_ar || !newTag.slug) {
+      setTagError('English name, Arabic name and slug are required.')
       return
     }
     setTagSubmitting(true)
@@ -139,21 +131,17 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
       const { data, error } = await supabase
         .from('tags')
         .insert({
-          name_fr: newTag.name_fr,
+          name_en: newTag.name_en,
           name_ar: newTag.name_ar,
           slug: newTag.slug,
         })
-        .select()
-        .single()
 
-      if (error) throw error
-
-      setLocalTags((prev) => [...prev, data].sort((a, b) => a.name_fr.localeCompare(b.name_fr)))
+      setLocalTags((prev) => [...prev, data].sort((a, b) => a.name_en.localeCompare(b.name_en)))
       setSelectedTags((prev) => [...prev, data.id])
-      toast({ title: 'Tag créé !', description: `Le tag "${data.name_fr}" a été ajouté et sélectionné.` })
+      toast({ title: 'Tag created!', description: `Tag "${data.name_en}" has been added and selected.` })
       setIsTagModalOpen(false)
       setNewTag({
-        name_fr: '',
+        name_en: '',
         name_ar: '',
         slug: '',
       })
@@ -516,9 +504,9 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
             <div>
               <label className="block text-xs font-medium text-white/40 mb-2">Statut</label>
               <select {...register('status')} className="input-cosmic">
-                <option value="draft">Brouillon</option>
-                <option value="published">Publié</option>
-                <option value="archived">Archivé</option>
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+                <option value="archived">Archived</option>
               </select>
             </div>
             <div>
@@ -526,7 +514,7 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
                 <Globe className="w-3 h-3" /> Langue
               </label>
               <select {...register('language')} className="input-cosmic">
-                <option value="fr">Français</option>
+                <option value="en">English</option>
                 <option value="ar">العربية</option>
               </select>
             </div>
@@ -629,14 +617,14 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
                     )}
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Nom (FR) *</label>
+                        <label className="block text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Name (EN) *</label>
                         <input
                           type="text"
                           required
-                          value={newCategory.name_fr}
-                          onChange={(e) => handleCategoryNameFRChange(e.target.value)}
+                          value={newCategory.name_en}
+                          onChange={(e) => handleCategoryNameENChange(e.target.value)}
                           className="input-cosmic text-sm w-full"
-                          placeholder="ex: Flamme Jumelle"
+                          placeholder="ex: Twin Flame"
                         />
                       </div>
                       <div>
@@ -685,13 +673,13 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Description (FR)</label>
+                      <label className="block text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Description (EN)</label>
                       <input
                         type="text"
-                        value={newCategory.description_fr}
-                        onChange={(e) => setNewCategory(prev => ({ ...prev, description_fr: e.target.value }))}
+                        value={newCategory.description_en}
+                        onChange={(e) => setNewCategory(prev => ({ ...prev, description_en: e.target.value }))}
                         className="input-cosmic text-sm w-full"
-                        placeholder="Description en français..."
+                        placeholder="Description in English..."
                       />
                     </div>
 
@@ -731,7 +719,7 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
               <option value="">— Aucune —</option>
               {localCategories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
-                  {locale === 'ar' ? cat.name_ar : cat.name_fr}
+                  {locale === 'ar' ? cat.name_ar : cat.name_en}
                 </option>
               ))}
             </select>
@@ -764,14 +752,14 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
                     )}
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Nom (FR) *</label>
+                        <label className="block text-xs font-semibold text-white/40 mb-1 uppercase tracking-wider">Name (EN) *</label>
                         <input
                           type="text"
                           required
-                          value={newTag.name_fr}
-                          onChange={(e) => handleTagNameFRChange(e.target.value)}
+                          value={newTag.name_en}
+                          onChange={(e) => handleTagNameENChange(e.target.value)}
                           className="input-cosmic text-sm w-full"
-                          placeholder="ex: Numérologie"
+                          placeholder="ex: Numerology"
                         />
                       </div>
                       <div>
@@ -832,7 +820,7 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
                       : 'bg-white/5 text-white/40 border border-white/10 hover:border-purple-500/30'
                   }`}
                 >
-                  #{locale === 'ar' ? tag.name_ar : tag.name_fr}
+                  #{locale === 'ar' ? tag.name_ar : tag.name_en}
                 </button>
               ))}
             </div>
