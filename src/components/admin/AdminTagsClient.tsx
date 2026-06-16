@@ -97,9 +97,9 @@ export function AdminTagsClient({ initialTags }: Props) {
               {errors.slug && <p className="text-red-400 text-xs">{errors.slug.message}</p>}
             </div>
             <div className="sm:col-span-3 flex justify-end gap-3">
-              <Button type="button" variant="ghost" size="sm" onClick={() => { setShowForm(false); reset() }}>Annuler</Button>
+              <Button type="button" variant="ghost" size="sm" onClick={() => { setShowForm(false); reset() }}>Cancel</Button>
               <Button type="submit" variant="glow" size="sm" disabled={isSubmitting}>
-                {isSubmitting ? 'Création...' : 'Créer'}
+                {isSubmitting ? 'Creating...' : 'Create'}
               </Button>
             </div>
           </form>
@@ -110,7 +110,7 @@ export function AdminTagsClient({ initialTags }: Props) {
         {tags.length === 0 ? (
           <div className="w-full flex flex-col items-center justify-center py-16 text-white/30">
             <Tag className="w-8 h-8 mb-2" />
-            <p className="text-sm">Aucun tag</p>
+            <p className="text-sm">No tags</p>
           </div>
         ) : tags.map(tag => (
           <div

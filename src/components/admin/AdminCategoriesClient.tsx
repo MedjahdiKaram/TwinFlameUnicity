@@ -97,7 +97,7 @@ export function AdminCategoriesClient({ initialCategories }: Props) {
     setDeletingId(id)
     const { error } = await supabase.from('categories').delete().eq('id', id)
     if (error) { toast({ title: 'Erreur', description: error.message, variant: 'destructive' }) }
-    else { setCategories(prev => prev.filter(c => c.id !== id)); toast({ title: 'Catégorie supprimée' }) }
+    else { setCategories(prev => prev.filter(c => c.id !== id)); toast({ title: 'Category deleted' }) }
     setDeletingId(null)
   }
 
@@ -107,7 +107,7 @@ export function AdminCategoriesClient({ initialCategories }: Props) {
     <div className="space-y-4">
       <div className="flex justify-end">
         <Button onClick={openCreate} variant="glow" size="sm" className="gap-2">
-          <Plus className="w-4 h-4" /> Nouvelle catégorie
+          <Plus className="w-4 h-4" /> New category
         </Button>
       </div>
 
@@ -115,7 +115,7 @@ export function AdminCategoriesClient({ initialCategories }: Props) {
       {showForm && (
         <div className="bg-white/[0.04] border border-white/10 rounded-xl p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-white">{editingId ? 'Modifier' : 'Nouvelle'} catégorie</h3>
+            <h3 className="font-semibold text-white">{editingId ? 'Edit' : 'New'} category</h3>
             <button onClick={() => { setShowForm(false); reset() }} className="text-white/40 hover:text-white">
               <X className="w-4 h-4" />
             </button>
@@ -142,7 +142,7 @@ export function AdminCategoriesClient({ initialCategories }: Props) {
               {errors.slug && <p className="text-red-400 text-xs">{errors.slug.message}</p>}
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="color">Couleur (ex: #9333ea)</Label>
+              <Label htmlFor="color">Color (e.g. #9333ea)</Label>
               <Input id="color" {...register('color')} placeholder="#9333ea" />
             </div>
             <div className="space-y-1.5 sm:col-span-2">
@@ -155,10 +155,10 @@ export function AdminCategoriesClient({ initialCategories }: Props) {
             </div>
             <div className="sm:col-span-2 flex justify-end gap-3">
               <Button type="button" variant="ghost" size="sm" onClick={() => { setShowForm(false); reset() }}>
-                Annuler
+                Cancel
               </Button>
               <Button type="submit" variant="glow" size="sm" disabled={isSubmitting}>
-                {isSubmitting ? 'Sauvegarde...' : editingId ? 'Mettre à jour' : 'Créer'}
+                {isSubmitting ? 'Saving...' : editingId ? 'Update' : 'Create'}
               </Button>
             </div>
           </form>
@@ -170,15 +170,15 @@ export function AdminCategoriesClient({ initialCategories }: Props) {
         {categories.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-white/30">
             <Folder className="w-8 h-8 mb-2" />
-            <p className="text-sm">Aucune catégorie</p>
+            <p className="text-sm">No categories</p>
           </div>
         ) : (
           <table className="w-full text-sm">
             <thead className="border-b border-white/10">
               <tr className="text-left text-white/40 text-xs uppercase tracking-wider">
-                <th className="px-4 py-3">Nom</th>
+                <th className="px-4 py-3">Name</th>
                 <th className="px-4 py-3 hidden sm:table-cell">Slug</th>
-                <th className="px-4 py-3 hidden md:table-cell">Couleur</th>
+                <th className="px-4 py-3 hidden md:table-cell">Color</th>
                 <th className="px-4 py-3 text-right">Actions</th>
               </tr>
             </thead>

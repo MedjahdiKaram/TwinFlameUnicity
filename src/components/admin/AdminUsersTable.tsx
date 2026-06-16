@@ -33,9 +33,9 @@ interface Props {
 }
 
 const STATUS_CONFIG = {
-  active: { color: 'text-green-400 bg-green-400/10 border-green-400/30', label: 'Actif' },
-  pending: { color: 'text-amber-400 bg-amber-400/10 border-amber-400/30', label: 'En attente' },
-  disabled: { color: 'text-red-400 bg-red-400/10 border-red-400/30', label: 'Désactivé' },
+  active: { color: 'text-green-400 bg-green-400/10 border-green-400/30', label: 'Active' },
+  pending: { color: 'text-amber-400 bg-amber-400/10 border-amber-400/30', label: 'Pending' },
+  disabled: { color: 'text-red-400 bg-red-400/10 border-red-400/30', label: 'Disabled' },
 }
 
 export function AdminUsersTable({ users: initialUsers, locale }: Props) {
@@ -61,8 +61,8 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
     e.preventDefault()
     if (!email || !password || !role) {
       toast({
-        title: 'Erreur',
-        description: 'Veuillez remplir les champs obligatoires.',
+        title: 'Error',
+        description: 'Please fill in the required fields.',
         variant: 'destructive',
       })
       return
@@ -84,14 +84,14 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
 
       if (result.error) {
         toast({
-          title: 'Erreur',
+          title: 'Error',
           description: result.error,
           variant: 'destructive',
         })
       } else if (result.success && result.user) {
         toast({
-          title: 'Succès',
-          description: 'L\'utilisateur a été créé avec succès.',
+          title: 'Success',
+          description: 'User created successfully.',
         })
         
         // Append the new user to state
@@ -110,8 +110,8 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
       }
     } catch (err: any) {
       toast({
-        title: 'Erreur',
-        description: err.message || 'Une erreur est survenue.',
+        title: 'Error',
+        description: err.message || 'An error occurred.',
         variant: 'destructive',
       })
     } finally {
@@ -137,7 +137,7 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
   }
 
   const deleteUser = async (userId: string) => {
-    if (!confirm('Supprimer définitivement cet utilisateur ?')) return
+    if (!confirm('Permanently delete this user?')) return
     const supabase = createClient() as any
     await supabase.from('profiles').delete().eq('id', userId)
     setUsers((prev) => prev.filter((u) => u.id !== userId))
@@ -152,7 +152,7 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Rechercher par nom, email, pseudo..."
+            placeholder="Search by name, email, username..."
             className="input-cosmic ps-10 text-sm"
           />
         </div>
@@ -167,7 +167,7 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
                   : 'bg-white/5 text-white/40 border border-white/10'
               }`}
             >
-              {s === 'all' ? 'Tous' : STATUS_CONFIG[s].label}
+              {s === 'all' ? 'All' : STATUS_CONFIG[s].label}
               {s === 'pending' && users.filter((u) => u.status === 'pending').length > 0 && (
                 <span className="ms-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full bg-amber-500/20 text-amber-400 text-[9px] font-bold">
                   {users.filter((u) => u.status === 'pending').length}
@@ -177,10 +177,10 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
           ))}
         </div>
         <div className="flex items-center gap-3 ms-auto">
-          <span className="text-xs text-white/30">{filtered.length} utilisateurs</span>
+          <span className="text-xs text-white/30">{filtered.length} users</span>
           <Button onClick={() => setIsAddOpen(true)} variant="glow" size="sm" className="gap-2">
             <UserPlus className="w-4 h-4" />
-            Ajouter un utilisateur
+            Add user
           </Button>
         </div>
       </div>
@@ -191,11 +191,11 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
           <table className="w-full">
             <thead>
               <tr className="border-b border-white/5">
-                <th className="text-start px-5 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Utilisateur</th>
+                <th className="text-start px-5 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">User</th>
                 <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Email</th>
-                <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Rôle</th>
-                <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Statut</th>
-                <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Inscrit le</th>
+                <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Role</th>
+                <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Status</th>
+                <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Joined</th>
                 <th className="px-4 py-3.5" />
               </tr>
             </thead>
@@ -203,7 +203,7 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
               {filtered.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="text-center py-12 text-white/20 text-sm">
-                    Aucun utilisateur
+                    No users
                   </td>
                 </tr>
               ) : (
@@ -257,7 +257,7 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
                           {user.status === 'pending' && (
                             <button
                               onClick={() => updateStatus(user.id, 'active')}
-                              title="Activer"
+                              title="Activate"
                               className="p-1.5 rounded-lg bg-green-500/10 text-green-400 hover:bg-green-500/20 transition-colors"
                             >
                               <CheckCircle className="w-3.5 h-3.5" />
@@ -266,7 +266,7 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
                           {user.status === 'active' && (
                             <button
                               onClick={() => updateStatus(user.id, 'disabled')}
-                              title="Désactiver"
+                              title="Deactivate"
                               className="p-1.5 rounded-lg bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 transition-colors"
                             >
                               <XCircle className="w-3.5 h-3.5" />
@@ -275,7 +275,7 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
                           {user.status === 'disabled' && (
                             <button
                               onClick={() => updateStatus(user.id, 'active')}
-                              title="Réactiver"
+                              title="Reactivate"
                               className="p-1.5 rounded-lg bg-green-500/10 text-green-400 hover:bg-green-500/20 transition-colors"
                             >
                               <CheckCircle className="w-3.5 h-3.5" />
@@ -284,7 +284,7 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
                           {user.role !== 'admin' && (
                             <button
                               onClick={() => deleteUser(user.id)}
-                              title="Supprimer"
+                              title="Delete"
                               className="p-1.5 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -306,17 +306,17 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-white">
               <UserPlus className="w-5 h-5 text-purple-400" />
-              Ajouter un nouvel utilisateur
+              Add new user
             </DialogTitle>
             <DialogDescription>
-              Créez un compte utilisateur et configurez ses informations ainsi que son rôle d&apos;accès.
+              Create a user account and configure their information and access role.
             </DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleAddUser} className="space-y-4 mt-2">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5 col-span-2 sm:col-span-1">
-                <Label htmlFor="firstName" className="text-white/70">Prénom</Label>
+                <Label htmlFor="firstName" className="text-white/70">First name</Label>
                 <Input
                   id="firstName"
                   value={firstName}
@@ -327,7 +327,7 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
               </div>
 
               <div className="space-y-1.5 col-span-2 sm:col-span-1">
-                <Label htmlFor="lastName" className="text-white/70">Nom</Label>
+                <Label htmlFor="lastName" className="text-white/70">Last name</Label>
                 <Input
                   id="lastName"
                   value={lastName}
@@ -340,7 +340,7 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5 col-span-2 sm:col-span-1">
-                <Label htmlFor="pseudo" className="text-white/70">Pseudo <span className="text-purple-400">*</span></Label>
+                <Label htmlFor="pseudo" className="text-white/70">Username <span className="text-purple-400">*</span></Label>
                 <Input
                   id="pseudo"
                   value={pseudo}
@@ -352,23 +352,23 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
               </div>
 
               <div className="space-y-1.5 col-span-2 sm:col-span-1">
-                <Label htmlFor="gender" className="text-white/70">Genre</Label>
+                <Label htmlFor="gender" className="text-white/70">Gender</Label>
                 <Select value={gender} onValueChange={(val: any) => setGender(val)}>
                   <SelectTrigger className="bg-white/5 border-white/10 text-white">
-                    <SelectValue placeholder="Sélectionner..." />
+                    <SelectValue placeholder="Select..." />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="male">Homme</SelectItem>
-                    <SelectItem value="female">Femme</SelectItem>
-                    <SelectItem value="other">Autre</SelectItem>
-                    <SelectItem value="prefer_not_to_say">Ne pas spécifier</SelectItem>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                    <SelectItem value="prefer_not_to_say">Prefer not to say</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-white/70">Adresse Email <span className="text-purple-400">*</span></Label>
+                <Label htmlFor="email" className="text-white/70">Email Address <span className="text-purple-400">*</span></Label>
               <Input
                 id="email"
                 type="email"
@@ -381,7 +381,7 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
             </div>
 
             <div className="space-y-1.5 relative">
-              <Label htmlFor="password" className="text-white/70">Mot de passe <span className="text-purple-400">*</span></Label>
+                <Label htmlFor="password" className="text-white/70">Password <span className="text-purple-400">*</span></Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -404,29 +404,29 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5 col-span-2 sm:col-span-1">
-                <Label htmlFor="role" className="text-white/70">Rôle <span className="text-purple-400">*</span></Label>
+                <Label htmlFor="role" className="text-white/70">Role <span className="text-purple-400">*</span></Label>
                 <Select value={role} onValueChange={(val: any) => setRole(val)}>
                   <SelectTrigger className="bg-white/5 border-white/10 text-white">
-                    <SelectValue placeholder="Rôle" />
+                    <SelectValue placeholder="Role" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="user">Utilisateur (user)</SelectItem>
-                    <SelectItem value="admin">Administrateur (admin)</SelectItem>
-                    <SelectItem value="visitor">Visiteur (visitor)</SelectItem>
+                    <SelectItem value="user">User</SelectItem>
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="visitor">Visitor</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-1.5 col-span-2 sm:col-span-1">
-                <Label htmlFor="status" className="text-white/70">Statut <span className="text-purple-400">*</span></Label>
+                <Label htmlFor="status" className="text-white/70">Status <span className="text-purple-400">*</span></Label>
                 <Select value={status} onValueChange={(val: any) => setStatus(val)}>
                   <SelectTrigger className="bg-white/5 border-white/10 text-white">
-                    <SelectValue placeholder="Statut" />
+                    <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="active">Actif (active)</SelectItem>
-                    <SelectItem value="pending">En attente (pending)</SelectItem>
-                    <SelectItem value="disabled">Désactivé (disabled)</SelectItem>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="disabled">Disabled</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -440,7 +440,7 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
                 disabled={isSubmitting}
                 className="text-white/70 hover:text-white"
               >
-                Annuler
+                Cancel
               </Button>
               <Button
                 type="submit"
@@ -451,12 +451,12 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Création...
+                    Creating...
                   </>
                 ) : (
                   <>
                     <UserPlus className="w-4 h-4" />
-                    Créer l&apos;utilisateur
+                    Create user
                   </>
                 )}
               </Button>

@@ -36,9 +36,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // Helper for alternate languages
-  const getAlternates = (frPath: string, arPath: string) => ({
+  const getAlternates = (enPath: string, arPath: string) => ({
     languages: {
-      fr: `${BASE_URL}/fr${frPath}`,
+      en: `${BASE_URL}/en${enPath}`,
       ar: `${BASE_URL}/ar${arPath}`,
     },
   })
@@ -46,7 +46,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 1. Homepages (Priority 1.0, daily)
   const homeUrls: MetadataRoute.Sitemap = [
     {
-      url: `${BASE_URL}/fr`,
+      url: `${BASE_URL}/en`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1.0,
@@ -64,7 +64,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 2. Blog Indices (Priority 0.9, daily)
   const blogUrls: MetadataRoute.Sitemap = [
     {
-      url: `${BASE_URL}/fr/blog`,
+      url: `${BASE_URL}/en/blog`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
@@ -83,22 +83,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     // About
     {
-      url: `${BASE_URL}/fr/a-propos`,
+      url: `${BASE_URL}/en/about`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
-      alternates: getAlternates('/a-propos', '/من-نحن'),
+      alternates: getAlternates('/about', '/من-نحن'),
     },
     {
       url: `${BASE_URL}/ar/من-نحن`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
-      alternates: getAlternates('/a-propos', '/من-نحن'),
+      alternates: getAlternates('/about', '/من-نحن'),
     },
     // Contact
     {
-      url: `${BASE_URL}/fr/contact`,
+      url: `${BASE_URL}/en/contact`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
@@ -113,7 +113,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     // Categories Index
     {
-      url: `${BASE_URL}/fr/categories`,
+      url: `${BASE_URL}/en/categories`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
@@ -128,7 +128,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     // Tags Index
     {
-      url: `${BASE_URL}/fr/tags`,
+      url: `${BASE_URL}/en/tags`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.7,
@@ -145,8 +145,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // 4. Articles (Priority 0.8, weekly)
   const articleUrls: MetadataRoute.Sitemap = articles.map((article) => {
-    const isFr = article.language === 'fr'
-    const path = isFr ? `/blog/${article.slug}` : `/مدونة/${article.slug}`
+    const isEn = article.language === 'en'
+    const path = isEn ? `/blog/${article.slug}` : `/مدونة/${article.slug}`
     return {
       url: `${BASE_URL}/${article.language}${path}`,
       lastModified: new Date(article.updated_at),
@@ -158,7 +158,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 5. Categories (Priority 0.6, weekly)
   const categoryUrls: MetadataRoute.Sitemap = categories.flatMap((cat) => [
     {
-      url: `${BASE_URL}/fr/categories/${cat.slug}`,
+      url: `${BASE_URL}/en/categories/${cat.slug}`,
       lastModified: new Date(cat.updated_at),
       changeFrequency: 'weekly',
       priority: 0.6,
@@ -176,7 +176,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 6. Tags (Priority 0.5, weekly)
   const tagUrls: MetadataRoute.Sitemap = tags.flatMap((tag) => [
     {
-      url: `${BASE_URL}/fr/tags/${tag.slug}`,
+      url: `${BASE_URL}/en/tags/${tag.slug}`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.5,

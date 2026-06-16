@@ -58,9 +58,9 @@ function StatCard({
 export function AdminDashboardStats({ stats, recentArticles, pendingUsers, locale }: Props) {
   const statCards = [
     { icon: FileText, label: 'Total Articles', value: stats.totalArticles, gradient: 'from-purple-600 to-violet-700', glow: 'rgba(147,51,234,0.4)' },
-    { icon: Users, label: 'Total Utilisateurs', value: stats.totalUsers, gradient: 'from-pink-600 to-rose-700', glow: 'rgba(236,72,153,0.4)' },
-    { icon: Eye, label: 'Total Vues', value: formatNumber(stats.totalViews), gradient: 'from-indigo-600 to-blue-700', glow: 'rgba(99,102,241,0.4)' },
-    { icon: Clock, label: 'En attente', value: stats.pendingUsers, gradient: 'from-amber-500 to-orange-600', glow: 'rgba(245,158,11,0.4)' },
+    { icon: Users, label: 'Total Users', value: stats.totalUsers, gradient: 'from-pink-600 to-rose-700', glow: 'rgba(236,72,153,0.4)' },
+    { icon: Eye, label: 'Total Views', value: formatNumber(stats.totalViews), gradient: 'from-indigo-600 to-blue-700', glow: 'rgba(99,102,241,0.4)' },
+    { icon: Clock, label: 'Pending', value: stats.pendingUsers, gradient: 'from-amber-500 to-orange-600', glow: 'rgba(245,158,11,0.4)' },
   ]
 
   return (
@@ -81,14 +81,14 @@ export function AdminDashboardStats({ stats, recentArticles, pendingUsers, local
           className="glass-card p-6 border border-white/5"
         >
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-display font-semibold text-white text-sm">Articles récents</h2>
+            <h2 className="font-display font-semibold text-white text-sm">Recent Articles</h2>
             <Link href="/admin/articles" className="text-xs text-purple-400 hover:text-purple-300 transition-colors">
-              Voir tout →
+              View all →
             </Link>
           </div>
           <div className="space-y-3">
             {recentArticles.length === 0 ? (
-              <p className="text-white/30 text-sm text-center py-6">Aucun article</p>
+              <p className="text-white/30 text-sm text-center py-6">No articles</p>
             ) : (
               recentArticles.map((article) => (
                 <div key={article.id} className="flex items-center gap-3 py-2 border-b border-white/5 last:border-0">
@@ -99,7 +99,7 @@ export function AdminDashboardStats({ stats, recentArticles, pendingUsers, local
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-white/80 truncate">{article.title}</p>
                     <p className="text-xs text-white/30">
-                      {formatDate(article.created_at, locale)} · {article.views} vues
+                      {formatDate(article.created_at, locale)} · {article.views} views
                     </p>
                   </div>
                   <div className="flex items-center gap-1">
@@ -121,7 +121,7 @@ export function AdminDashboardStats({ stats, recentArticles, pendingUsers, local
         >
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display font-semibold text-white text-sm">
-              Utilisateurs en attente
+              Pending Users
               {stats.pendingUsers > 0 && (
                 <span className="ms-2 inline-flex items-center justify-center w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 text-[10px] font-bold">
                   {stats.pendingUsers}
@@ -129,12 +129,12 @@ export function AdminDashboardStats({ stats, recentArticles, pendingUsers, local
               )}
             </h2>
             <Link href="/admin/users" className="text-xs text-purple-400 hover:text-purple-300 transition-colors">
-              Gérer →
+              Manage →
             </Link>
           </div>
           <div className="space-y-3">
             {pendingUsers.length === 0 ? (
-              <p className="text-white/30 text-sm text-center py-6">Aucun utilisateur en attente</p>
+              <p className="text-white/30 text-sm text-center py-6">No pending users</p>
             ) : (
               pendingUsers.map((user) => (
                 <div key={user.id} className="flex items-center gap-3 py-2 border-b border-white/5 last:border-0">
@@ -151,7 +151,7 @@ export function AdminDashboardStats({ stats, recentArticles, pendingUsers, local
                     href={`/admin/users` as `/${string}`}
                     className="text-xs px-2 py-1 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 transition-colors"
                   >
-                    Activer
+                    Activate
                   </Link>
                 </div>
               ))

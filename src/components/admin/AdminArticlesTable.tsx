@@ -32,9 +32,9 @@ interface Props {
 }
 
 const STATUS_CONFIG = {
-  published: { color: 'text-green-400 bg-green-400/10 border-green-400/30', label: 'Publié', icon: CheckCircle },
-  draft: { color: 'text-amber-400 bg-amber-400/10 border-amber-400/30', label: 'Brouillon', icon: Archive },
-  archived: { color: 'text-white/30 bg-white/5 border-white/10', label: 'Archivé', icon: XCircle },
+  published: { color: 'text-green-400 bg-green-400/10 border-green-400/30', label: 'Published', icon: CheckCircle },
+  draft: { color: 'text-amber-400 bg-amber-400/10 border-amber-400/30', label: 'Draft', icon: Archive },
+  archived: { color: 'text-white/30 bg-white/5 border-white/10', label: 'Archived', icon: XCircle },
 }
 
 export function AdminArticlesTable({ articles: initialArticles, locale }: Props) {
@@ -51,7 +51,7 @@ export function AdminArticlesTable({ articles: initialArticles, locale }: Props)
   })
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Supprimer cet article ?')) return
+    if (!confirm('Delete this article?')) return
     const supabase = createClient()
     await supabase.from('articles').delete().eq('id', id)
     setArticles((prev) => prev.filter((a) => a.id !== id))
@@ -72,7 +72,7 @@ export function AdminArticlesTable({ articles: initialArticles, locale }: Props)
       <div className="flex flex-wrap gap-3 glass-card p-4">
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-white/30" />
-          <span className="text-xs text-white/40">Filtrer:</span>
+          <span className="text-xs text-white/40">Filter:</span>
         </div>
         <div className="flex gap-2">
           {(['all', 'en', 'ar'] as const).map((l) => (
@@ -100,7 +100,7 @@ export function AdminArticlesTable({ articles: initialArticles, locale }: Props)
                   : 'bg-white/5 text-white/40 border border-white/10 hover:border-white/20'
               }`}
             >
-              {s === 'all' ? 'Tous' : STATUS_CONFIG[s].label}
+              {s === 'all' ? 'All' : STATUS_CONFIG[s].label}
             </button>
           ))}
         </div>
@@ -113,10 +113,10 @@ export function AdminArticlesTable({ articles: initialArticles, locale }: Props)
           <table className="w-full">
             <thead>
               <tr className="border-b border-white/5">
-                <th className="text-start px-5 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Titre</th>
-                <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Statut</th>
+                <th className="text-start px-5 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Title</th>
+                <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Status</th>
                 <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Lang</th>
-                <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Vues</th>
+                <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Views</th>
                 <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Date</th>
                 <th className="px-4 py-3.5" />
               </tr>
@@ -125,7 +125,7 @@ export function AdminArticlesTable({ articles: initialArticles, locale }: Props)
               {filtered.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="text-center py-12 text-white/20 text-sm">
-                    Aucun article
+                    No articles
                   </td>
                 </tr>
               ) : (
