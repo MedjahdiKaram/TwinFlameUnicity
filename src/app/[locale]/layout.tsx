@@ -93,6 +93,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       shortcut: '/favicon-32x32.png',
       apple: '/apple-touch-icon.png',
     },
+    verification: {
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    },
     openGraph: {
       type: 'website',
       locale: locale === 'ar' ? 'ar_MA' : 'fr_FR',
