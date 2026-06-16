@@ -7,8 +7,6 @@ import { ServicesSection } from '@/components/home/ServicesSection'
 import { BlogPreviewSection } from '@/components/home/BlogPreviewSection'
 import { QuizBanner } from '@/components/home/QuizBanner'
 import { JourneyTimeline } from '@/components/home/JourneyTimeline'
-import { CommunityTestimonials } from '@/components/home/CommunityTestimonials'
-import { NewsletterSection } from '@/components/home/NewsletterSection'
 import { createAdminClient } from '@/lib/supabase/server'
 import type { ArticleCard } from '@/types/database.types'
 import type { Metadata } from 'next'
@@ -69,8 +67,6 @@ export default async function HomePage({ params }: Props) {
         </Suspense>
         <QuizBanner />
         <JourneyTimeline />
-        <CommunityTestimonials />
-        <NewsletterSection />
       </main>
       <Footer locale={locale} />
     </>

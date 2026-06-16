@@ -23,7 +23,19 @@ export default async function AboutPage({ params }: Props) {
           </div>
 
           <div className="glass-card p-10 space-y-6 text-white/70 leading-relaxed">
-            {locale === 'en' ? (
+            {locale === 'ar' ? (
+              <>
+                <p>
+                  TwinFlameUnicity هو مساحة مقدسة مكرسة لتوائم الشعلة والنفوس التي تسعى إلى الصحوة الروحية. مهمتنا هي مرافقتك في طريق إعادة الاتصال بجوهرك الإلهي، من خلال مقالات الإرشاد، وممارسات التأمل، ومجتمع متعاطف.
+                </p>
+                <p>
+                  نحن نؤمن بأن كل روح تحمل نوراً فريداً، وأن لقاء توأم الشعلة يمثل الفرصة الأعمق للصحوة والتحول الداخلي.
+                </p>
+                <p>
+                  نهجنا شمولي، يجمع بين الحكمة الروحية القديمة والفهم الحديث لعلم نفس الروح. ندعوك للاستكشاف والتساؤل والاتصال بحقيقتك العميقة.
+                </p>
+              </>
+            ) : (
               <>
                 <p>
                   TwinFlameUnicity is a sacred space dedicated to Twin Flames and souls seeking spiritual awakening. Our mission is to accompany you on the path of reconnecting to your divine essence, through guidance articles, meditation practices, and a caring community.
@@ -33,18 +45,6 @@ export default async function AboutPage({ params }: Props) {
                 </p>
                 <p>
                   Our approach is holistic, combining ancient spiritual wisdom with a modern understanding of soul psychology. We invite you to explore, question, and connect to your deepest truth.
-                </p>
-              </>
-            ) : (
-              <>
-                <p>
-                  TwinFlameUnicity est un espace sacré dédié aux Flammes Jumelles et aux âmes en quête d&apos;éveil spirituel. Notre mission est de vous accompagner sur le chemin de la reconnexion à votre essence divine, à travers des articles de guidance, des pratiques de méditation et une communauté bienveillante.
-                </p>
-                <p>
-                  Nous croyons que chaque âme porte en elle une lumière unique, et que la rencontre avec sa Flamme Jumelle représente l&apos;opportunité la plus profonde d&apos;éveil et de transformation intérieure.
-                </p>
-                <p>
-                  Notre approche est holistique, alliant sagesse spirituelle ancienne et compréhension moderne de la psychologie de l&apos;âme. Nous vous invitons à explorer, questionner et vous connecter à votre vérité la plus profonde.
                 </p>
               </>
             )}

@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
+import { redirect } from '@/i18n/navigation'
 import { ProfileClient } from '@/components/profile/ProfileClient'
 
 interface Props {
@@ -11,7 +11,7 @@ export default async function ProfilePage({ params }: Props) {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect(`/${locale}/connexion`)
+  if (!user) redirect('/login')
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -19,7 +19,7 @@ export default async function ProfilePage({ params }: Props) {
     .eq('id', user.id)
     .single()
 
-  if (!profile) redirect(`/${locale}/connexion`)
+  if (!profile) redirect('/login')
 
   return (
     <main className="min-h-screen bg-cosmic-gradient pt-24 pb-16">

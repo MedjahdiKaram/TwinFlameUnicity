@@ -23,7 +23,7 @@ export async function loginAction(formData: FormData) {
   })
 
   if (error) {
-    return { error: 'Email ou mot de passe incorrect' }
+    return { error: 'error_invalid' }
   }
 
   // Check if user is active
@@ -42,7 +42,7 @@ export async function loginAction(formData: FormData) {
 
     if (profile?.status === 'disabled') {
       await supabase.auth.signOut()
-      return { error: 'Compte désactivé. Contactez l\'administrateur.' }
+      return { error: 'error_disabled' }
     }
   }
 
@@ -77,7 +77,7 @@ export async function registerAction(formData: FormData) {
     .single()
 
   if (existingPseudo) {
-    return { error: 'Ce pseudo est déjà utilisé' }
+    return { error: 'error_pseudo_exists' }
   }
 
   const { data, error } = await supabase.auth.signUp({
@@ -97,7 +97,7 @@ export async function registerAction(formData: FormData) {
 
   if (error) {
     if (error.message.includes('already registered')) {
-      return { error: 'Cet email est déjà utilisé' }
+      return { error: 'error_email_exists' }
     }
     return { error: error.message }
   }
@@ -116,18 +116,21 @@ export async function registerAction(formData: FormData) {
   return { success: true }
 }
 
-export async function logoutAction() {
+export async function logoutAction(locale: any) {
   const supabase = await createClient()
   await supabase.auth.signOut()
   revalidatePath('/', 'layout')
-  redirect('/fr')
+  
+  // Extract string locale if called from form action bind
+  const resolvedLocale = typeof locale === 'string' ? locale : 'ar'
+  redirect(`/${resolvedLocale}`)
 }
 
 export async function updateProfileAction(formData: FormData) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user) return { error: 'Non authentifié' }
+  if (!user) return { error: 'error_unauthorized' }
 
   const updates: Record<string, string> = {}
   const fields = ['first_name', 'last_name', 'pseudo', 'gender', 'bio']

@@ -205,7 +205,12 @@
     "login_success": "Signed in successfully!",
     "register_success": "Account created! Awaiting administrator approval.",
     "error_invalid": "Incorrect email or password",
-    "error_exists": "This email is already in use"
+    "error_exists": "This email is already in use",
+    "error_pseudo_exists": "This username is already in use",
+    "error_email_exists": "This email is already in use",
+    "error_disabled": "Account disabled. Please contact the administrator.",
+    "error_unauthorized": "Not authenticated.",
+    "error_generic": "An unexpected error occurred. Please try again."
   },
   "profile": {
     "title": "My Profile",
@@ -215,7 +220,25 @@
     "avatar_hint": "Click to change photo",
     "my_comments": "My comments",
     "member_since": "Member since",
-    "no_comments": "No comments yet"
+    "no_comments": "No comments yet",
+    "logout": "Sign Out",
+    "role_admin": "Administrator",
+    "role_member": "Member",
+    "role_visitor": "Visitor",
+    "status_active": "Active",
+    "status_pending": "Pending",
+    "status_disabled": "Disabled",
+    "first_name": "First Name",
+    "first_name_placeholder": "Your first name",
+    "last_name": "Last Name",
+    "last_name_placeholder": "Your last name",
+    "pseudo": "Username",
+    "pseudo_placeholder": "your-username",
+    "bio": "Bio",
+    "bio_placeholder": "Tell us about yourself...",
+    "saving": "Saving...",
+    "save_success": "Profile updated successfully!",
+    "save_error": "Error updating profile."
   },
   "admin": {
     "dashboard": "Dashboard",
@@ -247,7 +270,8 @@
     "all_statuses": "All statuses",
     "active": "Active",
     "pending": "Pending",
-    "disabled": "Disabled"
+    "disabled": "Disabled",
+    "logout": "Sign Out"
   },
   "common": {
     "loading": "Loading...",

@@ -9,7 +9,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { routing } from '@/i18n/routing'
 import { FairyCursor } from '@/components/layout/FairyCursor'
 import GoogleAnalytics from '@/components/layout/GoogleAnalytics'
-import { getGoogleAnalyticsId } from '@/server/actions/settings'
+import { getGoogleAnalyticsId } from '@/server/queries/settings'
 import '../globals.css'
 
 // ── Fonts ──────────────────────────────────────────────────

@@ -9,7 +9,7 @@ type Props = { params: Promise<{ locale: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'auth' })
-  return { title: t('login_title') }
+  return { title: `${t('login_title')} | TwinFlameUnicity` }
 }
 
 export default async function LoginPage({ params }: Props) {
@@ -17,6 +17,8 @@ export default async function LoginPage({ params }: Props) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (user) redirect(`/${locale}`)
+
+  const t = await getTranslations({ locale, namespace: 'auth' })
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -50,10 +52,10 @@ export default async function LoginPage({ params }: Props) {
             </div>
           </div>
           <h1 className="text-3xl font-display font-bold text-white mb-2">
-            {locale === 'ar' ? 'تسجيل الدخول' : 'Connexion'}
+            {t('login_title')}
           </h1>
           <p className="text-white/40 text-sm">
-            {locale === 'ar' ? 'عد إلى فضائك الروحي' : 'Retrouvez votre espace spirituel'}
+            {t('login_subtitle')}
           </p>
         </div>
         <LoginForm locale={locale as 'en' | 'ar'} />

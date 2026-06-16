@@ -58,7 +58,7 @@ export function LoginForm({ locale }: { locale: 'en' | 'ar' }) {
       ) : serverError ? (
         <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/30 rounded-xl p-4 text-sm text-red-400">
           <AlertCircle className="w-4 h-4 flex-shrink-0" />
-          {serverError}
+          {serverError.startsWith('error_') ? t(serverError as any) : serverError}
         </div>
       ) : null}
 

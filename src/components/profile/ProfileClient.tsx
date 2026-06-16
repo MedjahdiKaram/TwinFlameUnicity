@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Camera, Save, LogOut } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { useTranslations, useLocale } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -29,25 +30,16 @@ interface Props {
   profile: Profile
 }
 
-const roleLabels: Record<string, string> = {
-  admin: 'Administrateur',
-  user: 'Membre',
-  visitor: 'Visiteur',
-}
-
 const statusVariants: Record<string, 'success' | 'warning' | 'secondary'> = {
   active: 'success',
   pending: 'warning',
   disabled: 'secondary',
 }
 
-const statusLabels: Record<string, string> = {
-  active: 'Actif',
-  pending: 'En attente',
-  disabled: 'Désactivé',
-}
-
 export function ProfileClient({ profile }: Props) {
+  const t = useTranslations('profile')
+  const tAuth = useTranslations('auth')
+  const locale = useLocale()
   const [saving, setSaving] = useState(false)
 
   const fullName = [profile.first_name, profile.last_name].filter(Boolean).join(' ')
@@ -65,9 +57,10 @@ export function ProfileClient({ profile }: Props) {
     const result = await updateProfileAction(formData)
     setSaving(false)
     if (result?.error) {
-      toast({ title: 'Erreur', description: result.error, variant: 'destructive' })
+      const errorMsg = result.error.startsWith('error_') ? tAuth(result.error as any) : result.error
+      toast({ title: t('save_error'), description: errorMsg, variant: 'destructive' })
     } else {
-      toast({ title: 'Profil mis à jour' })
+      toast({ title: t('save_success') })
     }
   }
 
@@ -79,11 +72,11 @@ export function ProfileClient({ profile }: Props) {
     >
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white font-display">Mon profil</h1>
-        <form action={logoutAction}>
+        <h1 className="text-2xl font-bold text-white font-display">{t('title')}</h1>
+        <form action={logoutAction.bind(null, locale)}>
           <Button type="submit" variant="ghost" size="sm" className="gap-2 text-white/50 hover:text-white">
             <LogOut className="w-4 h-4" />
-            Déconnexion
+            {t('logout')}
           </Button>
         </form>
       </div>
@@ -102,6 +95,7 @@ export function ProfileClient({ profile }: Props) {
             <button
               type="button"
               className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-purple-600 hover:bg-purple-500 flex items-center justify-center transition-colors shadow-glow-sm"
+              aria-label={t('avatar_hint')}
             >
               <Camera className="w-3.5 h-3.5 text-white" />
             </button>
@@ -109,14 +103,14 @@ export function ProfileClient({ profile }: Props) {
 
           <div className="flex-1 min-w-0">
             <h2 className="text-lg font-semibold text-white truncate">
-              {fullName || profile.pseudo || 'Utilisateur'}
+              {fullName || profile.pseudo || t('role_member')}
             </h2>
             <p className="text-white/50 text-sm truncate">@{profile.pseudo}</p>
             <p className="text-white/30 text-sm truncate">{profile.email}</p>
             <div className="flex items-center gap-2 mt-2 flex-wrap">
-              <Badge variant="default">{roleLabels[profile.role] || profile.role}</Badge>
+              <Badge variant="default">{t(`role_${profile.role}` as any)}</Badge>
               <Badge variant={statusVariants[profile.status] || 'secondary'}>
-                {statusLabels[profile.status] || profile.status}
+                {t(`status_${profile.status}` as any)}
               </Badge>
             </div>
           </div>
@@ -126,39 +120,39 @@ export function ProfileClient({ profile }: Props) {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="first_name">Prénom</Label>
+              <Label htmlFor="first_name">{t('first_name')}</Label>
               <Input
                 id="first_name"
                 name="first_name"
                 defaultValue={profile.first_name || ''}
-                placeholder="Votre prénom"
+                placeholder={t('first_name_placeholder')}
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="last_name">Nom</Label>
+              <Label htmlFor="last_name">{t('last_name')}</Label>
               <Input
                 id="last_name"
                 name="last_name"
                 defaultValue={profile.last_name || ''}
-                placeholder="Votre nom"
+                placeholder={t('last_name_placeholder')}
               />
             </div>
             <div className="space-y-1.5 sm:col-span-2">
-              <Label htmlFor="pseudo">Pseudo</Label>
+              <Label htmlFor="pseudo">{t('pseudo')}</Label>
               <Input
                 id="pseudo"
                 name="pseudo"
                 defaultValue={profile.pseudo || ''}
-                placeholder="votre-pseudo"
+                placeholder={t('pseudo_placeholder')}
               />
             </div>
             <div className="space-y-1.5 sm:col-span-2">
-              <Label htmlFor="bio">Bio</Label>
+              <Label htmlFor="bio">{t('bio')}</Label>
               <Textarea
                 id="bio"
                 name="bio"
                 defaultValue={profile.bio || ''}
-                placeholder="Parlez-nous de vous..."
+                placeholder={t('bio_placeholder')}
                 rows={3}
               />
             </div>
@@ -167,15 +161,15 @@ export function ProfileClient({ profile }: Props) {
           <div className="flex justify-end pt-2">
             <Button type="submit" variant="glow" disabled={saving} className="gap-2">
               <Save className="w-4 h-4" />
-              {saving ? 'Sauvegarde...' : 'Sauvegarder'}
+              {saving ? t('saving') : t('save')}
             </Button>
           </div>
         </form>
       </div>
 
       <p className="text-center text-white/25 text-xs">
-        Membre depuis{' '}
-        {new Date(profile.created_at).toLocaleDateString('fr-FR', {
+        {t('member_since')}{' '}
+        {new Date(profile.created_at).toLocaleDateString(locale === 'ar' ? 'ar-EG' : 'en-US', {
           year: 'numeric',
           month: 'long',
         })}

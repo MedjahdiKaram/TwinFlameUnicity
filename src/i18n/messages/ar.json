@@ -205,7 +205,12 @@
     "login_success": "تم تسجيل الدخول بنجاح!",
     "register_success": "تم إنشاء الحساب! في انتظار موافقة المسؤول.",
     "error_invalid": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
-    "error_exists": "هذا البريد الإلكتروني مستخدم بالفعل"
+    "error_exists": "هذا البريد الإلكتروني مستخدم بالفعل",
+    "error_pseudo_exists": "اسم المستخدم هذا مستخدم بالفعل",
+    "error_email_exists": "البريد الإلكتروني هذا مستخدم بالفعل",
+    "error_disabled": "الحساب معطل. يرجى الاتصال بالمسؤول.",
+    "error_unauthorized": "غير مصرح به.",
+    "error_generic": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
   },
   "profile": {
     "title": "ملفي الشخصي",
@@ -215,7 +220,25 @@
     "avatar_hint": "انقر لتغيير الصورة",
     "my_comments": "تعليقاتي",
     "member_since": "عضو منذ",
-    "no_comments": "لا توجد تعليقات بعد"
+    "no_comments": "لا توجد تعليقات بعد",
+    "logout": "تسجيل الخروج",
+    "role_admin": "مسؤول",
+    "role_member": "عضو",
+    "role_visitor": "زائر",
+    "status_active": "نشط",
+    "status_pending": "في الانتظار",
+    "status_disabled": "معطل",
+    "first_name": "الاسم الأول",
+    "first_name_placeholder": "اسمك الأول",
+    "last_name": "اسم العائلة",
+    "last_name_placeholder": "اسم عائلتك",
+    "pseudo": "اسم المستخدم",
+    "pseudo_placeholder": "اسم-المستخدم",
+    "bio": "نبذة شخصية",
+    "bio_placeholder": "حدثنا عن نفسك...",
+    "saving": "جارٍ الحفظ...",
+    "save_success": "تم تحديث الملف الشخصي بنجاح!",
+    "save_error": "حدث خطأ أثناء تحديث الملف الشخصي"
   },
   "admin": {
     "dashboard": "لوحة التحكم",
@@ -247,7 +270,8 @@
     "all_statuses": "جميع الحالات",
     "active": "نشط",
     "pending": "في الانتظار",
-    "disabled": "معطل"
+    "disabled": "معطل",
+    "logout": "تسجيل الخروج"
   },
   "common": {
     "loading": "جارٍ التحميل...",

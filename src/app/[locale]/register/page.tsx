@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 import { createClient } from '@/lib/supabase/server'
 import { RegisterForm } from '@/components/auth/RegisterForm'
 import type { Metadata } from 'next'
@@ -7,7 +8,8 @@ type Props = { params: Promise<{ locale: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
-  return { title: locale === 'ar' ? 'إنشاء حساب | TwinFlameUnicity' : 'Inscription | TwinFlameUnicity' }
+  const t = await getTranslations({ locale, namespace: 'auth' })
+  return { title: `${t('register_title')} | TwinFlameUnicity` }
 }
 
 export default async function RegisterPage({ params }: Props) {
@@ -15,6 +17,8 @@ export default async function RegisterPage({ params }: Props) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (user) redirect(`/${locale}`)
+
+  const t = await getTranslations({ locale, namespace: 'auth' })
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden py-12">
@@ -42,10 +46,10 @@ export default async function RegisterPage({ params }: Props) {
       <div className="relative z-10 w-full max-w-2xl mx-auto px-4">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-display font-bold text-white mb-2">
-            {locale === 'ar' ? 'انضم إلى المجتمع' : 'Rejoindre la Communauté'}
+            {t('register_title')}
           </h1>
           <p className="text-white/40 text-sm">
-            {locale === 'ar' ? 'رحلتك تبدأ هنا' : 'Votre voyage commence ici'}
+            {t('register_subtitle')}
           </p>
         </div>
         <RegisterForm locale={locale as 'en' | 'ar'} />

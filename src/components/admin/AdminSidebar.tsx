@@ -88,7 +88,7 @@ export function AdminSidebar({ locale }: { locale: string }) {
           className="flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/40 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
         >
           <LogOut className="w-4 h-4" />
-          Déconnexion
+          {t('logout')}
         </button>
       </div>
     </div>
