@@ -325,11 +325,13 @@ export function HeroSection() {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="mb-6"
         >
-          <h1 className="text-4xl sm:text-6xl md:text-8xl font-display font-bold uppercase tracking-wider text-white mb-2">
-            {t('title_line1') || 'TWIN FLAME'}
-          </h1>
-          <h1 className="text-4xl sm:text-6xl md:text-8xl font-display font-bold uppercase tracking-widest text-gold drop-shadow-[0_0_15px_rgba(230,200,135,0.2)]">
-            {t('title_highlight') || 'UNICITY'}
+          <h1 className="font-display font-bold uppercase">
+            <span className="block text-4xl sm:text-6xl md:text-8xl tracking-wider text-white mb-2">
+              {t('title_line1') || 'TWIN FLAME'}
+            </span>
+            <span className="block text-4xl sm:text-6xl md:text-8xl tracking-widest text-gold drop-shadow-[0_0_15px_rgba(230,200,135,0.2)]">
+              {t('title_highlight') || 'UNICITY'}
+            </span>
           </h1>
         </motion.div>
 

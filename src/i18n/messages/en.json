@@ -328,5 +328,83 @@
     "default_description": "Discover your path to Unity. Spiritual guidance, awakening of consciousness and connection for Twin Flames.",
     "blog_title": "Spiritual Blog | TwinFlameUnicity",
     "blog_description": "Articles of spiritual guidance, awakening and connection for Twin Flames."
+  },
+  "static_pages": {
+    "awakening": {
+      "title": "Spiritual Awakening",
+      "subtitle": "The Call of Your Soul",
+      "intro": "The spiritual awakening is the initiation of your journey. It is the moment you begin to feel a deeper calling, questioning the nature of your reality, and sensing the presence of your twin soul even before physical recognition.",
+      "features": [
+        {
+          "title": "Divine Guidance",
+          "desc": "Signs, numbers, and synchronicities appear to guide your path."
+        },
+        {
+          "title": "Self-Discovery",
+          "desc": "Deep questioning of your life, beliefs, and true identity."
+        },
+        {
+          "title": "Inner Connection",
+          "desc": "A growing sense of connection to the universe and your twin flame."
+        }
+      ]
+    },
+    "healing": {
+      "title": "Spiritual Healing",
+      "subtitle": "Purifying the Soul Mirror",
+      "intro": "True healing involves releasing karmic patterns, old trauma, and emotional blockages. This phase prepares you for union by aligning your energy with unconditional love.",
+      "features": [
+        {
+          "title": "Karmic Release",
+          "desc": "Breaking negative cycles and ancestral patterns."
+        },
+        {
+          "title": "Inner Child Healing",
+          "desc": "Nurturing and healing wounds of rejection, abandonment, or fear."
+        },
+        {
+          "title": "Vibrational Alignment",
+          "desc": "Raising your energy frequency to match that of your divine counterpart."
+        }
+      ]
+    },
+    "twin-flame-union": {
+      "title": "Twin Flame Union",
+      "subtitle": "Sacred Soul Fusion",
+      "intro": "The Sacred Union is the ultimate fusion of divine masculine and feminine energies. It is the state of perfect inner harmony and physical alignment with your twin flame.",
+      "features": [
+        {
+          "title": "Divine Harmony",
+          "desc": "Perfect balance of energies and telepathic connection."
+        },
+        {
+          "title": "Shared Mission",
+          "desc": "Embodying your joint soul purpose to spread light and love."
+        },
+        {
+          "title": "Eternal Love",
+          "desc": "Unconditional fusion beyond time, space, and three-dimensional limits."
+        }
+      ]
+    },
+    "spiritual-growth": {
+      "title": "Spiritual Growth",
+      "subtitle": "Expanding Consciousness",
+      "intro": "Spiritual growth is a continuous expansion of your consciousness. Embody self-love, expand your awareness, and live in alignment with your high-vibrational soul purpose.",
+      "features": [
+        {
+          "title": "Expanded Awareness",
+          "desc": "Accessing higher dimensions of spiritual truth and wisdom."
+        },
+        {
+          "title": "Self-Love Mastery",
+          "desc": "Reclaiming your sovereignty and embodying unconditional self-worth."
+        },
+        {
+          "title": "Soul Purpose",
+          "desc": "Living your life as a channel of light and service to humanity."
+        }
+      ]
+    }
   }
 }

@@ -9,22 +9,22 @@ const SERVICES = [
   {
     icon: Eye,
     key: 'eveil_interieur',
-    href: '/categories/eveil-spirituel' as const,
+    href: '/static/awakening' as const,
   },
   {
     icon: Heart,
     key: 'harmonie_couple',
-    href: '/categories/guerison' as const,
+    href: '/static/healing' as const,
   },
   {
     icon: Flame,
     key: 'eveil_conscience',
-    href: '/categories/flammes-jumelles' as const,
+    href: '/static/twin-flame-union' as const,
   },
   {
     icon: Moon,
     key: 'guidance_spirituelle',
-    href: '/resources' as const,
+    href: '/static/spiritual-growth' as const,
   },
 ]
 

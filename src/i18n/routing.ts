@@ -29,6 +29,7 @@ export const routing = defineRouting({
     '/legal': '/legal',
     '/privacy': '/privacy',
     '/resources': '/resources',
+    '/static/[slug]': '/static/[slug]',
   },
 })
 

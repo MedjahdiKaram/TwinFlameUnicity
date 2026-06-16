@@ -65,7 +65,7 @@ export function BlogPreviewSection({ articles, locale }: Props) {
       slug: dbArt ? dbArt.slug : tpl.slug,
       readTime: dbArt ? `${dbArt.reading_time} min read` : tpl.readTime,
       category: dbArt && dbArt.category ? (locale === 'ar' ? dbArt.category.name_ar : dbArt.category.name_en) : t(`featured_articles.list.${idx}.category`, { defaultValue: tpl.category }),
-      image: tpl.image,
+      image: dbArt && dbArt.cover_url ? dbArt.cover_url : tpl.image,
     }
   })
 
