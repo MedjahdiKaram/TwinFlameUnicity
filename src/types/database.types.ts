@@ -31,6 +31,7 @@ export interface Database {
           bio: string | null
           avatar_url: string | null
           role: UserRole
+          is_vip: boolean
           status: UserStatus
           created_at: string
           updated_at: string
@@ -45,6 +46,7 @@ export interface Database {
           bio?: string | null
           avatar_url?: string | null
           role?: UserRole
+          is_vip?: boolean
           status?: UserStatus
           created_at?: string
           updated_at?: string
@@ -59,6 +61,7 @@ export interface Database {
           bio?: string | null
           avatar_url?: string | null
           role?: UserRole
+          is_vip?: boolean
           status?: UserStatus
           updated_at?: string
         }
@@ -137,7 +140,7 @@ export interface Database {
           cover_url: string | null
           cover_alt: string | null
           status: ArticleStatus
-          is_premium: boolean
+          is_vip: boolean
           is_featured: boolean
           reading_time: number
           views: number
@@ -161,7 +164,7 @@ export interface Database {
           cover_url?: string | null
           cover_alt?: string | null
           status?: ArticleStatus
-          is_premium?: boolean
+          is_vip?: boolean
           is_featured?: boolean
           reading_time?: number
           views?: number
@@ -184,7 +187,7 @@ export interface Database {
           cover_url?: string | null
           cover_alt?: string | null
           status?: ArticleStatus
-          is_premium?: boolean
+          is_vip?: boolean
           is_featured?: boolean
           reading_time?: number
           views?: number
@@ -331,7 +334,7 @@ export interface Database {
           reading_time: number
           views: number
           category_id: string | null
-          is_premium: boolean
+          is_vip: boolean
           language: ArticleLanguage
           rank: number
         }>
@@ -389,7 +392,7 @@ export type ArticleCard = Pick<
   | 'excerpt'
   | 'cover_url'
   | 'cover_alt'
-  | 'is_premium'
+  | 'is_vip'
   | 'is_featured'
   | 'language'
   | 'reading_time'

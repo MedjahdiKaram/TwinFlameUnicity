@@ -60,7 +60,7 @@ export function ArticleCard({ article, locale, index = 0, featured = false }: Pr
 
             {/* Badges */}
             <div className="absolute top-3 start-3 flex gap-2">
-              {article.is_premium && (
+              {article.is_vip && (
                 <span className="badge-premium flex items-center gap-1">
                   <Crown className="w-2.5 h-2.5" />
                   {t('premium_badge')}

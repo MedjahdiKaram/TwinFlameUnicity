@@ -23,6 +23,7 @@ interface UserProfile {
   gender: string | null
   role: 'admin' | 'user' | 'visitor'
   status: 'pending' | 'active' | 'disabled'
+  is_vip: boolean
   created_at: string
   avatar_url: string | null
 }
@@ -239,10 +240,18 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
                       </td>
                       <td className="px-4 py-4 text-sm text-white/50">{user.email}</td>
                       <td className="px-4 py-4">
-                        <span className={`flex items-center gap-1 text-xs font-medium w-fit ${user.role === 'admin' ? 'text-purple-300' : 'text-white/40'}`}>
-                          {user.role === 'admin' ? <Shield className="w-3 h-3" /> : <User className="w-3 h-3" />}
-                          {user.role}
-                        </span>
+                        <div className="flex flex-col gap-1 items-start">
+                          <span className={`flex items-center gap-1 text-xs font-medium w-fit ${user.role === 'admin' ? 'text-purple-300' : 'text-white/40'}`}>
+                            {user.role === 'admin' ? <Shield className="w-3 h-3" /> : <User className="w-3 h-3" />}
+                            {user.role}
+                          </span>
+                          {user.is_vip && (
+                            <span className="flex items-center gap-1 text-[10px] uppercase font-bold text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+                              VIP
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="px-4 py-4">
                         <span className={`text-[10px] font-semibold px-2 py-1 rounded-full border ${status.color}`}>
@@ -281,6 +290,17 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
                               <CheckCircle className="w-3.5 h-3.5" />
                             </button>
                           )}
+                          <button
+                            onClick={async () => {
+                              const supabase = createClient() as any
+                              await supabase.from('profiles').update({ is_vip: !user.is_vip }).eq('id', user.id)
+                              setUsers((prev) => prev.map((u) => u.id === user.id ? { ...u, is_vip: !user.is_vip } : u))
+                            }}
+                            title={user.is_vip ? "Remove VIP" : "Make VIP"}
+                            className={`p-1.5 rounded-lg transition-colors ${user.is_vip ? 'bg-amber-500/20 text-amber-400' : 'bg-white/5 text-white/40 hover:bg-amber-500/20 hover:text-amber-400'}`}
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinelinejoin="round" className="lucide lucide-crown"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>
+                          </button>
                           {user.role !== 'admin' && (
                             <button
                               onClick={() => deleteUser(user.id)}

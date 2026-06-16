@@ -51,7 +51,7 @@ export default async function EditArticlePage({ params }: Props) {
           cover_url: article.cover_url,
           cover_alt: article.cover_alt,
           status: article.status,
-          is_premium: article.is_premium,
+          is_vip: article.is_vip,
           is_featured: article.is_featured,
           category_id: article.category_id,
           meta_title: article.meta_title,

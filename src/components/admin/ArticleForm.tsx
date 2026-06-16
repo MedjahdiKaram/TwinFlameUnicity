@@ -198,7 +198,7 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
       cover_url: initialData?.cover_url || '',
       cover_alt: initialData?.cover_alt || '',
       status: initialData?.status || 'draft',
-      is_premium: initialData?.is_premium ?? false,
+      is_vip: initialData?.is_vip ?? false,
       is_featured: initialData?.is_featured ?? false,
       category_id: initialData?.category_id || '',
       meta_title: initialData?.meta_title || '',
@@ -362,7 +362,7 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
         cover_url: data.cover_url || null,
         cover_alt: data.cover_alt || null,
         status: data.status,
-        is_premium: data.is_premium,
+        is_vip: data.is_vip,
         is_featured: data.is_featured,
         category_id: data.category_id || null,
         meta_title: data.meta_title || null,
@@ -520,9 +520,9 @@ export function ArticleForm({ categories, tags, authorId, locale, initialData }:
             </div>
             <div className="space-y-3 pt-2">
               <label className="flex items-center gap-3 cursor-pointer">
-                <input {...register('is_premium')} type="checkbox" className="w-4 h-4 rounded accent-purple-600" />
+                <input {...register('is_vip')} type="checkbox" className="w-4 h-4 rounded accent-purple-600" />
                 <span className="flex items-center gap-1.5 text-sm text-white/70">
-                  <Crown className="w-3.5 h-3.5 text-amber-400" /> Article Premium
+                  <Crown className="w-3.5 h-3.5 text-amber-400" /> For VIP users
                 </span>
               </label>
               <label className="flex items-center gap-3 cursor-pointer">

@@ -12,7 +12,7 @@ export default async function AdminArticlesPage({ params }: Props) {
   const { data: articles } = await supabase
     .from('articles')
     .select(`
-      id, slug, title, status, language, is_premium, is_featured,
+      id, slug, title, status, language, is_vip, is_featured,
       views, likes, created_at, published_at,
       category:categories(name_en, name_ar, color)
     `)

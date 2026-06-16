@@ -9,7 +9,7 @@ export default async function AdminUsersPage({ params }: Props) {
 
   const { data: users } = await supabase
     .from('profiles')
-    .select('id, email, first_name, last_name, pseudo, gender, role, status, created_at, avatar_url')
+    .select('id, email, first_name, last_name, pseudo, gender, role, status, is_vip, created_at, avatar_url')
     .order('created_at', { ascending: false })
 
   return (

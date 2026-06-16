@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { Clock, Eye, Heart, ArrowLeft, ArrowRight, Crown, ChevronRight, ChevronLeft } from 'lucide-react'
 import { formatDate, formatRelativeDate } from '@/lib/utils'
 import { ArticleCard } from './ArticleCard'
+import { Comments } from './Comments'
 import { createClient } from '@/lib/supabase/client'
 import type { ArticleCard as ArticleCardType } from '@/types/database.types'
 import { ShareButtons } from './ShareButtons'
@@ -16,9 +17,12 @@ interface Props {
   article: any
   related: ArticleCardType[]
   locale: 'en' | 'ar'
+  isVipUser?: boolean
+  isAdmin?: boolean
+  user?: any
 }
 
-export function ArticleDetail({ article, related, locale }: Props) {
+export function ArticleDetail({ article, related, locale, isVipUser, isAdmin, user }: Props) {
   const t = useTranslations('blog')
   const [likes, setLikes] = useState(article.likes || 0)
   const [liked, setLiked] = useState(false)
@@ -74,7 +78,7 @@ export function ArticleDetail({ article, related, locale }: Props) {
       >
         {/* Badges */}
         <div className="flex flex-wrap gap-2 mb-4">
-          {article.is_premium && (
+          {article.is_vip && (
             <span className="badge-premium flex items-center gap-1">
               <Crown className="w-2.5 h-2.5" /> Premium
             </span>
@@ -169,9 +173,37 @@ export function ArticleDetail({ article, related, locale }: Props) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className="prose-cosmic mb-12"
-        dangerouslySetInnerHTML={{ __html: article.content }}
-      />
+        className="prose-cosmic mb-12 relative"
+      >
+        {article.is_vip && !isVipUser && !isAdmin ? (
+          <div>
+            <div 
+              dangerouslySetInnerHTML={{ 
+                __html: `<p>${(article.content.replace(/<[^>]+>/g, ' ').match(/[^.!?]+[.!?]+/g) || []).slice(0, 3).join(' ')}...</p>`
+              }} 
+              className="opacity-40 blur-sm pointer-events-none select-none transition-all duration-700"
+            />
+            <div className="absolute inset-x-0 bottom-0 top-0 flex flex-col items-center justify-center p-8 bg-gradient-to-t from-black via-black/80 to-transparent rounded-xl">
+              <Crown className="w-12 h-12 text-amber-400 mb-4" />
+              <h3 className="text-2xl font-bold text-white mb-2 text-center">
+                {locale === 'ar' ? 'قم بتسجيل الدخول كمستخدم VIP لقراءته' : 'Login as a VIP User to read it'}
+              </h3>
+              <p className="text-white/60 mb-6 text-center max-w-md">
+                {locale === 'ar' 
+                  ? 'هذا المقال حصري للأعضاء المميزين. قم بتسجيل الدخول أو الترقية للوصول إلى المحتوى الكامل.' 
+                  : 'This article is exclusive to VIP members. Log in or upgrade your account to read the full content.'}
+              </p>
+              {!user ? (
+                <Link href="/login" className="px-6 py-3 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium hover:from-amber-400 hover:to-orange-400 transition-all shadow-lg shadow-amber-500/20">
+                  {locale === 'ar' ? 'تسجيل الدخول' : 'Log In'}
+                </Link>
+              ) : null}
+            </div>
+          </div>
+        ) : (
+          <div dangerouslySetInnerHTML={{ __html: article.content }} />
+        )}
+      </motion.div>
 
       {/* Tags */}
       {article.tags?.length > 0 && (
@@ -234,6 +266,14 @@ export function ArticleDetail({ article, related, locale }: Props) {
           </div>
         </section>
       )}
+
+      {/* Comments section */}
+      <Comments 
+        articleId={article.id} 
+        locale={locale} 
+        currentUser={user} 
+        isAdmin={isAdmin || false} 
+      />
     </article>
   )
 }

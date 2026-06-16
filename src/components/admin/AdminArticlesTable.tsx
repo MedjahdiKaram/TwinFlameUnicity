@@ -17,7 +17,7 @@ interface Article {
   title: string
   status: 'draft' | 'published' | 'archived'
   language: 'en' | 'ar'
-  is_premium: boolean
+  is_vip: boolean
   is_featured: boolean
   views: number
   likes: number
@@ -143,7 +143,7 @@ export function AdminArticlesTable({ articles: initialArticles, locale }: Props)
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-2">
                           <p className="text-sm text-white/80 font-medium max-w-xs truncate">{article.title}</p>
-                          {article.is_premium && <Crown className="w-3 h-3 text-amber-400 flex-shrink-0" />}
+                          {article.is_vip && <Crown className="w-3 h-3 text-amber-400 flex-shrink-0" />}
                           {article.is_featured && <Star className="w-3 h-3 text-purple-400 flex-shrink-0" />}
                         </div>
                         {article.category && (

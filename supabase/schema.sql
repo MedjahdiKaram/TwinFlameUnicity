@@ -32,6 +32,7 @@ CREATE TABLE public.profiles (
   bio           TEXT,
   avatar_url    TEXT,
   role          user_role NOT NULL DEFAULT 'user',
+  is_vip        BOOLEAN NOT NULL DEFAULT FALSE,
   status        user_status NOT NULL DEFAULT 'pending',
   created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
@@ -140,7 +141,7 @@ CREATE TABLE public.articles (
   cover_url       TEXT,
   cover_alt       TEXT,
   status          article_status NOT NULL DEFAULT 'draft',
-  is_premium      BOOLEAN NOT NULL DEFAULT FALSE,
+  is_vip          BOOLEAN NOT NULL DEFAULT FALSE,
   is_featured     BOOLEAN NOT NULL DEFAULT FALSE,
   reading_time    INTEGER DEFAULT 5,          -- minutes
   views           INTEGER NOT NULL DEFAULT 0,
@@ -198,6 +199,26 @@ CREATE TABLE public.article_tags (
 );
 
 ALTER TABLE public.article_tags ENABLE ROW LEVEL SECURITY;
+
+-- ============================================================
+-- TABLE: comments
+-- ============================================================
+
+CREATE TABLE public.comments (
+  id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  article_id      UUID NOT NULL REFERENCES public.articles(id) ON DELETE CASCADE,
+  user_id         UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  parent_id       UUID REFERENCES public.comments(id) ON DELETE CASCADE,
+  content         TEXT NOT NULL,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE public.comments ENABLE ROW LEVEL SECURITY;
+
+CREATE TRIGGER comments_updated_at
+  BEFORE UPDATE ON public.comments
+  FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
 
 -- ============================================================
 -- TABLE: article_images (gallery)

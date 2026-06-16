@@ -62,7 +62,7 @@ export function BlogList({ initialArticles, categories, total, page, pageSize, l
         .from('articles')
         .select(`
           id, slug, title, excerpt, cover_url, cover_alt,
-          is_premium, is_featured, language, reading_time, views, likes,
+          is_vip, is_featured, language, reading_time, views, likes,
           published_at, category_id,
           category:categories(id, name_en, name_ar, slug, color),
           tags:article_tags(tag:tags(id, name_en, name_ar, slug))

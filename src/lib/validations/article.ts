@@ -16,7 +16,7 @@ export const articleSchema = z.object({
   cover_url: z.string().url('URL de couverture invalide').optional().or(z.literal('')),
   cover_alt: z.string().max(200).optional(),
   status: z.enum(['draft', 'published', 'archived']),
-  is_premium: z.boolean().default(false),
+  is_vip: z.boolean().default(false),
   is_featured: z.boolean().default(false),
   category_id: z.string().uuid('Catégorie invalide').optional().or(z.literal('')),
   tag_ids: z.array(z.string().uuid()).optional(),

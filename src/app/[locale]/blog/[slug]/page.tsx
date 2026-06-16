@@ -75,6 +75,16 @@ export default async function ArticlePage({ params }: Props) {
   const decodedSlug = decodeURIComponent(slug)
   const supabase = await createClient()
 
+  // Get current user and profile for VIP check
+  const { data: { user } } = await supabase.auth.getUser()
+  let isVipUser = false
+  let isAdmin = false
+  if (user) {
+    const { data: profile } = await supabase.from('profiles').select('is_vip, role').eq('id', user.id).single()
+    isVipUser = profile?.is_vip || false
+    isAdmin = profile?.role === 'admin'
+  }
+
   // Fetch article with relations
   const { data: article } = await supabase
     .from('articles')
@@ -104,7 +114,7 @@ export default async function ArticlePage({ params }: Props) {
     .from('articles')
     .select(`
       id, slug, title, excerpt, cover_url, cover_alt,
-      is_premium, is_featured, language, reading_time, views, likes,
+      is_vip, is_featured, language, reading_time, views, likes,
       published_at, category_id,
       category:categories(id, name_en, name_ar, slug, color),
       tags:article_tags(tag:tags(id, name_en, name_ar, slug))
@@ -162,6 +172,9 @@ export default async function ArticlePage({ params }: Props) {
           article={normalizedArticle}
           related={relatedArticles}
           locale={locale as 'en' | 'ar'}
+          isVipUser={isVipUser}
+          isAdmin={isAdmin}
+          user={user}
         />
       </main>
       <Footer locale={locale} />
