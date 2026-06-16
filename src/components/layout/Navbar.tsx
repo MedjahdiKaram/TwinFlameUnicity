@@ -86,6 +86,7 @@ export function Navbar({ locale }: { locale: string }) {
             <Image
               src="/images/logo_twin.png"
               alt="TwinFlame Unicity Logo"
+              title="TwinFlame Unicity Logo"
               width={40}
               height={40}
               className="relative z-10 w-auto h-10 object-contain transition-transform duration-300 group-hover:scale-105"

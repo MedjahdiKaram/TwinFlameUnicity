@@ -54,6 +54,7 @@ export function Footer({ locale }: { locale: string }) {
                 <Image
                   src="/images/logo_twin.png"
                   alt="TwinFlame Unicity Logo"
+                  title="TwinFlame Unicity Logo"
                   width={40}
                   height={40}
                   className="object-contain"

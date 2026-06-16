@@ -49,6 +49,7 @@ export function AdminSidebar({ locale }: { locale: string }) {
           <Image
             src="/images/logo_twin.png"
             alt="TwinFlame Unicity Logo"
+            title="TwinFlame Unicity Logo"
             width={32}
             height={32}
             className="object-contain"

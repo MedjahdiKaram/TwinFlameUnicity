@@ -45,6 +45,7 @@ export function ArticleCard({ article, locale, index = 0, featured = false }: Pr
               <Image
                 src={article.cover_url}
                 alt={article.cover_alt || article.title}
+                title={article.cover_alt || article.title}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                 sizes={featured ? '(max-width: 768px) 100vw, 50vw' : '(max-width: 768px) 100vw, 33vw'}

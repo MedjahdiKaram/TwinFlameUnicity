@@ -160,6 +160,7 @@ export function ArticleDetail({ article, related, locale, isVipUser, isAdmin, us
           <Image
             src={article.cover_url}
             alt={article.cover_alt || article.title}
+            title={article.cover_alt || article.title}
             fill
             className="object-cover"
             priority
