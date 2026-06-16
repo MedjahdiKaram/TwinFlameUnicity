@@ -5,16 +5,17 @@ import Image from 'next/image'
 
 export function Footer({ locale }: { locale: string }) {
   const t = useTranslations('footer')
+  const tNav = useTranslations('nav')
   const year = new Date().getFullYear()
 
   const columns = [
     {
       title: t('sitemap'),
       links: [
-        { label: locale === 'ar' ? 'الرئيسية' : 'Accueil', href: '/' as const },
-        { label: locale === 'ar' ? 'المدونة' : 'Blog', href: '/blog' as const },
-        { label: locale === 'ar' ? 'التصنيفات' : 'Catégories', href: '/categories' as const },
-        { label: locale === 'ar' ? 'نهجنا' : 'Notre Approche', href: '/about' as const },
+        { label: tNav('home'), href: '/' as const },
+        { label: tNav('blog'), href: '/blog' as const },
+        { label: tNav('categories'), href: '/categories' as const },
+        { label: tNav('about'), href: '/about' as const },
       ],
     },
     {

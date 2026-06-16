@@ -30,7 +30,7 @@ export function Comments({ articleId, locale, currentUser, isAdmin }: CommentPro
         .from('comments')
         .select(`
           id, content, created_at, parent_id,
-          user:profiles!comments_user_id_fkey(id, pseudo, first_name, last_name, avatar_url)
+          user:profiles!comments_user_id_fkey(id, pseudo, avatar_url)
         `)
         .eq('article_id', articleId)
         .order('created_at', { ascending: true })
@@ -116,7 +116,7 @@ export function Comments({ articleId, locale, currentUser, isAdmin }: CommentPro
             <Image src={comment.user.avatar_url} alt="" width={32} height={32} className="rounded-full object-cover w-8 h-8" />
           ) : (
             <div className="w-8 h-8 flex items-center justify-center rounded-full bg-purple-600/30 text-purple-300 font-medium text-xs">
-              {(comment.user?.pseudo || comment.user?.first_name || '?')[0].toUpperCase()}
+              {(comment.user?.pseudo || '?')[0].toUpperCase()}
             </div>
           )}
         </div>
@@ -124,7 +124,7 @@ export function Comments({ articleId, locale, currentUser, isAdmin }: CommentPro
           <div className="bg-white/5 rounded-2xl p-4 shadow-sm border border-white/5 relative group">
             <div className="flex items-center justify-between mb-2">
               <span className="font-semibold text-white/80 text-sm">
-                {comment.user?.pseudo || `${comment.user?.first_name || ''} ${comment.user?.last_name || ''}`.trim() || 'Anonymous'}
+                {comment.user?.pseudo || 'Anonymous'}
               </span>
               <span className="text-xs text-white/30">{formatRelativeDate(comment.created_at, locale)}</span>
             </div>

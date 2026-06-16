@@ -23,15 +23,31 @@ export default async function AboutPage({ params }: Props) {
           </div>
 
           <div className="glass-card p-10 space-y-6 text-white/70 leading-relaxed">
-            <p>
-              TwinFlameUnicity est un espace sacré dédié aux Flammes Jumelles et aux âmes en quête d&apos;éveil spirituel. Notre mission est de vous accompagner sur le chemin de la reconnexion à votre essence divine, à travers des articles de guidance, des pratiques de méditation et une communauté bienveillante.
-            </p>
-            <p>
-              Nous croyons que chaque âme porte en elle une lumière unique, et que la rencontre avec sa Flamme Jumelle représente l&apos;opportunité la plus profonde d&apos;éveil et de transformation intérieure.
-            </p>
-            <p>
-              Notre approche est holistique, alliant sagesse spirituelle ancienne et compréhension moderne de la psychologie de l&apos;âme. Nous vous invitons à explorer, questionner et vous connecter à votre vérité la plus profonde.
-            </p>
+            {locale === 'en' ? (
+              <>
+                <p>
+                  TwinFlameUnicity is a sacred space dedicated to Twin Flames and souls seeking spiritual awakening. Our mission is to accompany you on the path of reconnecting to your divine essence, through guidance articles, meditation practices, and a caring community.
+                </p>
+                <p>
+                  We believe that every soul carries a unique light, and that meeting one's Twin Flame represents the most profound opportunity for awakening and inner transformation.
+                </p>
+                <p>
+                  Our approach is holistic, combining ancient spiritual wisdom with a modern understanding of soul psychology. We invite you to explore, question, and connect to your deepest truth.
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  TwinFlameUnicity est un espace sacré dédié aux Flammes Jumelles et aux âmes en quête d&apos;éveil spirituel. Notre mission est de vous accompagner sur le chemin de la reconnexion à votre essence divine, à travers des articles de guidance, des pratiques de méditation et une communauté bienveillante.
+                </p>
+                <p>
+                  Nous croyons que chaque âme porte en elle une lumière unique, et que la rencontre avec sa Flamme Jumelle représente l&apos;opportunité la plus profonde d&apos;éveil et de transformation intérieure.
+                </p>
+                <p>
+                  Notre approche est holistique, alliant sagesse spirituelle ancienne et compréhension moderne de la psychologie de l&apos;âme. Nous vous invitons à explorer, questionner et vous connecter à votre vérité la plus profonde.
+                </p>
+              </>
+            )}
           </div>
         </div>
       </main>

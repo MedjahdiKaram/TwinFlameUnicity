@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { ArticleDetail } from '@/components/blog/ArticleDetail'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import type { Metadata } from 'next'
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params
   const decodedSlug = decodeURIComponent(slug)
-  const supabase = await createClient()
+  const supabase = await createAdminClient()
   const { data: article } = await supabase
     .from('articles')
     .select(`
@@ -74,6 +74,7 @@ export default async function ArticlePage({ params }: Props) {
   const { locale, slug } = await params
   const decodedSlug = decodeURIComponent(slug)
   const supabase = await createClient()
+  const supabaseAdmin = await createAdminClient()
 
   // Get current user and profile for VIP check
   const { data: { user } } = await supabase.auth.getUser()
@@ -86,7 +87,7 @@ export default async function ArticlePage({ params }: Props) {
   }
 
   // Fetch article with relations
-  const { data: article } = await supabase
+  const { data: article } = await supabaseAdmin
     .from('articles')
     .select(`
       *,
@@ -101,8 +102,16 @@ export default async function ArticlePage({ params }: Props) {
 
   if (!article) notFound()
 
+  // Truncate content for unauthorized users to prevent leaking via React payload
+  if (article.is_vip && !isVipUser && !isAdmin) {
+    const rawText = article.content.replace(/<[^>]+>/g, ' ');
+    const sentences = rawText.match(/[^.!?]+[.!?]+/g) || [];
+    const truncatedContent = sentences.slice(0, 3).join(' ') + '...';
+    article.content = `<p>${truncatedContent}</p>`;
+  }
+
   // Increment views (fire & forget)
-  supabase.rpc('increment_article_views', { article_slug: decodedSlug }).then(() => {})
+  supabaseAdmin.rpc('increment_article_views', { article_slug: decodedSlug }).then(() => {})
 
   const normalizedArticle = {
     ...article,
@@ -110,7 +119,7 @@ export default async function ArticlePage({ params }: Props) {
   }
 
   // Related articles
-  const { data: related } = await supabase
+  const { data: related } = await supabaseAdmin
     .from('articles')
     .select(`
       id, slug, title, excerpt, cover_url, cover_alt,

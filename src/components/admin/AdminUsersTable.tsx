@@ -193,6 +193,8 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
             <thead>
               <tr className="border-b border-white/5">
                 <th className="text-start px-5 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">User</th>
+                <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Pseudo</th>
+                <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Pseudo</th>
                 <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Email</th>
                 <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Role</th>
                 <th className="text-start px-4 py-3.5 text-xs font-semibold text-white/40 uppercase tracking-wider">Status</th>
@@ -203,7 +205,7 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
             <tbody>
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="text-center py-12 text-white/20 text-sm">
+                  <td colSpan={7} className="text-center py-12 text-white/20 text-sm">
                     No users
                   </td>
                 </tr>
@@ -230,14 +232,12 @@ export function AdminUsersTable({ users: initialUsers, locale }: Props) {
                           )}
                           <div>
                             <p className="text-sm text-white/80 font-medium">
-                              {user.pseudo || `${user.first_name || ''} ${user.last_name || ''}`.trim() || '—'}
+                              {`${user.first_name || ''} ${user.last_name || ''}`.trim() || '—'}
                             </p>
-                            {user.pseudo && (user.first_name || user.last_name) && (
-                              <p className="text-xs text-white/30">{`${user.first_name || ''} ${user.last_name || ''}`.trim()}</p>
-                            )}
                           </div>
                         </div>
                       </td>
+                      <td className="px-4 py-4 text-sm text-white/50">{user.pseudo || '—'}</td>
                       <td className="px-4 py-4 text-sm text-white/50">{user.email}</td>
                       <td className="px-4 py-4">
                         <div className="flex flex-col gap-1 items-start">
