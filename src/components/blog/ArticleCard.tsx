@@ -17,6 +17,7 @@ interface Props {
 
 export function ArticleCard({ article, locale, index = 0, featured = false }: Props) {
   const t = useTranslations('blog')
+  const tCommon = useTranslations('common')
 
   const categoryName = locale === 'ar'
     ? article.category?.name_ar
@@ -141,10 +142,10 @@ export function ArticleCard({ article, locale, index = 0, featured = false }: Pr
                 )}
               </div>
 
-              {/* Lire la suite CTA */}
+              {/* Read more CTA */}
               <div className="flex justify-end pt-1">
                 <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-400 group-hover:text-purple-300 transition-colors">
-                  {locale === 'ar' ? 'اقرأ المزيد ←' : 'Lire la suite →'}
+                  {locale === 'ar' ? 'اقرأ المزيد ←' : `${tCommon('read_more')} →`}
                 </span>
               </div>
             </div>

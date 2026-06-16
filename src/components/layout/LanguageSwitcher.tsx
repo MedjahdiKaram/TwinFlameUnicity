@@ -18,7 +18,7 @@ export function LanguageSwitcher({ locale }: { locale: string }) {
   }
 
   const languages = [
-    { code: 'fr', label: 'Français', dir: 'ltr' },
+    { code: 'en', label: 'English', dir: 'ltr' },
     { code: 'ar', label: 'العربية', dir: 'rtl' },
   ]
 
