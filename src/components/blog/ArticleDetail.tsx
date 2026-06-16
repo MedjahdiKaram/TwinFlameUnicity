@@ -181,16 +181,14 @@ export function ArticleDetail({ article, related, locale, isVipUser, isAdmin, us
             <div className="mt-8 p-6 bg-purple-950/20 border border-purple-500/20 rounded-xl flex flex-col items-center justify-center text-center">
               <Crown className="w-10 h-10 text-amber-400 mb-4" />
               <h3 className="text-2xl font-bold text-white mb-2">
-                {locale === 'ar' ? 'محتوى مخصص لمستخدمي VIP' : 'Content for VIP users'}
+                {t('vip_content_title')}
               </h3>
               <p className="text-white/60 mb-6 text-sm max-w-md">
-                {locale === 'ar' 
-                  ? 'هذا المقال حصري للأعضاء المميزين. قم بتسجيل الدخول كعضو VIP للوصول إلى المحتوى الكامل.' 
-                  : 'This article is exclusive to VIP members. Log in as a VIP user to read the full content.'}
+                {t('vip_content_desc')}
               </p>
               {!user ? (
                 <Link href="/login" className="px-6 py-3 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium hover:from-amber-400 hover:to-orange-400 transition-all shadow-lg shadow-amber-500/20">
-                  {locale === 'ar' ? 'تسجيل الدخول' : 'Log In'}
+                  {t('vip_login')}
                 </Link>
               ) : null}
             </div>

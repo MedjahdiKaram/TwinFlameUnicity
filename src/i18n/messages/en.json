@@ -66,7 +66,10 @@
     "share": "Share",
     "comments": "Comments",
     "related": "Related articles",
-    "back": "Back to blog"
+    "back": "Back to blog",
+    "vip_content_title": "Content for VIP users",
+    "vip_content_desc": "This article is exclusive to VIP members. Log in as a VIP user to read the full content.",
+    "vip_login": "Log In"
   },
   "categories": {
     "title": "Categories",
