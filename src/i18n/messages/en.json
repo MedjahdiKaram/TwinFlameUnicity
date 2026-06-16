@@ -84,6 +84,32 @@
     "newsletter_description": "Join our sacred circle and receive insights, energy updates and exclusive content to support your journey.",
     "newsletter_cta": "Join The Sacred Circle →",
     "newsletter_success": "Welcome to our sacred circle! Check your email.",
+    "first_name_placeholder": "First Name",
+    "email_placeholder": "Email Address",
+    "featured_articles": {
+      "list": {
+        "0": {
+          "title": "11 Powerful Signs You've Met Your Twin Flame",
+          "category": "TWIN FLAMES"
+        },
+        "1": {
+          "title": "111, 222, 333 - What Are Angels Trying To Tell You?",
+          "category": "SYNCHRONICITIES"
+        },
+        "2": {
+          "title": "Healing The Divine Feminine Within",
+          "category": "SACRED FEMININE"
+        },
+        "3": {
+          "title": "Understanding The Divine Masculine Energy",
+          "category": "SACRED MASCULINE"
+        },
+        "4": {
+          "title": "How To Prepare For Twin Flame Union",
+          "category": "DIVINE UNION"
+        }
+      }
+    },
     "services_list": {
       "eveil_interieur": {
         "title": "Awakening",

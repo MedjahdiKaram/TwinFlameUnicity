@@ -126,14 +126,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ar: '/ar',
       },
     },
-    verification: {
-      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
-      yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION || '',
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: 'black-translucent',
     },
     other: {
       'theme-color': '#0a0516',
-      'apple-mobile-web-app-capable': 'yes',
-      'apple-mobile-web-app-status-bar-style': 'black-translucent',
     },
   }
 }
