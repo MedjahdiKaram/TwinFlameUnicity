@@ -29,7 +29,25 @@
     "blog_title": "أصداء الوحدة",
     "blog_subtitle": "آخر المقالات الروحية",
     "blog_cta": "عرض جميع المقالات",
-    "featured_tag": "مميز"
+    "featured_tag": "مميز",
+    "services_list": {
+      "eveil_interieur": {
+        "title": "الصحوة الداخلية",
+        "description": "استكشف أعماق وعيك وأيقظ نورك الداخلي."
+      },
+      "harmonie_couple": {
+        "title": "توافق الزوجين",
+        "description": "افهم طاقاتك وجد التوافق المثالي في تواصلك المقدس."
+      },
+      "eveil_conscience": {
+        "title": "صحوة الوعي",
+        "description": "تجاوز حدود الأنا وتواصل مع ذاتك العليا."
+      },
+      "guidance_spirituelle": {
+        "title": "التوجيه الروحي",
+        "description": "تلقَّ رسائل الروح وابحر في مسيرتك بوضوح إلهي."
+      }
+    }
   },
   "blog": {
     "title": "المدونة الروحية",

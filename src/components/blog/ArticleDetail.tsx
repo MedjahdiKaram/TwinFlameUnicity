@@ -176,19 +176,18 @@ export function ArticleDetail({ article, related, locale, isVipUser, isAdmin, us
         className="prose-cosmic mb-12 relative"
       >
         {article.is_vip && !isVipUser && !isAdmin ? (
-          <div>
+          <div className="relative">
             <div 
               dangerouslySetInnerHTML={{ 
                 __html: `<p>${(article.content.replace(/<[^>]+>/g, ' ').match(/[^.!?]+[.!?]+/g) || []).slice(0, 3).join(' ')}...</p>`
               }} 
-              className="opacity-40 blur-sm pointer-events-none select-none transition-all duration-700"
             />
-            <div className="absolute inset-x-0 bottom-0 top-0 flex flex-col items-center justify-center p-8 bg-gradient-to-t from-black via-black/80 to-transparent rounded-xl">
-              <Crown className="w-12 h-12 text-amber-400 mb-4" />
-              <h3 className="text-2xl font-bold text-white mb-2 text-center">
-                {locale === 'ar' ? 'قم بتسجيل الدخول كمستخدم VIP لقراءته' : 'Login as a VIP User to read it'}
+            <div className="mt-8 p-6 bg-purple-950/20 border border-purple-500/20 rounded-xl flex flex-col items-center justify-center text-center">
+              <Crown className="w-10 h-10 text-amber-400 mb-4" />
+              <h3 className="text-2xl font-bold text-white mb-2">
+                {locale === 'ar' ? 'محتوى مخصص لمستخدمي VIP' : 'Content for VIP users'}
               </h3>
-              <p className="text-white/60 mb-6 text-center max-w-md">
+              <p className="text-white/60 mb-6 text-sm max-w-md">
                 {locale === 'ar' 
                   ? 'هذا المقال حصري للأعضاء المميزين. قم بتسجيل الدخول أو الترقية للوصول إلى المحتوى الكامل.' 
                   : 'This article is exclusive to VIP members. Log in or upgrade your account to read the full content.'}

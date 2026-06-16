@@ -10,40 +10,24 @@ const SERVICES = [
     key: 'eveil_interieur',
     gradient: 'from-purple-600 to-violet-700',
     glow: 'rgba(147,51,234,0.4)',
-    title_fr: 'Éveil Intérieur',
-    title_ar: 'الصحوة الداخلية',
-    desc_fr: 'Explorez les profondeurs de votre conscience et éveilllez votre lumière intérieure.',
-    desc_ar: 'استكشف أعماق وعيك وأيقظ نورك الداخلي.',
   },
   {
     icon: Heart,
     key: 'harmonie_couple',
     gradient: 'from-pink-600 to-rose-700',
     glow: 'rgba(236,72,153,0.4)',
-    title_fr: 'Harmonie du Couple',
-    title_ar: 'توافق الزوجين',
-    desc_fr: 'Alignez vos énergies et trouvez l\'harmonie parfaite dans votre connexion sacrée.',
-    desc_ar: 'افهم طاقاتك وجد التوافق المثالي في تواصلك المقدس.',
   },
   {
     icon: Eye,
     key: 'eveil_conscience',
     gradient: 'from-indigo-600 to-blue-700',
     glow: 'rgba(99,102,241,0.4)',
-    title_fr: 'Éveil de la Conscience',
-    title_ar: 'صحوة الوعي',
-    desc_fr: 'Transcendez les limites de l\'ego et connectez-vous à votre Soi supérieur.',
-    desc_ar: 'تجاوز حدود الأنا وتواصل مع ذاتك العليا.',
   },
   {
     icon: Star,
     key: 'guidance_spirituelle',
     gradient: 'from-amber-500 to-orange-600',
     glow: 'rgba(245,158,11,0.4)',
-    title_fr: 'Guidance Spirituelle',
-    title_ar: 'التوجيه الروحي',
-    desc_fr: 'Recevez des messages de l\'âme et naviguez votre parcours avec clarté divine.',
-    desc_ar: 'تلقَّ رسائل الروح وابحر في مسيرتك بوضوح إلهي.',
   },
 ]
 
@@ -89,7 +73,7 @@ export function ServicesSection({ locale }: { locale: 'en' | 'ar' }) {
                 <service.icon className="w-7 h-7 text-white" />
               </div>
               <span className="text-xs font-semibold uppercase tracking-wider text-white/50 text-center max-w-[80px] leading-tight">
-                {locale === 'ar' ? service.title_ar : service.title_fr}
+                {t(`services_list.${service.key}.title`)}
               </span>
             </motion.div>
           ))}
@@ -115,10 +99,10 @@ export function ServicesSection({ locale }: { locale: 'en' | 'ar' }) {
                 <service.icon className="w-6 h-6 text-white" />
               </div>
               <h3 className="font-display font-semibold text-white/90 mb-2 text-sm uppercase tracking-wide">
-                {locale === 'ar' ? service.title_ar : service.title_fr}
+                {t(`services_list.${service.key}.title`)}
               </h3>
               <p className="text-xs text-white/45 leading-relaxed">
-                {locale === 'ar' ? service.desc_ar : service.desc_fr}
+                {t(`services_list.${service.key}.description`)}
               </p>
             </motion.div>
           ))}

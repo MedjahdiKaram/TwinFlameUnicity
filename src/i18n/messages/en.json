@@ -29,7 +29,25 @@
     "blog_title": "Echoes of Unity",
     "blog_subtitle": "Latest spiritual articles",
     "blog_cta": "View all articles",
-    "featured_tag": "Featured"
+    "featured_tag": "Featured",
+    "services_list": {
+      "eveil_interieur": {
+        "title": "Inner Awakening",
+        "description": "Explore the depths of your consciousness and awaken your inner light."
+      },
+      "harmonie_couple": {
+        "title": "Couple's Harmony",
+        "description": "Align your energies and find perfect harmony in your sacred connection."
+      },
+      "eveil_conscience": {
+        "title": "Consciousness Awakening",
+        "description": "Transcend the limits of the ego and connect with your higher Self."
+      },
+      "guidance_spirituelle": {
+        "title": "Spiritual Guidance",
+        "description": "Receive messages from the soul and navigate your journey with divine clarity."
+      }
+    }
   },
   "blog": {
     "title": "The Spiritual Blog",
