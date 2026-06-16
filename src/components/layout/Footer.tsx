@@ -1,3 +1,5 @@
+'use client'
+
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { Mail, Instagram, Facebook, Youtube, Gift, ArrowUp } from 'lucide-react'
