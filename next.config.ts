@@ -42,6 +42,12 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
+  rewrites: async () => [
+    {
+      source: '/:locale(en|ar)/images/:path*',
+      destination: '/images/:path*',
+    },
+  ],
   headers: async () => [
     {
       source: '/(.*)',

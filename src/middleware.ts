@@ -95,8 +95,8 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and static files
-    '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+    // Skip Next.js internals, static files, and files with extensions
+    '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\..*).*)',
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
