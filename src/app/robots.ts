@@ -11,6 +11,12 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin/', '/api/', '/fr/connexion', '/fr/inscription', '/ar/تسجيل-دخول', '/ar/التسجيل'],
         crawlDelay: 2,
       },
+      {
+        // Autoriser explicitement les moteurs de recherche IA et crawlers LLM
+        userAgent: ['GPTBot', 'ChatGPT-User', 'ClaudeBot', 'anthropic-ai', 'Google-Extended', 'PerplexityBot', 'CCBot'],
+        allow: '/',
+        disallow: ['/admin/', '/api/', '/fr/connexion', '/fr/inscription', '/ar/تسجيل-دخول', '/ar/التسجيل'],
+      }
     ],
     sitemap: `${BASE_URL}/sitemap.xml`,
     host: BASE_URL,
