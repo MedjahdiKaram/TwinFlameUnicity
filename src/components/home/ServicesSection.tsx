@@ -2,32 +2,29 @@
 
 import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
-import { Flame, Heart, Eye, Star } from 'lucide-react'
+import { Link } from '@/i18n/navigation'
+import { Eye, Heart, Flame, Moon, ArrowRight, ArrowLeft } from 'lucide-react'
 
 const SERVICES = [
   {
-    icon: Flame,
+    icon: Eye,
     key: 'eveil_interieur',
-    gradient: 'from-purple-600 to-violet-700',
-    glow: 'rgba(147,51,234,0.4)',
+    href: '/categories/eveil-spirituel' as const,
   },
   {
     icon: Heart,
     key: 'harmonie_couple',
-    gradient: 'from-pink-600 to-rose-700',
-    glow: 'rgba(236,72,153,0.4)',
+    href: '/categories/guerison' as const,
   },
   {
-    icon: Eye,
+    icon: Flame,
     key: 'eveil_conscience',
-    gradient: 'from-indigo-600 to-blue-700',
-    glow: 'rgba(99,102,241,0.4)',
+    href: '/categories/flammes-jumelles' as const,
   },
   {
-    icon: Star,
+    icon: Moon,
     key: 'guidance_spirituelle',
-    gradient: 'from-amber-500 to-orange-600',
-    glow: 'rgba(245,158,11,0.4)',
+    href: '/resources' as const,
   },
 ]
 
@@ -35,75 +32,48 @@ export function ServicesSection({ locale }: { locale: 'en' | 'ar' }) {
   const t = useTranslations('home')
 
   return (
-    <section className="relative py-24 overflow-hidden">
-      {/* BG */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/20 to-transparent pointer-events-none" />
+    <section className="relative py-20 bg-[#06030c] border-y border-white/5 overflow-hidden">
+      {/* Background radial glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(230,200,135,0.02)_0%,transparent_85%)] pointer-events-none" />
 
       <div className="container mx-auto px-4 lg:px-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl font-display font-bold text-white mb-3">
-            {t('services_title')}{' '}
-            <span className="text-cosmic">{t('services_highlight')}</span>
-          </h2>
-          <div className="w-24 h-px mx-auto bg-gradient-to-r from-transparent via-purple-500 to-transparent mt-4" />
-        </motion.div>
-
-        {/* Icons row */}
-        <div className="flex justify-center gap-6 sm:gap-10 mb-16 flex-wrap">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y lg:divide-y-0 lg:divide-x divide-white/5 rtl:divide-x-reverse border border-white/5 rounded-3xl bg-black/30 backdrop-blur-md">
           {SERVICES.map((service, i) => (
             <motion.div
               key={service.key}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="flex flex-col items-center gap-3 group cursor-pointer"
-            >
-              <div
-                className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${service.gradient} flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg`}
-                style={{ boxShadow: `0 0 20px ${service.glow}` }}
-              >
-                <service.icon className="w-7 h-7 text-white" />
-              </div>
-              <span className="text-xs font-semibold uppercase tracking-wider text-white/50 text-center max-w-[80px] leading-tight">
-                {t(`services_list.${service.key}.title`)}
-              </span>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Cards grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {SERVICES.map((service, i) => (
-            <motion.div
-              key={service.key}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              whileHover={{ y: -6, transition: { duration: 0.3 } }}
-              className="glass-card p-6 group cursor-pointer border border-white/5 hover:border-purple-500/30 transition-all duration-500"
-              style={{ '--glow': service.glow } as React.CSSProperties}
+              className="p-8 flex flex-col items-center text-center group cursor-pointer hover:bg-white/[0.01] transition-all duration-300"
             >
-              <div
-                className={`w-12 h-12 rounded-xl bg-gradient-to-br ${service.gradient} flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110`}
-                style={{ boxShadow: `0 0 15px ${service.glow}` }}
-              >
-                <service.icon className="w-6 h-6 text-white" />
+              {/* Gold Outline Icon */}
+              <div className="mb-6 text-[#e6c887] group-hover:scale-110 transition-transform duration-300">
+                <service.icon className="w-8 h-8 stroke-[1.25] drop-shadow-[0_0_8px_rgba(230,200,135,0.2)]" />
               </div>
-              <h3 className="font-display font-semibold text-white/90 mb-2 text-sm uppercase tracking-wide">
+
+              {/* Title */}
+              <h3 className="font-display font-semibold text-xs tracking-widest text-white mb-3 uppercase">
                 {t(`services_list.${service.key}.title`)}
               </h3>
-              <p className="text-xs text-white/45 leading-relaxed">
+
+              {/* Description */}
+              <p className="text-[11px] text-white/40 leading-relaxed mb-6 max-w-[220px] h-12 flex items-center justify-center">
                 {t(`services_list.${service.key}.description`)}
               </p>
+
+              {/* Gold Link */}
+              <Link
+                href={service.href}
+                className="inline-flex items-center gap-1.5 text-[10px] font-bold tracking-widest text-[#e6c887] group-hover:text-white transition-colors uppercase"
+              >
+                <span>{t('explore') || 'EXPLORE'}</span>
+                {locale === 'ar' ? (
+                  <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-1" />
+                ) : (
+                  <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
+                )}
+              </Link>
             </motion.div>
           ))}
         </div>

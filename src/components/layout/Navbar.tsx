@@ -12,10 +12,13 @@ import type { Profile } from '@/types/database.types'
 
 const NAV_LINKS = [
   { key: 'home', href: '/' as const },
+  { key: 'twin_flames', href: '/categories/flammes-jumelles' as const },
+  { key: 'soulmates', href: '/categories/ames-soeurs' as const },
+  { key: 'awakening', href: '/categories/eveil-spirituel' as const },
+  { key: 'healing', href: '/categories/guerison' as const },
   { key: 'blog', href: '/blog' as const },
-  { key: 'categories', href: '/categories' as const },
+  { key: 'resources', href: '/resources' as const },
   { key: 'about', href: '/about' as const },
-  { key: 'contact', href: '/contact' as const },
 ]
 
 export function Navbar({ locale }: { locale: string }) {
@@ -74,69 +77,73 @@ export function Navbar({ locale }: { locale: string }) {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? 'bg-black/60 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-purple-900/20'
+          ? 'bg-black/80 backdrop-blur-xl border-b border-white/5 shadow-lg shadow-purple-900/10'
           : 'bg-transparent'
       }`}
     >
-      <nav className="container mx-auto flex items-center justify-between h-20 px-4 lg:px-8">
+      <nav className="container mx-auto flex items-center justify-between lg:grid lg:grid-cols-3 h-20 px-4 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-10 h-10 flex items-center justify-center">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500/20 to-indigo-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
-            <Image
-              src="/images/logo_twin.png"
-              alt="TwinFlame Unicity Logo"
-              title="TwinFlame Unicity Logo"
-              width={40}
-              height={40}
-              className="relative z-10 w-auto h-10 object-contain transition-transform duration-300 group-hover:scale-105"
-              priority
-            />
-          </div>
-          <div className="hidden sm:block">
-            <div className="text-sm font-display font-bold tracking-wider text-white leading-none">
-              TwinFlame
+        <div className="flex justify-start">
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative w-10 h-10 flex items-center justify-center">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#e6c887]/10 to-[#d4af37]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
+              <Image
+                src="/images/logo_twin.png"
+                alt="TwinFlame Unicity Logo"
+                title="TwinFlame Unicity Logo"
+                width={40}
+                height={40}
+                className="relative z-10 w-auto h-10 object-contain transition-transform duration-300 group-hover:scale-105"
+                priority
+              />
             </div>
-            <div className="text-xs text-cosmic font-display font-semibold tracking-widest">
-              UNICITY
+            <div className="hidden sm:block">
+              <div className="text-sm font-display font-bold tracking-wider text-white leading-none">
+                TwinFlame
+              </div>
+              <div className="text-[10px] text-gold font-display font-semibold tracking-widest">
+                UNICITY
+              </div>
             </div>
-          </div>
-        </Link>
+          </Link>
+        </div>
 
         {/* Desktop navigation */}
-        <ul className="hidden lg:flex items-center gap-1">
-          {NAV_LINKS.map(({ key, href }) => (
-            <li key={key}>
-              <Link
-                href={href}
-                className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg group ${
-                  isActive(href)
-                    ? 'text-purple-300'
-                    : 'text-white/70 hover:text-white'
-                }`}
-              >
-                {isActive(href) && (
-                  <motion.span
-                    layoutId="nav-active"
-                    className="absolute inset-0 rounded-lg bg-purple-500/15 border border-purple-500/30"
-                    transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-                <span className="relative">{t(key as keyof ReturnType<typeof t>)}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="hidden lg:flex justify-center">
+          <ul className="flex items-center gap-1">
+            {NAV_LINKS.map(({ key, href }) => (
+              <li key={key}>
+                <Link
+                  href={href}
+                  className={`relative px-3 py-2 text-[10px] font-semibold uppercase tracking-wider transition-all duration-300 rounded-lg group ${
+                    isActive(href)
+                      ? 'text-[#e6c887]'
+                      : 'text-white/70 hover:text-white'
+                  }`}
+                >
+                  {isActive(href) && (
+                    <motion.span
+                      layoutId="nav-active"
+                      className="absolute inset-0 rounded-lg bg-white/5 border border-white/5"
+                      transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <span className="relative">{t(key as any)}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
 
         {/* Right actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center justify-end gap-3">
           <LanguageSwitcher locale={locale} />
 
           {profile ? (
             <div className="relative">
               <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 hover:border-purple-500/40 transition-all duration-300 text-sm"
+                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 hover:border-[#e6c887]/40 transition-all duration-300 text-sm"
               >
                 {profile.avatar_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -196,15 +203,15 @@ export function Navbar({ locale }: { locale: string }) {
             <div className="hidden sm:flex items-center gap-2">
               <Link
                 href="/login"
-                className="px-4 py-2 text-sm font-medium text-white/70 hover:text-white transition-colors"
+                className="px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white/70 hover:text-white transition-colors"
               >
                 {t('login')}
               </Link>
               <Link
                 href="/register"
-                className="px-4 py-2 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition-all duration-300 shadow-glow-sm hover:shadow-glow"
+                className="btn-gold shadow-glow-sm h-10 flex items-center justify-center text-[10px] tracking-wider"
               >
-                {t('register')}
+                {t('start_here')}
               </Link>
             </div>
           )}
@@ -228,7 +235,7 @@ export function Navbar({ locale }: { locale: string }) {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden overflow-hidden bg-black/80 backdrop-blur-xl border-b border-white/10"
+            className="lg:hidden overflow-hidden bg-black/95 backdrop-blur-xl border-b border-white/10"
           >
             <div className="container mx-auto px-4 py-6 space-y-1">
               {NAV_LINKS.map(({ key, href }) => (
@@ -238,11 +245,11 @@ export function Navbar({ locale }: { locale: string }) {
                   onClick={() => setIsMobileOpen(false)}
                   className={`block px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                     isActive(href)
-                      ? 'bg-purple-500/15 text-purple-300 border border-purple-500/30'
+                      ? 'bg-white/5 text-[#e6c887] border border-[#e6c887]/20'
                       : 'text-white/70 hover:text-white hover:bg-white/5'
                   }`}
                 >
-                  {t(key as keyof ReturnType<typeof t>)}
+                  {t(key as any)}
                 </Link>
               ))}
               {!profile && (
@@ -257,9 +264,9 @@ export function Navbar({ locale }: { locale: string }) {
                   <Link
                     href="/register"
                     onClick={() => setIsMobileOpen(false)}
-                    className="block text-center px-4 py-3 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600"
+                    className="btn-gold py-3 text-xs justify-center"
                   >
-                    {t('register')}
+                    {t('start_here')}
                   </Link>
                 </div>
               )}

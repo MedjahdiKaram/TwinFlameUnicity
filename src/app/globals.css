@@ -211,6 +211,43 @@
     transform: translateY(-2px);
   }
 
+  /* Premium Gold Button */
+  .btn-gold {
+    @apply relative overflow-hidden transition-all duration-500 px-6 py-2.5 text-xs font-semibold tracking-widest text-[#1c1008] uppercase rounded-full flex items-center justify-center gap-2;
+    background: linear-gradient(135deg, #e6c887 0%, #d4af37 100%);
+    box-shadow: 0 0 15px rgba(230, 200, 135, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-gold:hover {
+    box-shadow: 0 0 25px rgba(230, 200, 135, 0.6), 0 0 45px rgba(230, 200, 135, 0.3);
+    transform: translateY(-2px);
+  }
+
+  /* Outline White Button */
+  .btn-outline-white {
+    @apply px-6 py-2.5 text-xs font-semibold tracking-widest text-white uppercase rounded-full border border-white/30 transition-all duration-300 bg-transparent flex items-center justify-center gap-2;
+  }
+
+  .btn-outline-white:hover {
+    @apply border-white bg-white/5;
+    transform: translateY(-2px);
+  }
+
+  /* Gold Border Cards & Outlines */
+  .border-gold-glow {
+    border: 1px solid rgba(230, 200, 135, 0.15);
+    box-shadow: 0 0 15px rgba(230, 200, 135, 0.03);
+    background: rgba(10, 5, 22, 0.75);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+
+  /* Gold Text */
+  .text-gold {
+    color: #e6c887;
+  }
+
   /* Cosmic text gradient */
   .text-cosmic {
     background: linear-gradient(135deg, #c084fc, #a78bfa, #818cf8);

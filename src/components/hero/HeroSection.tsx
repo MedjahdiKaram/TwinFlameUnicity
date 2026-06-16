@@ -264,27 +264,25 @@ export function HeroSection() {
         <div
           className="absolute inset-0"
           style={{
-            background: 'radial-gradient(circle at 50% 35%, transparent 20%, rgba(15, 7, 40, 0.3) 60%, #0f0728 100%)',
+            background: 'radial-gradient(circle at 50% 35%, transparent 20%, rgba(6, 3, 12, 0.2) 60%, #06030c 100%)',
           }}
         />
       </motion.div>
 
       {/* ── Background overlay vignette ── */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/10 to-[#0f0728] pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-[#06030c] pointer-events-none" />
 
       {/* ── Particle canvas ── */}
       <ParticleCanvas />
 
       {/* ── Background glow orbs ── */}
       <motion.div
-        className="absolute inset-0 pointer-events-none opacity-40"
+        className="absolute inset-0 pointer-events-none opacity-30"
         style={{ y: yBg }}
       >
-        <EnergyOrb color="rgba(147,51,234,0.3)"  x={15} y={20} size={600} delay={0} />
-        <EnergyOrb color="rgba(79,70,229,0.2)"   x={75} y={60} size={500} delay={2} />
-        <EnergyOrb color="rgba(217,70,239,0.15)"  x={50} y={80} size={400} delay={4} />
-        <EnergyOrb color="rgba(236,72,153,0.1)" x={85} y={15} size={350} delay={1} />
-        <EnergyOrb color="rgba(139,92,246,0.2)"  x={5}  y={65} size={450} delay={3} />
+        <EnergyOrb color="rgba(230, 200, 135, 0.15)"  x={15} y={20} size={600} delay={0} />
+        <EnergyOrb color="rgba(147,51,234,0.15)"   x={75} y={60} size={500} delay={2} />
+        <EnergyOrb color="rgba(217,70,239,0.1)"  x={50} y={80} size={400} delay={4} />
       </motion.div>
 
       {/* ── Stars ── */}
@@ -301,62 +299,57 @@ export function HeroSection() {
           <ShimmerRing size={500} delay={1} />
           <ShimmerRing size={700} delay={2} />
           <ShimmerRing size={900} delay={0.5} />
-          <ShimmerRing size={1100} delay={1.5} />
         </div>
       </div>
 
       {/* ── Light mist overlay ── */}
       <motion.div
         className="absolute inset-0 pointer-events-none"
-        animate={{ opacity: [0.3, 0.5, 0.3] }}
+        animate={{ opacity: [0.2, 0.4, 0.2] }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         style={{
           background:
-            'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(147,51,234,0.12) 0%, transparent 70%)',
+            'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(230, 200, 135, 0.05) 0%, transparent 70%)',
         }}
       />
-
-      {/* ── Divine light beam ── */}
-      <motion.div
-        className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none"
-        animate={{ opacity: [0.4, 0.7, 0.4], scaleX: [0.8, 1, 0.8] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-        style={{
-          width: 3,
-          height: '60%',
-          background:
-            'linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(168,85,247,0.5), transparent)',
-          filter: 'blur(4px)',
-          boxShadow: '0 0 30px 10px rgba(168,85,247,0.4)',
-        }}
-      />
-
-      {/* ── Portal light ── */}
-      <motion.div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2"
-        style={{ x: springX, y: springY }}
-      >
-        <PortalLight />
-      </motion.div>
 
       {/* ── Main content ── */}
       <motion.div
-        className="relative z-10 container mx-auto px-4 text-center"
+        className="relative z-10 container mx-auto px-4 text-center max-w-4xl pt-20"
         style={{ y: yTitle, opacity }}
       >
         {/* Title */}
-        <AnimatedTitle
-          line1={t('title_line1')}
-          line2={t('title_line2')}
-          highlight={t('title_highlight')}
-        />
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="mb-6"
+        >
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-display font-bold uppercase tracking-wider text-white mb-2">
+            {t('title_line1') || 'TWIN FLAME'}
+          </h1>
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-display font-bold uppercase tracking-widest text-gold drop-shadow-[0_0_15px_rgba(230,200,135,0.2)]">
+            {t('title_highlight') || 'UNICITY'}
+          </h1>
+        </motion.div>
 
-        {/* Subtitle */}
+        {/* Sub-headline */}
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.0 }}
+          className="text-lg sm:text-2xl text-white/90 font-display mb-6 tracking-wide"
+        >
+          {t('sub_title_normal') || 'Transform Your Twin Flame Journey Into '}
+          <span className="text-gold font-semibold">{t('sub_title_highlight') || 'Sacred Union'}</span>
+        </motion.h2>
+
+        {/* Subtitle / Description */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.4 }}
-          className="text-base sm:text-lg text-white/60 max-w-2xl mx-auto leading-relaxed mt-8 mb-12"
+          className="text-xs sm:text-sm text-white/50 max-w-2xl mx-auto leading-relaxed mb-12"
         >
           {t('subtitle')}
         </motion.p>
@@ -366,27 +359,19 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.6 }}
-          className="flex items-center justify-center"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <Link
-            href="/blog"
-            className="group relative px-10 py-4 rounded-full font-display font-semibold text-white tracking-widest text-xs transition-all duration-500 hover:-translate-y-1 overflow-hidden"
+            href="/register"
+            className="btn-gold px-8 py-3.5 text-[10px] tracking-wider font-bold shadow-glow-sm"
           >
-            {/* Glowing border backdrop */}
-            <span className="absolute inset-0 rounded-full border border-purple-500/60 group-hover:border-fuchsia-400 transition-colors duration-500" />
-            
-            {/* Inner background with glassmorphism */}
-            <span className="absolute inset-0 bg-purple-950/40 backdrop-blur-md group-hover:bg-purple-900/60 transition-all duration-500" />
-            
-            {/* Glow shadow behind button */}
-            <div className="absolute inset-0 rounded-full opacity-50 group-hover:opacity-100 transition-opacity duration-500 shadow-[0_0_20px_rgba(168,85,247,0.4)] group-hover:shadow-[0_0_30px_rgba(236,72,153,0.6)]" style={{ zIndex: -1 }} />
-
-            {/* Content */}
-            <span className="relative z-10 flex items-center justify-center gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-purple-300 animate-pulse" />
-              <span>{t('cta_primary')}</span>
-              <Sparkles className="w-3.5 h-3.5 text-purple-300 animate-pulse" style={{ animationDirection: 'reverse' }} />
-            </span>
+            <span>{t('cta_primary')}</span>
+          </Link>
+          <Link
+            href="/blog"
+            className="btn-outline-white px-8 py-3.5 text-[10px] tracking-wider font-bold"
+          >
+            <span>{t('cta_secondary')}</span>
           </Link>
         </motion.div>
       </motion.div>

@@ -1,9 +1,13 @@
 {
   "nav": {
     "home": "Home",
+    "twin_flames": "Twin Flames",
+    "soulmates": "Soulmates",
+    "awakening": "Awakening",
+    "healing": "Healing",
     "blog": "Blog",
     "categories": "Categories",
-    "about": "Our Approach",
+    "about": "About Us",
     "contact": "Contact",
     "login": "Sign In",
     "register": "Sign Up",
@@ -11,41 +15,91 @@
     "logout": "Sign Out",
     "admin": "Admin",
     "resources": "Resources",
-    "shop": "Shop"
+    "shop": "Shop",
+    "start_here": "START HERE →"
   },
   "hero": {
-    "title_line1": "Illuminate Your",
-    "title_line2": "Path to",
-    "title_highlight": "Unity",
-    "subtitle": "A Spiritual Journey of Awakening and Luminous Connection for Twin Flames.",
-    "cta_primary": "Discover your luminous path",
-    "cta_secondary": "Begin the Journey",
+    "title_line1": "Twin Flame",
+    "title_highlight": "Unicity",
+    "sub_title_normal": "Transform Your Twin Flame Journey Into ",
+    "sub_title_highlight": "Sacred Union",
+    "subtitle": "Discover guidance, healing, synchronicity, and spiritual awakening on your path toward divine love.",
+    "cta_primary": "Start Your Journey →",
+    "cta_secondary": "Explore Articles",
     "scroll_hint": "Discover"
   },
   "home": {
     "services_title": "Services &",
     "services_highlight": "Spiritual Awakening",
     "services_subtitle": "Your luminous journey toward union",
-    "blog_title": "Echoes of Unity",
-    "blog_subtitle": "Latest spiritual articles",
-    "blog_cta": "View all articles",
-    "featured_tag": "Featured",
+    "blog_title": "Featured Articles",
+    "blog_subtitle": "Dive into wisdom, real stories and spiritual insights to support your twin flame journey.",
+    "blog_cta": "Browse All Articles",
+    "featured_tag": "Insights & Guidance",
+    "explore": "Explore",
+    "quiz_title": "Are You Experiencing a Twin Flame Connection?",
+    "quiz_description": "Take our free quiz and receive personalized insights about your unique twin flame journey.",
+    "quiz_cta": "Take The Free Quiz →",
+    "timeline_tag": "THE TWIN FLAME JOURNEY",
+    "timeline_title": "The Path To Sacred Union",
+    "timeline_steps": {
+      "awakening": {
+        "title": "Awakening",
+        "description": "The call of your soul begins. You start questioning everything."
+      },
+      "recognition": {
+        "title": "Recognition",
+        "description": "You feel an intense soul connection beyond this world."
+      },
+      "separation": {
+        "title": "Separation",
+        "description": "Challenges arise to heal, grow and awaken individually."
+      },
+      "healing": {
+        "title": "Healing",
+        "description": "Deep inner work, releasing karmic patterns and wounds."
+      },
+      "inner_union": {
+        "title": "Inner Union",
+        "description": "You find wholeness within and embody self-love."
+      },
+      "sacred_union": {
+        "title": "Sacred Union",
+        "description": "Divine union manifests in perfect timing and higher alignment."
+      }
+    },
+    "testimonials_title": "What Our Community Says",
+    "testimonials": {
+      "sophia": {
+        "text": "Twin Flame Unicity has been a beacon of light in my darkest times. The articles, guidance and community helped me heal and trust the process."
+      },
+      "melanie": {
+        "text": "The synchronicity calculator and the stages of the journey changed everything for me. I finally feel aligned with my twin flame path."
+      },
+      "jessica": {
+        "text": "This is more than a website, it's a sacred space of love, wisdom and transformation. I'm so grateful to be part of this community."
+      }
+    },
+    "newsletter_title": "Receive Weekly Spiritual Guidance",
+    "newsletter_description": "Join our sacred circle and receive insights, energy updates and exclusive content to support your journey.",
+    "newsletter_cta": "Join The Sacred Circle →",
+    "newsletter_success": "Welcome to our sacred circle! Check your email.",
     "services_list": {
       "eveil_interieur": {
-        "title": "Inner Awakening",
-        "description": "Explore the depths of your consciousness and awaken your inner light."
+        "title": "Awakening",
+        "description": "Recognize the signs, symbols and synchronicities guiding you to your true path."
       },
       "harmonie_couple": {
-        "title": "Couple's Harmony",
-        "description": "Align your energies and find perfect harmony in your sacred connection."
+        "title": "Healing",
+        "description": "Release karmic wounds, trauma and blocks to realign your energy."
       },
       "eveil_conscience": {
-        "title": "Consciousness Awakening",
-        "description": "Transcend the limits of the ego and connect with your higher Self."
+        "title": "Twin Flame Union",
+        "description": "Navigate separation, surrender and reunion with divine timing and trust."
       },
       "guidance_spirituelle": {
-        "title": "Spiritual Guidance",
-        "description": "Receive messages from the soul and navigate your journey with divine clarity."
+        "title": "Spiritual Growth",
+        "description": "Expand consciousness, embody self-love and live your soul mission."
       }
     }
   },
@@ -201,10 +255,19 @@
   },
   "footer": {
     "tagline": "Your spiritual journey toward Unity",
-    "sitemap": "Sitemap",
+    "sitemap": "Explore",
+    "quick_links": "Quick Links",
+    "resources": "Resources",
+    "stages": "Twin Flame Stages",
+    "signs": "Signs & Synchronicities",
+    "test": "Twin Flame Test",
+    "journal": "Journal",
+    "books": "Recommended Books",
+    "free_gift": "Free Gift",
+    "gift_desc": "Download Your Free Twin Flame Journey Guide",
+    "get_it_now": "Get It Now →",
     "legal": "Legal notice",
     "privacy": "Privacy",
-    "resources": "Resources",
     "guidance": "Spiritual Guidance",
     "contact": "Contact us",
     "copyright": "© {year} TwinFlameUnicity. All rights reserved.",
