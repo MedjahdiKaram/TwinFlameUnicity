@@ -169,7 +169,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             disableTransitionOnChange={false}
           >
             <QueryProvider>
-              <GoogleAnalytics />
+              <GoogleAnalytics locale={locale} />
               <FairyCursor />
               {children}
               <Toaster />
