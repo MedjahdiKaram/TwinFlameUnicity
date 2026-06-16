@@ -9,6 +9,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { routing } from '@/i18n/routing'
 import { FairyCursor } from '@/components/layout/FairyCursor'
 import GoogleAnalytics from '@/components/layout/GoogleAnalytics'
+import { getGoogleAnalyticsId } from '@/server/actions/settings'
 import '../globals.css'
 
 // ── Fonts ──────────────────────────────────────────────────
@@ -152,6 +153,7 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   const messages = await getMessages()
   const isRtl = locale === 'ar'
+  const googleAnalyticsId = await getGoogleAnalyticsId()
 
   return (
     <html
@@ -169,7 +171,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             disableTransitionOnChange={false}
           >
             <QueryProvider>
-              <GoogleAnalytics locale={locale} />
+              <GoogleAnalytics gaId={googleAnalyticsId} locale={locale} />
               <FairyCursor />
               {children}
               <Toaster />

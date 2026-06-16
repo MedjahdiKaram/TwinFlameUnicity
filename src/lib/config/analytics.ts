@@ -1,6 +1,5 @@
 export const analyticsConfig = {
-  settingsStorageKey: 'twinflame_settings',
-  analyticsIdField: 'analyticsId',
+  googleAnalyticsConfigKey: 'google_analytics_id',
   enabledLocales: ['en'] as const,
 }
 

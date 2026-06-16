@@ -8,9 +8,12 @@ import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { toast } from '@/hooks/use-toast'
+import { getGoogleAnalyticsId, saveGoogleAnalyticsId } from '@/server/actions/settings'
 
 export default function AdminSettingsPage() {
   const [saving, setSaving] = useState(false)
+  const [gaStatusLoading, setGaStatusLoading] = useState(true)
+  const [savedGaId, setSavedGaId] = useState('')
   const [settings, setSettings] = useState({
     siteName: 'TwinFlameUnicity',
     siteUrl: 'https://twinflameunicity.com',
@@ -35,10 +38,29 @@ export default function AdminSettingsPage() {
   })
 
   useEffect(() => {
+    const loadGoogleAnalyticsId = async () => {
+      try {
+        const gaId = await getGoogleAnalyticsId()
+        setSavedGaId(gaId)
+        if (gaId) {
+          setSettings(prev => ({ ...prev, analyticsId: gaId }))
+        }
+      } catch (e) {
+        console.error('Error loading Google Analytics ID', e)
+      } finally {
+        setGaStatusLoading(false)
+      }
+    }
+
+    loadGoogleAnalyticsId()
+
     const saved = localStorage.getItem('twinflame_settings')
     if (saved) {
       try {
-        setSettings(prev => ({ ...prev, ...JSON.parse(saved) }))
+        const parsed = JSON.parse(saved) as Record<string, unknown>
+        const { analyticsId: _ignoredAnalyticsId, ...safeSettings } = parsed
+        void _ignoredAnalyticsId
+        setSettings(prev => ({ ...prev, ...safeSettings }))
       } catch (e) {
         console.error('Error parsing settings', e)
       }
@@ -55,8 +77,25 @@ export default function AdminSettingsPage() {
 
   const save = async () => {
     setSaving(true)
-    await new Promise(r => setTimeout(r, 800))
-    localStorage.setItem('twinflame_settings', JSON.stringify(settings))
+
+    const normalizedGaId = settings.analyticsId.trim()
+    const gaResult = await saveGoogleAnalyticsId(normalizedGaId)
+    if (gaResult?.error) {
+      setSaving(false)
+      toast({
+        title: 'Échec de sauvegarde',
+        description: gaResult.error,
+        variant: 'destructive',
+      })
+      return
+    }
+
+    setSavedGaId(normalizedGaId)
+    setSettings(prev => ({ ...prev, analyticsId: normalizedGaId }))
+
+    const { analyticsId: _ignoredAnalyticsId, ...safeSettings } = settings
+    void _ignoredAnalyticsId
+    localStorage.setItem('twinflame_settings', JSON.stringify(safeSettings))
     localStorage.setItem('twinflame_ai_settings', JSON.stringify(aiSettings))
     setSaving(false)
     toast({ title: 'Paramètres sauvegardés' })
@@ -128,6 +167,17 @@ export default function AdminSettingsPage() {
                   placeholder="G-XXXXXXXXXX"
                   onChange={e => setSettings(s => ({ ...s, analyticsId: e.target.value }))}
                 />
+                <p className="text-xs text-white/60">
+                  Statut tag:
+                  {' '}
+                  {gaStatusLoading ? (
+                    <span className="text-amber-300">vérification...</span>
+                  ) : savedGaId ? (
+                    <span className="text-emerald-300">actif (ID en base: {savedGaId})</span>
+                  ) : (
+                    <span className="text-red-300">inactif (aucun ID sauvegardé en base)</span>
+                  )}
+                </p>
               </div>
             </div>
 

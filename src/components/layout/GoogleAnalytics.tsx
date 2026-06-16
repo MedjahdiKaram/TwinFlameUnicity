@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Script from 'next/script'
 import { analyticsConfig } from '@/lib/config/analytics'
 
@@ -17,29 +16,7 @@ export default function GoogleAnalytics({
     return null
   }
 
-  const [resolvedGaId, setResolvedGaId] = useState(gaId || '')
-
-  useEffect(() => {
-    if (gaId) {
-      setResolvedGaId(gaId)
-      return
-    }
-
-    try {
-      const savedSettings = localStorage.getItem(analyticsConfig.settingsStorageKey)
-      if (!savedSettings) return
-
-      const parsed = JSON.parse(savedSettings) as Record<string, unknown>
-      const configuredGaId = parsed[analyticsConfig.analyticsIdField]
-
-      if (typeof configuredGaId === 'string' && configuredGaId.trim()) {
-        setResolvedGaId(configuredGaId.trim())
-      }
-    } catch {
-      // Ignore malformed local storage settings and keep GA disabled.
-    }
-  }, [gaId])
-
+  const resolvedGaId = (gaId || '').trim()
   if (!resolvedGaId) return null
 
   return (

@@ -308,6 +308,22 @@ CREATE TABLE public.media (
 ALTER TABLE public.media ENABLE ROW LEVEL SECURITY;
 
 -- ============================================================
+-- TABLE: site_config (configuration globale)
+-- ============================================================
+
+CREATE TABLE public.site_config (
+  key         TEXT PRIMARY KEY,
+  value       TEXT NOT NULL DEFAULT '',
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE public.site_config ENABLE ROW LEVEL SECURITY;
+
+CREATE TRIGGER site_config_updated_at
+  BEFORE UPDATE ON public.site_config
+  FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
+
+-- ============================================================
 -- RLS POLICIES
 -- ============================================================
 
@@ -486,6 +502,25 @@ CREATE POLICY "Admins can manage media"
     EXISTS (
       SELECT 1 FROM public.profiles
       WHERE id = auth.uid() AND role = 'admin'
+    )
+  );
+
+-- SITE_CONFIG
+CREATE POLICY "Site config is viewable by everyone"
+  ON public.site_config FOR SELECT USING (TRUE);
+
+CREATE POLICY "Admins can manage site config"
+  ON public.site_config FOR ALL
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE id = auth.uid() AND role = 'admin' AND status = 'active'
+    )
+  )
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM public.profiles
+      WHERE id = auth.uid() AND role = 'admin' AND status = 'active'
     )
   );
 
