@@ -9,7 +9,7 @@ import { Search, X, SlidersHorizontal } from 'lucide-react'
 import { ArticleCard } from './ArticleCard'
 import type { ArticleCard as ArticleCardType, Category } from '@/types/database.types'
 import { useInView } from 'react-intersection-observer'
-import { createClient } from '@/lib/supabase/client'
+import { fetchArticlesList } from '@/server/actions/articles'
 
 interface Props {
   initialArticles: ArticleCardType[]
@@ -54,45 +54,26 @@ export function BlogList({ initialArticles, categories, total, page, pageSize, l
     if (isLoading || !hasMore) return
     setIsLoading(true)
     try {
-      const supabase = createClient()
       const nextPage = currentPage + 1
-      const from = (nextPage - 1) * pageSize
+      const { articles: newArticles, total: newTotal } = await fetchArticlesList({
+        locale,
+        page: nextPage,
+        pageSize,
+        activeCategory,
+        search
+      })
 
-      let query = supabase
-        .from('articles')
-        .select(`
-          id, slug, title, excerpt, cover_url, cover_alt,
-          is_vip, is_featured, language, reading_time, views, likes,
-          published_at, category_id,
-          category:categories(id, name_en, name_ar, slug, color),
-          tags:article_tags(tag:tags(id, name_en, name_ar, slug))
-        `)
-        .eq('status', 'published')
-        .eq('language', locale)
-
-      if (activeCategory) query = query.eq('category_id', activeCategory)
-      if (search) query = query.or(`title.ilike.%${search}%,excerpt.ilike.%${search}%`)
-
-      query = query
-        .order('published_at', { ascending: false })
-        .range(from, from + pageSize - 1)
-
-      const { data } = await query
-      if (data && data.length > 0) {
-        const normalized = data.map((a: any) => ({
-          ...a,
-          tags: a.tags?.map((t: any) => t.tag) ?? [],
-        })) as ArticleCardType[]
-        setArticles((prev) => [...prev, ...normalized])
+      if (newArticles.length > 0) {
+        setArticles((prev) => [...prev, ...newArticles])
         setCurrentPage(nextPage)
-        setHasMore(articles.length + normalized.length < total)
+        setHasMore(articles.length + newArticles.length < newTotal)
       } else {
         setHasMore(false)
       }
     } finally {
       setIsLoading(false)
     }
-  }, [isLoading, hasMore, currentPage, pageSize, locale, activeCategory, search, articles.length, total])
+  }, [isLoading, hasMore, currentPage, pageSize, locale, activeCategory, search, articles.length])
 
   const handleSearch = useCallback((value: string) => {
     setSearch(value)

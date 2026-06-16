@@ -365,20 +365,9 @@ CREATE POLICY "Only admins can manage tags"
   );
 
 -- ARTICLES
-CREATE POLICY "Published non-premium articles visible to all"
+CREATE POLICY "Published articles visible to all"
   ON public.articles FOR SELECT
-  USING (status = 'published' AND is_premium = FALSE);
-
-CREATE POLICY "Published premium articles visible to active users"
-  ON public.articles FOR SELECT
-  USING (
-    status = 'published' AND is_premium = TRUE AND (
-      EXISTS (
-        SELECT 1 FROM public.profiles
-        WHERE id = auth.uid() AND status = 'active'
-      )
-    )
-  );
+  USING (status = 'published');
 
 CREATE POLICY "Authors can view own articles"
   ON public.articles FOR SELECT

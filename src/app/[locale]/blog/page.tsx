@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { Navbar } from '@/components/layout/Navbar'
 import { Footer } from '@/components/layout/Footer'
 import { BlogList } from '@/components/blog/BlogList'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/server'
 import type { Metadata } from 'next'
 
 type Props = {
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 async function getData(locale: string, searchParams: Awaited<Props['searchParams']>) {
-  const supabase = await createClient()
+  const supabase = await createAdminClient()
   const page = parseInt(searchParams.page || '1', 10)
   const pageSize = 12
   const from = (page - 1) * pageSize

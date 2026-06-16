@@ -5,7 +5,7 @@ import { Footer } from '@/components/layout/Footer'
 import { HeroSection } from '@/components/hero/HeroSection'
 import { ServicesSection } from '@/components/home/ServicesSection'
 import { BlogPreviewSection } from '@/components/home/BlogPreviewSection'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/server'
 import type { ArticleCard } from '@/types/database.types'
 import type { Metadata } from 'next'
 
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 async function getLatestArticles(locale: string): Promise<ArticleCard[]> {
   try {
-    const supabase = await createClient()
+    const supabase = await createAdminClient()
     const { data } = await supabase
       .from('articles')
       .select(`

@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { ArticleCard } from '@/components/blog/ArticleCard'
 import { generatePageMetadata } from '@/lib/seo/jsonld'
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CategoryPage({ params }: Props) {
   const { locale, slug } = await params
   const decodedSlug = decodeURIComponent(slug)
-  const supabase = await createClient()
+  const supabase = await createAdminClient()
   const isAr = locale === 'ar'
 
   const { data: category } = await supabase
