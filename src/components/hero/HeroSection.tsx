@@ -130,7 +130,7 @@ function AnimatedTitle({
 
   return (
     <div className="overflow-hidden py-4 -my-4 perspective-1000">
-      <motion.div
+      <motion.h1
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -180,7 +180,7 @@ function AnimatedTitle({
             {highlight}
           </motion.span>
         </div>
-      </motion.div>
+      </motion.h1>
     </div>
   )
 }
