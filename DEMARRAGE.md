@@ -36,17 +36,17 @@ Le fichier `.env.local` est déjà rempli avec tes clés Supabase :
 npm run dev
 ```
 
-→ Ouvre http://localhost:3000/fr
+→ Ouvre http://localhost:3000/en
 
 ## 6. Structure des URLs
 
-| Page | FR | AR |
+| Page | EN | AR |
 |------|----|----|
-| Accueil | /fr | /ar |
-| Blog | /fr/blog | /ar/مدونة |
-| Article | /fr/blog/[slug] | /ar/مدونة/[slug] |
-| Connexion | /fr/connexion | /ar/تسجيل-دخول |
-| Admin | /fr/admin | /ar/admin |
+| Accueil | /en | /ar |
+| Blog | /en/blog | /ar/مدونة |
+| Article | /en/blog/[slug] | /ar/مدونة/[slug] |
+| Connexion | /en/login | /ar/تسجيل-دخول |
+| Admin | /en/admin | /ar/admin |
 
 ## 7. Déploiement Vercel
 
@@ -65,6 +65,6 @@ Ajouter les variables d'environnement dans le dashboard Vercel.
 - **TailwindCSS** + Shadcn/UI
 - **Framer Motion** (animations cinématiques)
 - **TipTap** (éditeur WYSIWYG → HTML)
-- **next-intl** (i18n FR/AR + RTL)
+- **next-intl** (i18n EN/AR + RTL)
 - **Tanstack Query** (data fetching)
 - **Zod** + **React Hook Form** (validation)

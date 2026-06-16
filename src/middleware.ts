@@ -14,7 +14,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Strip locale prefix for path checking
-  const pathWithoutLocale = pathname.replace(/^\/(fr|ar)/, '') || '/'
+  const pathWithoutLocale = pathname.replace(/^\/(en|ar)/, '') || '/'
 
   // Check if it's an admin or protected route
   const isAdminRoute = ADMIN_PATHS.some((p) => pathWithoutLocale.startsWith(p))
@@ -96,7 +96,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // Skip Next.js internals and static files
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest|xml|txt)).*)',
+    '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],

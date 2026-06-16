@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: t('blog_description'),
     alternates: {
       canonical: `/${locale}/blog`,
-      languages: { fr: '/fr/blog', ar: '/ar/مدونة' },
+      languages: { en: '/en/blog', ar: '/ar/مدونة' },
     },
   }
 }

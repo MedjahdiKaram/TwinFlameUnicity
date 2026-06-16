@@ -137,43 +137,43 @@ function AnimatedTitle({
         className="leading-tight rtl:leading-normal"
       >
         {/* Line 1 */}
-        <div className="flex flex-wrap justify-center gap-x-4 mb-1">
+        <div className="flex flex-wrap justify-center gap-x-6 mb-2">
           {words1.map((word, i) => (
             <motion.span
               key={i}
               variants={wordVariants}
-              className="inline-block text-white font-display font-bold"
+              className="inline-block text-white font-display font-bold uppercase tracking-wide whitespace-pre"
               style={{
-                fontSize: 'clamp(2.5rem, 7vw, 5.5rem)',
-                WebkitTextStroke: '1px rgba(10, 5, 22, 0.7)',
+                fontSize: 'clamp(2rem, 6vw, 5rem)',
+                WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)',
                 textShadow: '0 4px 12px rgba(10, 5, 22, 0.6)',
               }}
             >
-              {word}
+              {word}{i < words1.length - 1 ? ' ' : ''}
             </motion.span>
           ))}
         </div>
         {/* Line 2 + highlight */}
-        <div className="flex flex-wrap justify-center gap-x-4 mb-1">
+        <div className="flex flex-wrap justify-center gap-x-6">
           {words2.map((word, i) => (
             <motion.span
               key={i}
               variants={wordVariants}
-              className="inline-block text-white font-display font-bold"
+              className="inline-block text-white font-display font-bold uppercase tracking-wide whitespace-pre"
               style={{
-                fontSize: 'clamp(2.5rem, 7vw, 5.5rem)',
-                WebkitTextStroke: '1px rgba(10, 5, 22, 0.7)',
+                fontSize: 'clamp(2rem, 6vw, 5rem)',
+                WebkitTextStroke: '1px rgba(255, 255, 255, 0.1)',
                 textShadow: '0 4px 12px rgba(10, 5, 22, 0.6)',
               }}
             >
-              {word}
+              {word}{' '}
             </motion.span>
           ))}
           <motion.span
             variants={wordVariants}
-            className="inline-block font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#ffe17d] via-[#f59e0b] to-[#d97706]"
+            className="inline-block font-display font-bold uppercase tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#ffe17d] via-[#f59e0b] to-[#d97706]"
             style={{
-              fontSize: 'clamp(2.5rem, 7vw, 5.5rem)',
+              fontSize: 'clamp(2rem, 6vw, 5rem)',
               filter: 'drop-shadow(0 2px 8px rgba(10, 5, 22, 0.8)) drop-shadow(0 0 20px rgba(245,158,11,0.4))',
             }}
           >

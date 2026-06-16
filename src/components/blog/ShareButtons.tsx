@@ -62,11 +62,11 @@ export function ShareButtons({ url, title, locale }: Props) {
     }
   }
 
-  const labels = {
-    fr: { share: 'Partager l\'article', fb: 'Facebook', wa: 'WhatsApp', msg: 'Messenger', insta: 'Instagram (Lien)' },
+  const labels: any = {
+    en: { share: 'Share this article', fb: 'Facebook', wa: 'WhatsApp', msg: 'Messenger', insta: 'Instagram (Link)' },
     ar: { share: 'مشاركة المقال', fb: 'فيسبوك', wa: 'واتساب', msg: 'ماسينجر', insta: 'انستغرام (نسخ)' }
   }
-  const t = labels[locale] || labels.fr
+  const t = labels[locale] || labels.en
 
   return (
     <div className="flex flex-col gap-2">

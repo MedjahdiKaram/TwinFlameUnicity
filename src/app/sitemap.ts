@@ -3,6 +3,8 @@ import { createClient } from '@/lib/supabase/server'
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://twinflameunicity.com'
 
+export const dynamic = 'force-dynamic'
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let articles: { slug: string; language: string; updated_at: string }[] = []
   let categories: { slug: string; updated_at: string }[] = []
@@ -28,15 +30,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .from('tags')
       .select('slug')
 
-    articles = articlesData ?? []
-    categories = categoriesData ?? []
-    tags = tagsData ?? []
-  } catch {
+    articles = articlesData as any ?? []
+    categories = categoriesData as any ?? []
+    tags = tagsData as any ?? []
+  } catch (error) {
+    console.error('Error fetching sitemap data:', error)
     // Supabase unavailable during build — return static pages only
   }
 
   // Helper for alternate languages: Ensure URLs are safely URI encoded
-  // Search engines expect x-default and encoded URLs for non-ASCII characters
   const getAlternates = (enPath: string, arPath: string) => {
     const encodedEn = encodeURI(enPath)
     const encodedAr = encodeURI(arPath)
@@ -45,26 +47,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       languages: {
         en: `${BASE_URL}/en${encodedEn}`,
         ar: `${BASE_URL}/ar${encodedAr}`,
-        'x-default': `${BASE_URL}/en${encodedEn}`, // Usually en is set as x-default fallback
+        'x-default': `${BASE_URL}/en${encodedEn}`,
       },
     }
   }
+
+  const now = new Date()
 
   // 1. Homepages (Priority 1.0, daily)
   const homeUrls: MetadataRoute.Sitemap = [
     {
       url: `${BASE_URL}/en`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'daily',
       priority: 1.0,
-      alternates: getAlternates('', ''),
+      alternates: getAlternates('/', '/'),
     },
     {
       url: `${BASE_URL}/ar`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'daily',
       priority: 1.0,
-      alternates: getAlternates('', ''),
+      alternates: getAlternates('/', '/'),
     },
   ]
 
@@ -72,14 +76,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogUrls: MetadataRoute.Sitemap = [
     {
       url: `${BASE_URL}/en/blog`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'daily',
       priority: 0.9,
       alternates: getAlternates('/blog', '/مدونة'),
     },
     {
       url: `${BASE_URL}/ar${encodeURI('/مدونة')}`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'daily',
       priority: 0.9,
       alternates: getAlternates('/blog', '/مدونة'),
@@ -88,62 +92,58 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // 3. Static Pages (Priority 0.7, monthly)
   const staticPages: MetadataRoute.Sitemap = [
-    // About
     {
       url: `${BASE_URL}/en/about`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.7,
       alternates: getAlternates('/about', '/من-نحن'),
     },
     {
       url: `${BASE_URL}/ar${encodeURI('/من-نحن')}`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.7,
       alternates: getAlternates('/about', '/من-نحن'),
     },
-    // Contact
     {
       url: `${BASE_URL}/en/contact`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.7,
       alternates: getAlternates('/contact', '/تواصل'),
     },
     {
       url: `${BASE_URL}/ar${encodeURI('/تواصل')}`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.7,
       alternates: getAlternates('/contact', '/تواصل'),
     },
-    // Categories Index
     {
       url: `${BASE_URL}/en/categories`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.7,
       alternates: getAlternates('/categories', '/تصنيفات'),
     },
     {
       url: `${BASE_URL}/ar${encodeURI('/تصنيفات')}`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.7,
       alternates: getAlternates('/categories', '/تصنيفات'),
     },
-    // Tags Index
     {
       url: `${BASE_URL}/en/tags`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.7,
       alternates: getAlternates('/tags', '/وسوم'),
     },
     {
       url: `${BASE_URL}/ar${encodeURI('/وسوم')}`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.7,
       alternates: getAlternates('/tags', '/وسوم'),
@@ -156,7 +156,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const path = isEn ? `/blog/${article.slug}` : `/مدونة/${article.slug}`
     return {
       url: `${BASE_URL}/${article.language}${encodeURI(path)}`,
-      lastModified: new Date(article.updated_at),
+      lastModified: article.updated_at ? new Date(article.updated_at) : now,
       changeFrequency: 'weekly',
       priority: 0.8,
     }
@@ -166,14 +166,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const categoryUrls: MetadataRoute.Sitemap = categories.flatMap((cat) => [
     {
       url: `${BASE_URL}/en/categories/${encodeURI(cat.slug)}`,
-      lastModified: new Date(cat.updated_at),
+      lastModified: cat.updated_at ? new Date(cat.updated_at) : now,
       changeFrequency: 'weekly',
       priority: 0.6,
       alternates: getAlternates(`/categories/${cat.slug}`, `/تصنيفات/${cat.slug}`),
     },
     {
       url: `${BASE_URL}/ar${encodeURI(`/تصنيفات/${cat.slug}`)}`,
-      lastModified: new Date(cat.updated_at),
+      lastModified: cat.updated_at ? new Date(cat.updated_at) : now,
       changeFrequency: 'weekly',
       priority: 0.6,
       alternates: getAlternates(`/categories/${cat.slug}`, `/تصنيفات/${cat.slug}`),
@@ -184,14 +184,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const tagUrls: MetadataRoute.Sitemap = tags.flatMap((tag) => [
     {
       url: `${BASE_URL}/en/tags/${encodeURI(tag.slug)}`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'weekly',
       priority: 0.5,
       alternates: getAlternates(`/tags/${tag.slug}`, `/وسوم/${tag.slug}`),
     },
     {
       url: `${BASE_URL}/ar${encodeURI(`/وسوم/${tag.slug}`)}`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: 'weekly',
       priority: 0.5,
       alternates: getAlternates(`/tags/${tag.slug}`, `/وسوم/${tag.slug}`),
